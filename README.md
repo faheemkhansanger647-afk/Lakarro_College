@@ -27,13 +27,12 @@ built on a 100% free-tier-friendly stack.
 |---|---|
 | **School** | Government Degree College Lakarai |
 | **Established** | 2004 |
-| **Established** | 2018 |
-| **Classes** | 6 – 10 |
+| **Classes** | 1st year, 2nd year and BS Programs |
 | **Board** | BISE Peshawar |
 | **Location** | Lakarai, Tehsil Halimzai, District Mohmand, KPK, Pakistan |
 | **Contact** | info@gdclakarai.edu.pk · +92 346 9898295 |
 
-The website is designed, developed and maintained **in-house by a student** (Muhammad Faheem, 2nd Year)
+The website is designed, developed and maintained **in-house by a student** (Muhammad Nadeem, 2nd Year Student)
 as a school/community project — see [Credits](#-credits).
 
 ---
