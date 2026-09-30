@@ -1,0 +1,32 @@
+# robots.txt — Government Degree College Lakarai (GDC Lakarai)
+# Allow all search engines to crawl everything; no disallows.
+# Sitemap is declared for fast discovery by Google / Bing / Yandex / Baidu.
+
+User-agent: *
+Allow: /
+
+# ─── AI Crawlers — allow (lets LLMs index college info for AI search) ──
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# ─── Sitemaps ─────────────────────────────────────────────────────────
+Sitemap: https://gdclakarai.edu.pk/sitemap.xml
+Sitemap: https://gdclakarai.edu.pk/rss.xml

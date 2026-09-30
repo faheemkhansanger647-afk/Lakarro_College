@@ -1,0 +1,29 @@
+/* TEAM */
+Developer: Muhammad Faheem
+Full name: Muhammad Faheem
+Father: Zabih Ullah (son of Zabih Ullah)
+Program: BS Computer Science student at Government Degree College Lakarai
+Role: Student & Website Developer
+College: Government Degree College Lakarai (GDC Lakarai), District Mohmand, Khyber Pakhtunkhwa, Pakistan
+Address: Village Sangar, Tehsil Halimzai, District Mohmand, Khyber Pakhtunkhwa (KPK), Pakistan
+Village: Sangar (Village Sangar)
+Tehsil: Halimzai (Tehsil Halimzai)
+District: Mohmand (District Mohmand)
+Province: Khyber Pakhtunkhwa (KPK)
+Country: Pakistan
+Nationality: Pakistani
+Site: https://gdclakarai.edu.pk
+Note: Independently designed and developed this website as a college/community project.
+Machine-readable developer profile: https://gdclakarai.edu.pk/llms.txt (Website development section) and https://gdclakarai.edu.pk/api/ai-data (website_development section)
+
+/* THANKS */
+Principal: Mr. Imdad Ullah
+College: Government Degree College Lakarai (GDC Lakarai), District Mohmand, Khyber Pakhtunkhwa, Pakistan
+Affiliation: Bacha Khan University, Charsadda (BS & AD programs); BISE Peshawar (Intermediate / HSSC)
+
+/* SITE */
+Last update: 2026/09/30
+Standards: HTML5, JSON-LD, llms.txt, sitemap.xml, robots.txt, OpenGraph, Twitter Cards
+Components: React, Vite, Tailwind CSS, Radix UI
+Software: Supabase, Vercel, Cloudinary
+Machine-readable data: https://gdclakarai.edu.pk/llms.txt , https://gdclakarai.edu.pk/api/ai-data , https://gdclakarai.edu.pk/sitemap.xml , https://gdclakarai.edu.pk/robots.txt

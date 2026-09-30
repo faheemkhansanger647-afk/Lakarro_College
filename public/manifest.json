@@ -1,0 +1,89 @@
+{
+  "name": "Government Degree College Lakarai — GDC Lakarai",
+  "short_name": "GDC Lakarai",
+  "description": "Government Degree College Lakarai, Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. Affiliated with Bacha Khan University, Charsadda. Intermediate (Pre-Engineering, Pre-Medical, ICS, Arts), Associate Degrees (AD English, AD Urdu, AD Political Science) and BS programs (Urdu, Zoology, Botany, Political Science, Computer Science). Established 2004.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#7d1c2f",
+  "theme_color": "#7d1c2f",
+  "lang": "en-PK",
+  "dir": "ltr",
+  "categories": ["education", "higher-education"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Admissions",
+      "short_name": "Admissions",
+      "description": "Apply online for admission to 1st Year, 2nd Year, AD or BS programs",
+      "url": "/admission",
+      "icons": [{ "src": "/favicon-32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Academic Programs",
+      "short_name": "Programs",
+      "description": "View Intermediate, AD and BS programs offered at GDC Lakarai",
+      "url": "/programs",
+      "icons": [{ "src": "/favicon-32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "News & Notices",
+      "short_name": "News",
+      "description": "Latest news, notices and announcements from GDC Lakarai",
+      "url": "/news",
+      "icons": [{ "src": "/favicon-32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Results",
+      "short_name": "Results",
+      "description": "Check Intermediate and BS exam results",
+      "url": "/results",
+      "icons": [{ "src": "/favicon-32.png", "sizes": "32x32" }]
+    }
+  ]
+}

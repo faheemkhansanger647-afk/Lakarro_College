@@ -1,0 +1,66 @@
+# Government Degree College Lakarai (GDC Lakarai)
+
+> Government Degree College Lakarai (GDC Lakarai) is a public-sector
+> higher-education institution located on Bajaur Express Road, Mohmand,
+> Khyber Pakhtunkhwa, Pakistan. Established in 2004, the college is
+> affiliated with **Bacha Khan University, Charsadda** for its BS and AD
+> programs, and affiliated with **BISE Peshawar** for its Intermediate
+> (HSSC) programs.
+
+## Programs Offered
+
+### Intermediate (2-Year HSSC, BISE Peshawar)
+- Pre-Engineering — Mathematics, Physics, Chemistry
+- Pre-Medical — Biology, Physics, Chemistry
+- ICS (Intermediate in Computer Science)
+- Arts (Humanities) — Civics, History, Islamic Studies (plus optional)
+
+### Associate Degree (AD) Programs — 2 Years (4 Semesters), HEC-recognized
+- AD English
+- AD Urdu
+- AD Political Science
+
+### BS Programs — 4 Years (8 Semesters), Affiliated with Bacha Khan University
+- BS Urdu
+- BS Zoology
+- BS Botany
+- BS Political Science
+- BS Computer Science
+
+## Admissions
+
+- 1st Year (Intermediate Part-I): Requires Matriculation (SSC) result
+- 2nd Year (Intermediate Part-II): Requires 1st Year pass / NOC
+- AD Programs: Require Intermediate (HSSC) — any group, 2nd division
+- BS Programs: Require Intermediate (HSSC) — see individual program pages
+- BS Computer Science: Requires Intermediate with Mathematics
+
+Apply online at https://gdclakarai.edu.pk/admission
+
+## Contact
+
+- Address: Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan
+- Email: info@gdclakarai.edu.pk
+- Website: https://gdclakarai.edu.pk
+- Established: 2004
+- Affiliation: Bacha Khan University, Charsadda (BS & AD programs)
+- Board affiliation: BISE Peshawar (Intermediate / HSSC programs)
+
+## Key Pages
+
+- [Home](https://gdclakarai.edu.pk/)
+- [About Us](https://gdclakarai.edu.pk/about)
+- [Academic Programs](https://gdclakarai.edu.pk/programs)
+- [Admissions](https://gdclakarai.edu.pk/admission)
+- [Faculty](https://gdclakarai.edu.pk/teachers)
+- [News & Events](https://gdclakarai.edu.pk/news)
+- [Notices](https://gdclakarai.edu.pk/notices)
+- [Results](https://gdclakarai.edu.pk/results)
+- [Contact](https://gdclakarai.edu.pk/contact)
+- [FAQ](https://gdclakarai.edu.pk/faq)
+
+## Sitemap
+
+- XML: https://gdclakarai.edu.pk/sitemap.xml
+- RSS: https://gdclakarai.edu.pk/rss.xml
+- Robots: https://gdclakarai.edu.pk/robots.txt
