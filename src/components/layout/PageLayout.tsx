@@ -9,7 +9,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
     // + its safe-area inset, so the footer / last section can never hide
     // BEHIND the fixed dock (X-Twitter-style clearance). Desktop (lg+) has
     // no dock, so the padding resets to 0 there.
-    <div className="min-h-screen flex flex-col pb-[calc(52px+env(safe-area-inset-bottom,0px))] lg:pb-0">
+    <div className="min-h-screen flex flex-col overflow-x-clip pb-[calc(52px+env(safe-area-inset-bottom,0px))] lg:pb-0">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

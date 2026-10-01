@@ -867,7 +867,7 @@ const Navbar = () => {
     <nav
       {...navIntentPrefetch}
       onMouseMove={handleNavMouseMove}
-      className={`nav-glass-edges sticky top-0 z-50 border-b transition-all duration-300 ${
+      className={`nav-glass-edges sticky top-0 z-50 w-full overflow-x-clip border-b transition-all duration-300 ${
         scrolled
           ? "bg-background/95 border-border shadow-card"
           : "bg-background border-border/80"
@@ -875,10 +875,10 @@ const Navbar = () => {
       style={{ transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms, box-shadow 300ms, border-color 300ms" }}
     >
       {/* ── Top bar ── */}
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
+      <div className="container mx-auto flex min-w-0 w-full items-center justify-between h-16 px-4">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-4 shrink-0">
+        <Link to="/" className="flex min-w-0 items-center gap-3 shrink-0">
           <HexagonLogoFrame size={38}>
             {settings?.logo_url && !logoFailed ? (
               <img
@@ -892,20 +892,20 @@ const Navbar = () => {
             )}
           </HexagonLogoFrame>
           <div>
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
+            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-none block tracking-tight">
               Government Degree College
             </span>
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
+            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-none block tracking-tight">
               Lakarai
             </span>
-            <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground/80 leading-none">
+            <span className="mt-1 block text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground/80 leading-none">
               College Portal · Mohmand
             </span>
           </div>
         </Link>
 
         {/* ── Desktop nav: direct links + grouped mega drop-downs ── */}
-        <div className="hidden lg:flex items-center gap-1" ref={desktopNavRef}>
+        <div className="hidden min-w-0 lg:flex items-center gap-1" ref={desktopNavRef}>
 
           {/* Home — direct link */}
           <Link
