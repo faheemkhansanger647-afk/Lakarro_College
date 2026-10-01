@@ -710,7 +710,7 @@ const Navbar = () => {
   }, []);
   const sectionLeave = useCallback(() => {
     window.clearTimeout(hoverTimers.current.enter);
-    hoverTimers.current.leave = window.setTimeout(() => setOpenSection(null), 550);
+    hoverTimers.current.leave = window.setTimeout(() => setOpenSection(null), 900);
   }, []);
   const toggleSection = useCallback((id: string) => {
     window.clearTimeout(hoverTimers.current.enter);
@@ -735,7 +735,7 @@ const Navbar = () => {
   const anyMenuOpen = open || !!openSection || !!mobileOpenSection || searchOpen;
   useEffect(() => {
     lastScrollYRef.current = window.scrollY;
-    const NAV_HEIGHT = 108; // matches the XL three-row controls; hiding starts only past it
+    const NAV_HEIGHT = 76; // matches the XL two-row controls; hiding starts only past it
     const onScroll = () => {
       const y = window.scrollY;
       const last = lastScrollYRef.current;
@@ -867,7 +867,7 @@ const Navbar = () => {
     <nav
       {...navIntentPrefetch}
       onMouseMove={handleNavMouseMove}
-      className={`nav-glass-edges sticky top-0 z-50 w-full overflow-x-clip border-b transition-all duration-300 ${
+      className={`nav-glass-edges sticky top-0 z-[100] w-full overflow-visible border-b transition-all duration-300 ${
         scrolled
           ? "bg-background/95 border-border shadow-card"
           : "bg-background border-border/80"
@@ -875,7 +875,7 @@ const Navbar = () => {
       style={{ transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms, box-shadow 300ms, border-color 300ms" }}
     >
       {/* ── Top bar ── */}
-      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 xl:h-[108px] px-4">
+      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 xl:h-[76px] px-4">
 
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-3 shrink-0">
@@ -897,9 +897,6 @@ const Navbar = () => {
             </span>
             <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Lakarai
-            </span>
-            <span className="mt-1 block text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground/80 leading-none">
-              College Portal · Mohmand
             </span>
           </div>
         </Link>
@@ -954,7 +951,7 @@ const Navbar = () => {
                     micro eyebrow, compact rows. No bulky header/footer, so it
                     reads light and fast instead of "thick". */}
                 <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50"
+                  className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-[110] pointer-events-auto"
                   onMouseEnter={() => sectionEnter(section.id)}
                 >
                   <AnimatePresence>
@@ -1077,14 +1074,8 @@ const Navbar = () => {
               )
             )}
           </div>
-          {/* Row 2 — notification, theme toggle, and live status */}
-          <div className="flex min-h-8 items-center justify-end gap-2">
-            <RollSlipCountdown variant="chip" />
-            {!authLoading && user && <NotificationBell />}
-            <ThemeSwitcher />
-          </div>
-          {/* Row 3 — full-width search */}
-          <div className="relative flex min-h-8 w-full items-center justify-end">
+          {/* Row 2 — search, notification, theme toggle, and live status */}
+          <div className="flex min-h-8 items-center justify-end gap-1">
           {/* ── Inline Search ── */}
           <div className="relative ml-1 flex items-center">
             <AnimatePresence mode="wait">
@@ -1093,7 +1084,7 @@ const Navbar = () => {
                 <motion.div
                   key="search-form"
                   initial={{ width: 32, opacity: 0 }}
-                  animate={{ width: 220, opacity: 1 }}
+                  animate={{ width: 150, opacity: 1 }}
                   exit={{ width: 32, opacity: 0 }}
                   transition={{ duration: 0.22, ease: "easeOut" }}
                   className="flex items-center overflow-hidden rounded-lg border border-border bg-background shadow-sm"
@@ -1191,8 +1182,11 @@ const Navbar = () => {
               />
             )}
           </div>
+            <RollSlipCountdown variant="chip" />
+            {!authLoading && user && <NotificationBell />}
+            <ThemeSwitcher />
           </div>
-          </div>
+        </div>
         {/* Mobile: Search icon + Hamburger — outside the drawer.
             The search icon now opens the full ⌘K command palette (fuzzy
             search + quick actions + recents) instead of the old inline
