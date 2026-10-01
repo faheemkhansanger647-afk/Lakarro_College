@@ -2198,7 +2198,7 @@ ${nav ? `<nav>${nav}</nav>` : ""}
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=120, stale-while-revalidate=86400, max-age=0");
-  res.setHeader("X-GHS-Render", `live; generated=${new Date().toISOString()}`);
+  res.setHeader("X-GDC-Render", `live; generated=${new Date().toISOString()}`);
   return res.status(200).send(html);
 }
 

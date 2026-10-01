@@ -245,7 +245,7 @@ The admin suite at `/admin` (role-gated) covers the entire school operation:
 ## 📁 Project Structure
 
 ```text
-GHS-Babi-Khel-main/
+GDC-Lakarai-main/
 ├── api/                        # Vercel serverless functions (10 — Hobby limit is 12!)
 │   ├── ai-chat.ts              # Z.AI GLM proxy — SSE streaming, model fallback
 │   ├── auto-publish-results.js # Scheduled publish: flips is_published when publish_at passes

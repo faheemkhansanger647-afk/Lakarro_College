@@ -1634,7 +1634,7 @@ export function comparisonShareText(d: ComparisonShareData): string {
 export async function shareComparisonCard(d: ComparisonShareData): Promise<ShareOutcome> {
   const canvas = buildComparisonCanvas(d);
   return shareCanvas(canvas, {
-    fileName: `Comparison-${safeName(d.rollA)}-vs-${safeName(d.rollB)}-GHS-Babi-Khel.png`,
+    fileName: `Comparison-${safeName(d.rollA)}-vs-${safeName(d.rollB)}-GDC-Lakarai.png`,
     title: "Result Comparison — Government Degree College Lakarai",
     text: comparisonShareText(d),
   });
@@ -1644,7 +1644,7 @@ export async function shareSchoolResultCard(d: SchoolResultShareData): Promise<S
   const photo = d.photoUrl ? await loadImage(d.photoUrl) : null;
   const canvas = buildSchoolCanvas(d, photo);
   return shareCanvas(canvas, {
-    fileName: `GHS-Babi-Khel-Result-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`,
+    fileName: `GDC-Lakarai-Result-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`,
     title: "Result Card — Government Degree College Lakarai",
     text: schoolShareText(d),
   });
@@ -1653,7 +1653,7 @@ export async function shareSchoolResultCard(d: SchoolResultShareData): Promise<S
 export async function shareBiseResultCard(d: BiseResultShareData): Promise<ShareOutcome> {
   const canvas = buildBiseCanvas(d);
   return shareCanvas(canvas, {
-    fileName: `BISE-Result-${safeName(d.rollNo)}-GHS-Babi-Khel.png`,
+    fileName: `BISE-Result-${safeName(d.rollNo)}-GDC-Lakarai.png`,
     title: "BISE Peshawar Result — via Government Degree College Lakarai",
     text: biseShareText(d),
   });
@@ -1666,7 +1666,7 @@ export async function saveSchoolResultCard(d: SchoolResultShareData): Promise<Sh
   const photo = d.photoUrl ? await loadImage(d.photoUrl) : null;
   const canvas = buildSchoolCanvas(d, photo);
   try {
-    const file = canvasToPngFile(canvas, `GHS-Babi-Khel-Result-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`);
+    const file = canvasToPngFile(canvas, `GDC-Lakarai-Result-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`);
     downloadFile(file);
     return "downloaded";
   } catch {
@@ -1677,7 +1677,7 @@ export async function saveSchoolResultCard(d: SchoolResultShareData): Promise<Sh
 export async function saveBiseResultCard(d: BiseResultShareData): Promise<ShareOutcome> {
   const canvas = buildBiseCanvas(d);
   try {
-    const file = canvasToPngFile(canvas, `BISE-Result-${safeName(d.rollNo)}-GHS-Babi-Khel.png`);
+    const file = canvasToPngFile(canvas, `BISE-Result-${safeName(d.rollNo)}-GDC-Lakarai.png`);
     downloadFile(file);
     return "downloaded";
   } catch {
@@ -1816,7 +1816,7 @@ export function meritShareText(d: MeritShareData): string {
 export async function shareRollSlipCard(d: RollSlipShareData): Promise<ShareOutcome> {
   const canvas = buildRollSlipCanvas(d);
   return shareCanvas(canvas, {
-    fileName: `GHS-Babi-Khel-Roll-No-Slip-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`,
+    fileName: `GDC-Lakarai-Roll-No-Slip-${safeName(d.rollNo)}-${safeName(d.studentName)}.png`,
     title: "Exam Roll No. Slip — Government Degree College Lakarai",
     text: rollSlipShareText(d),
     url: ROLLSLIP_SHARE_URL,
@@ -1827,7 +1827,7 @@ export async function shareMeritCard(d: MeritShareData): Promise<ShareOutcome> {
   const photo = d.photoUrl ? await loadImage(d.photoUrl) : null;
   const canvas = buildMeritCanvas(d, photo);
   return shareCanvas(canvas, {
-    fileName: `GHS-Babi-Khel-Merit-Position-${safeName(String(d.position))}-${safeName(d.studentName)}.png`,
+    fileName: `GDC-Lakarai-Merit-Position-${safeName(String(d.position))}-${safeName(d.studentName)}.png`,
     title: "Merit List — Government Degree College Lakarai",
     text: meritShareText(d),
     url: MERIT_SHARE_URL,
@@ -1850,7 +1850,7 @@ export async function shareTop3Card(d: Top3ShareData): Promise<ShareOutcome> {
   );
   const canvas = buildTop3Canvas(d, photos);
   return shareCanvas(canvas, {
-    fileName: `GHS-Babi-Khel-Top-3-Achievers.png`,
+    fileName: `GDC-Lakarai-Top-3-Achievers.png`,
     title: "Top 3 Achievers — Government Degree College Lakarai",
     text: top3ShareText(d),
     url: MERIT_SHARE_URL,

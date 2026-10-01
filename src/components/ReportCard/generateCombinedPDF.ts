@@ -1103,7 +1103,7 @@ export async function generateCombinedReportPDF(opts: CombinedPDFOpts): Promise<
   }
 
   const safe = (s: string) => s.replace(/[^a-z0-9-]/gi, "_");
-  const schoolSlug = safe(opts.schoolName || "GHS_BabiKhel").replace(/_+/g, "_");
+  const schoolSlug = safe(opts.schoolName || "GDC_Lakarai").replace(/_+/g, "_");
   doc.save(
     `${schoolSlug}_Combined_${safe(keyA)}_${safe(keyB)}_${safe(opts.examType)}_${safe(opts.year)}.pdf`
   );

@@ -181,7 +181,7 @@ export function generateExamICS(
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement("a");
   a.href     = url;
-  a.download = `GHS-Babi-Khel-Class${cls}-${examType.replace(/\s+/g, "-")}-${year}-Exam-Schedule.ics`;
+  a.download = `GDC-Lakarai-Class${cls}-${examType.replace(/\s+/g, "-")}-${year}-Exam-Schedule.ics`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

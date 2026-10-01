@@ -149,10 +149,10 @@ const examCode = (examType: string): string => {
   return (examType.replace(/[^A-Za-z0-9]/g, "").slice(0, 2) || "EX").toUpperCase();
 };
 
-// Deterministic, meaningful DMC number: GHS-BK/<year>/<exam><class>-<position>
-// e.g. GHS-BK/2026/1S10-01 = 1st Semester, 2nd Year, 1st position.
+// Deterministic, meaningful DMC number: GDC-LK/<year>/<exam><class>-<position>
+// e.g. GDC-LK/2026/1S10-01 = 1st Semester, 2nd Year, 1st position.
 const buildDMCNo = (r: ResultRecord): string =>
-  `GHS-BK/${r.year}/${examCode(r.exam_type)}${r.class}-${String(r.position ?? 0).padStart(2, "0")}`;
+  `GDC-LK/${r.year}/${examCode(r.exam_type)}${r.class}-${String(r.position ?? 0).padStart(2, "0")}`;
 
 // The masthead carries the college's FULL formal name — "Government Degree College Lakarai" in
 // settings is expanded to "Government Degree College Lakarai" on the PDF.

@@ -37,7 +37,7 @@ const COLOR_TITLE_TEXT = "FF0F172A"; // slate-900
 
 export function excelFileName(sel: ExamSelection): string {
   const safe = (s: string) => s.replace(/[^a-z0-9-]/gi, "_");
-  const schoolSlug = safe(sel.schoolName || "GHS_BabiKhel").replace(/_+/g, "_");
+  const schoolSlug = safe(sel.schoolName || "GDC_Lakarai").replace(/_+/g, "_");
   return `${schoolSlug}_${safe(sel.className)}_${safe(sel.examType)}_${safe(sel.year)}.xlsx`;
 }
 

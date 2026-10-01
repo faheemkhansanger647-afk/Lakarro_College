@@ -442,7 +442,7 @@ const ParticleManifesto = () => {
             just a small on-brand signature so the moment stays wordless. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-5 sm:bottom-7 flex justify-center">
           <span className="text-[10px] sm:text-[11px] tracking-[0.3em] text-[#F7B145]/60 font-medium">
-            GHS BABI KHEL
+            GDC LAKARAI
           </span>
         </div>
       </div>

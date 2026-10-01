@@ -182,7 +182,7 @@ const AdminTeachers = () => {
               <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => set("phone", e.target.value)} /></div>
               <div><Label>Email</Label><Input value={form.email} onChange={(e) => set("email", e.target.value)} /></div>
             </div>
-            <div><Label>Bio</Label><Textarea rows={2} value={form.bio} onChange={(e) => set("bio", e.target.value)} /></div>
+            <div><Label>Bio / Designation / Role</Label><Textarea rows={3} value={form.bio} onChange={(e) => set("bio", e.target.value)} placeholder="e.g. Associate Professor & Head of Department (Physics)" /></div>
             <div className="grid sm:grid-cols-2 gap-3">
               <div><Label>Display Order</Label><Input type="number" value={form.display_order} onChange={(e) => set("display_order", +e.target.value)} /></div>
               <div className="flex items-center gap-2 pt-5">

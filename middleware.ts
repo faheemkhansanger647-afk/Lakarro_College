@@ -288,7 +288,7 @@ async function proxyToLiveRender(request: Request, pathname: string): Promise<Re
   // Content varies by user-agent class (bots get rendered HTML, humans get
   // the SPA) — make that explicit for any intermediate cache.
   out.headers.set("Vary", "User-Agent");
-  out.headers.set("X-GHS-Live-Render", "1");
+  out.headers.set("X-GDC-Live-Render", "1");
   return out;
 }
 

@@ -333,7 +333,7 @@ async function networkFirstNavigation(request, event) {
     if (!res || !res.ok) return;
     // Never cache bot-targeted live renders (they carry Vary: User-Agent,
     // and a human should never be served that copy from this cache).
-    if (res.headers.get("X-GHS-Live-Render")) return;
+    if (res.headers.get("X-GDC-Live-Render")) return;
     try {
       await cache.put(request, res.clone());
       await recordRouteHtml(url.pathname);

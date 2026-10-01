@@ -1988,7 +1988,7 @@ const BiseResultSearch = () => {
       subjects: [],
     });
     let outcome = await shareResultCardNode(fullCardRef.current, {
-      fileName: `BISE-Result-${(result.roll_no || "Result").replace(/[^a-zA-Z0-9]+/g, "-")}-GHS-Babi-Khel.png`,
+      fileName: `BISE-Result-${(result.roll_no || "Result").replace(/[^a-zA-Z0-9]+/g, "-")}-GDC-Lakarai.png`,
       title: "BISE Peshawar Result — via Government Degree College Lakarai",
       text,
     });
@@ -2032,7 +2032,7 @@ const BiseResultSearch = () => {
     setSavingBise(true);
     let outcome = await saveResultCardNode(
       fullCardRef.current,
-      `BISE-Result-${(result.roll_no || "Result").replace(/[^a-zA-Z0-9]+/g, "-")}-GHS-Babi-Khel.png`,
+      `BISE-Result-${(result.roll_no || "Result").replace(/[^a-zA-Z0-9]+/g, "-")}-GDC-Lakarai.png`,
     );
     if (outcome === "failed") {
       // Fallback: the original hand-drawn canvas card.

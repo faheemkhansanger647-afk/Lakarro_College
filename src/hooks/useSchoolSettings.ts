@@ -36,9 +36,9 @@ export const fallbackSettings: SchoolSettings = {
     "Established in 2004, Government Degree College Lakarai (GDC Lakarai) is a public-sector higher-education institution located on Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. Affiliated with Bacha Khan University, Charsadda, the college offers Intermediate (HSSC) programs in Pre-Engineering, Pre-Medical, ICS and Arts (Humanities), Associate Degree (AD) programs in English, Urdu and Political Science, and four-year BS programs in Urdu, Zoology, Botany, Political Science and Computer Science. Our mission is to prepare students for university specialization and professional careers through rigorous academics and dedicated faculty.",
   logo_url: "",
   banner_url: "",
-  emis_code: "",
+  emis_code: "24651",
   address: "Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan",
-  phone: null,
+  phone: "0924293409",
   email: "info@gdclakarai.edu.pk",
   established_year: 2004,
   // ⚠ KEEP ALIGNED WITH THE ADMIN DASHBOARD (school_settings id=1).

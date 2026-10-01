@@ -19,8 +19,8 @@ import type { NewsItem } from "@/hooks/useNews";
  *    rendering Urdu letters as broken isolated glyphs.
  *  • Masthead redesigned — no more single 'ع + Official Dispatch' repeated
  *    on every card. Instead, a multi-element EMBLEM: school monogram +
- *    decorative quill + dual-tone gold rule + bilingual "GHS BABI KHEL /
- *    گھس بابی خیل" masthead line + edition tag. Reads like the masthead
+ *    decorative quill + dual-tone gold rule + bilingual "GDC LAKARAI /
+ *    جی ڈی سی لکارئی" masthead line + edition tag. Reads like the masthead
  *    of a printed journal, not a missing-image fallback.
  *  • Image card gets the same emblem overlaid bottom-left as a "plate
  *    credit" so it always feels editorial, image or not.
@@ -148,7 +148,7 @@ const CornerTicks = () => (
  *  Layers (top → bottom):
  *    1. Tiny diamond + "EST. 2018" header line (with right-side roman numerals)
  *    2. School monogram — a serif "GHS" inside a hexagonal gold ring
- *    3. Bilingual school name: "GHS BABI KHEL" (Latin) + "گھس بابی خیل" (Urdu)
+ *    3. Bilingual school name: "GDC LAKARAI" (Latin) + "جی ڈی سی لکارئی" (Urdu)
  *    4. Dual-tone gold rule + diamond ornament
  *    5. Edition tag — "EDITORIAL DISPATCH · ISSUE №X"
  * ────────────────────────────────────────────────────────────────────────── */

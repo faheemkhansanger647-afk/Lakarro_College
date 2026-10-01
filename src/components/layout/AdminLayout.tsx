@@ -59,6 +59,7 @@ const navSections: NavSection[] = [
     heading: "COLLEGE",
     items: [
       { id: "teachers",      label: "Manage Faculty",   emoji: "👨‍🏫" },
+      { id: "programs",      label: "Manage Programs",  emoji: "🎓" },
       { id: "timetables",    label: "Timetables",        emoji: "📅" },
       { id: "events",        label: "Event Calendar",    emoji: "🗓️" },
       { id: "announcements", label: "Announcements",     emoji: "📢" },

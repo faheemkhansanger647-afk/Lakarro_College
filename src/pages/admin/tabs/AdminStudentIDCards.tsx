@@ -144,7 +144,7 @@ async function renderFront(student: Student, qrDataUrl: string): Promise<string>
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 18px 'Georgia', serif";
   ctx.textAlign = "left";
-  ctx.fillText("GHS BABI KHEL", TXT_X, HDR_H / 2 - 14);
+  ctx.fillText("GDC LAKARAI", TXT_X, HDR_H / 2 - 14);
   ctx.fillStyle = "#d9ecf9";
   ctx.font = "10px 'Georgia', serif";
   ctx.fillText("Govt. College · Mohmand · KPK", TXT_X, HDR_H / 2 + 2);
@@ -362,7 +362,7 @@ async function renderBack(student: Student): Promise<string> {
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 18px 'Georgia', serif";
   ctx.textAlign = "center";
-  ctx.fillText("GHS BABI KHEL", W / 2, BACK_HDR_H / 2 - 4);
+  ctx.fillText("GDC LAKARAI", W / 2, BACK_HDR_H / 2 - 4);
   ctx.font = "11px 'Georgia', serif";
   ctx.fillStyle = "#d9ecf9";
   ctx.fillText("District Mohmand, KPK", W / 2, BACK_HDR_H / 2 + 16);
@@ -672,7 +672,7 @@ type GeneratedCard = { student: Student; frontUrl: string; backUrl: string; qrUr
 
 const AdminStudentIDCards = ({ isAdminView = true }: { isAdminView?: boolean }) => {
   const [classFilter, setClassFilter] = useState<string>("");
-  const [serialPrefix, setSerialPrefix] = useState<string>("GHSBK-2025");
+  const [serialPrefix, setSerialPrefix] = useState<string>("GDCLK-2025");
   const [search, setSearch] = useState("");
   const [generated, setGenerated] = useState<GeneratedCard[]>([]);
   const [generating, setGenerating] = useState(false);
@@ -859,7 +859,7 @@ const AdminStudentIDCards = ({ isAdminView = true }: { isAdminView?: boolean }) 
       const blob = await zip.generateAsync({ type: "blob" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.download = `GHS_Babi_Khel_ID_Cards_${classFilter}.zip`;
+      a.download = `GDC_Lakarai_ID_Cards_${classFilter}.zip`;
       a.href = url; a.click();
       URL.revokeObjectURL(url);
       toast.success("ZIP downloaded!");
@@ -910,7 +910,7 @@ const AdminStudentIDCards = ({ isAdminView = true }: { isAdminView?: boolean }) 
               <Input
                 value={serialPrefix}
                 onChange={e => setSerialPrefix(e.target.value)}
-                placeholder="e.g. GHSBK-2025"
+                placeholder="e.g. GDCLK-2025"
                 className="bg-white dark:bg-slate-900"
               />
             </div>

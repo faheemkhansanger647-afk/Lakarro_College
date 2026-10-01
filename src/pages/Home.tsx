@@ -1226,8 +1226,8 @@ const Home = () => {
       <section className="py-5 bg-background overflow-hidden border-y border-border mt-16">
         <div className="relative flex overflow-hidden">
           <div className="flex gap-8 shrink-0" style={{ animation: "marqueeScroll 28s linear infinite", willChange: "transform" }}>
-            {["📐 Mathematics","⚡ Physics","🧪 Chemistry","🌿 Biology","📖 English","✍️ Urdu","🗺️ Pakistan Studies","☪️ Islamiyat","💻 Computer Science","📗 Mutalia Quran","🔬 General Science","🌍 Geography","🏛️ History","🪶 Pashto","🕌 Arabic",
-              "📐 Mathematics","⚡ Physics","🧪 Chemistry","🌿 Biology","📖 English","✍️ Urdu","🗺️ Pakistan Studies","☪️ Islamiyat","💻 Computer Science","📗 Mutalia Quran","🔬 General Science","🌍 Geography","🏛️ History","🪶 Pashto","🕌 Arabic"]
+            {["📐 Mathematics","⚡ Physics","🧪 Chemistry","🌿 Biology","📖 English","✍️ Urdu","🗺️ Pakistan Studies","☪️ Islamiyat","💻 Computer Science","📗 Mutalia Quran","🔬 General Science","🇵🇰 Pak-Study","⚖️ Civics","🔬 Zoology",
+              "📐 Mathematics","⚡ Physics","🧪 Chemistry","🌿 Biology","📖 English","✍️ Urdu","🗺️ Pakistan Studies","☪️ Islamiyat","💻 Computer Science","📗 Mutalia Quran","🔬 General Science","🇵🇰 Pak-Study","⚖️ Civics","🔬 Zoology"]
               .map((s, i) => {
                 const [emoji, ...rest] = s.split(" ");
                 return (

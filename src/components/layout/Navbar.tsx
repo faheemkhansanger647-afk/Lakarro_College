@@ -893,7 +893,10 @@ const Navbar = () => {
           </HexagonLogoFrame>
           <div>
             <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
-              {settings?.school_name || "Government Degree College Lakarai"}
+              Government Degree College
+            </span>
+            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
+              Lakarai
             </span>
             <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground/80 leading-none">
               College Portal · Mohmand

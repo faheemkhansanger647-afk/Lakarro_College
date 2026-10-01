@@ -1955,7 +1955,7 @@ const AdminExamRollNumbers = () => {
       doc.setTextColor(100, 100, 100);
       doc.setFontSize(6);
       doc.setFont("helvetica", "bold");
-      doc.text("GHS BABI KHEL — EXAM ATTENDANCE REPORT", w / 2, h - 11, { align: "center" });
+      doc.text("GDC LAKARAI — EXAM ATTENDANCE REPORT", w / 2, h - 11, { align: "center" });
       doc.setTextColor(160, 160, 160);
       doc.setFontSize(5.5);
       doc.text(`Page ${p}/${totalPages}`, w - 18, h - 11, { align: "right" });
@@ -2085,7 +2085,7 @@ const AdminExamRollNumbers = () => {
       doc.setTextColor(100, 100, 100);
       doc.setFontSize(6);
       doc.setFont("helvetica", "bold");
-      doc.text("GHS BABI KHEL — CLASS OVERVIEW REPORT", w / 2, h - 8, { align: "center" });
+      doc.text("GDC LAKARAI — CLASS OVERVIEW REPORT", w / 2, h - 8, { align: "center" });
       doc.setTextColor(160, 160, 160);
       doc.setFontSize(5.5);
       doc.text(`Page ${p}/${totalPages}`, w - 14, h - 8, { align: "right" });

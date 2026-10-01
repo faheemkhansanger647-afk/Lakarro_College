@@ -110,7 +110,6 @@ const About = () => {
           >
             {[
               { icon: Calendar, label: `Est. ${settings?.established_year || 2004}` },
-              { icon: GraduationCap, label: `Estd. 2004` },
               { icon: MapPin, label: settings?.address || "District Mohmand, KPK" },
             ].map(({ icon: Icon, label }) => (
               <span
@@ -167,7 +166,6 @@ const About = () => {
                     {[
                       { icon: MapPin, label: settings?.address || "District Mohmand" },
                       { icon: Calendar, label: `Est. ${settings?.established_year || 2004}` },
-                      { icon: GraduationCap, label: `Estd. ${settings?.established_year || 2004}` },
                     ].map(({ icon: Icon, label }) => (
                       <span
                         key={label}
