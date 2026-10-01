@@ -710,7 +710,7 @@ const Navbar = () => {
   }, []);
   const sectionLeave = useCallback(() => {
     window.clearTimeout(hoverTimers.current.enter);
-    hoverTimers.current.leave = window.setTimeout(() => setOpenSection(null), 180);
+    hoverTimers.current.leave = window.setTimeout(() => setOpenSection(null), 550);
   }, []);
   const toggleSection = useCallback((id: string) => {
     window.clearTimeout(hoverTimers.current.enter);
@@ -735,7 +735,7 @@ const Navbar = () => {
   const anyMenuOpen = open || !!openSection || !!mobileOpenSection || searchOpen;
   useEffect(() => {
     lastScrollYRef.current = window.scrollY;
-    const NAV_HEIGHT = 64; // matches h-16 top bar; hiding starts only past it
+    const NAV_HEIGHT = 104; // matches the XL two-row top bar; hiding starts only past it
     const onScroll = () => {
       const y = window.scrollY;
       const last = lastScrollYRef.current;
@@ -875,7 +875,7 @@ const Navbar = () => {
       style={{ transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms, box-shadow 300ms, border-color 300ms" }}
     >
       {/* ── Top bar ── */}
-      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 px-4">
+      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 xl:h-[104px] px-4">
 
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-3 shrink-0">
@@ -905,7 +905,8 @@ const Navbar = () => {
         </Link>
 
         {/* ── Desktop nav: direct links + grouped mega drop-downs ── */}
-        <div className="hidden min-w-0 flex-1 xl:flex items-center justify-center gap-0.5" ref={desktopNavRef}>
+        <div className="hidden min-w-0 flex-1 xl:flex items-center justify-center" ref={desktopNavRef}>
+          <div className="grid grid-cols-4 grid-rows-2 items-center justify-items-center gap-x-1 gap-y-0.5">
 
           {/* Home — direct link */}
           <Link
@@ -952,7 +953,10 @@ const Navbar = () => {
                 {/* Panel — slim editorial dropdown: hairline gold accent,
                     micro eyebrow, compact rows. No bulky header/footer, so it
                     reads light and fast instead of "thick". */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50">
+                <div
+                  className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50"
+                  onMouseEnter={() => sectionEnter(section.id)}
+                >
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
@@ -1038,6 +1042,12 @@ const Navbar = () => {
             <span className="nav-dot" aria-hidden="true" />
           </Link>
 
+          </div>
+        </div>
+        {/* Desktop right-side controls: search is separated from the tab grid,
+            while account/theme controls stay in their own clearly bounded group. */}
+        <div className="hidden xl:flex items-center gap-2 shrink-0">
+          <div className="relative flex items-center border-r border-border/70 pr-2">
           {/* ── Inline Search ── */}
           <div className="relative ml-1 flex items-center">
             <AnimatePresence mode="wait">
@@ -1145,9 +1155,8 @@ const Navbar = () => {
             )}
           </div>
         </div>
-
-        {/* Desktop right-side controls */}
-        <div className="hidden xl:flex items-center gap-2 shrink-0">
+          </div>
+          <div className="flex items-center gap-2">
           {/* Live countdown on the Roll No. Slip link (desktop top bar) */}
           <RollSlipCountdown variant="chip" />
           {!authLoading && (
