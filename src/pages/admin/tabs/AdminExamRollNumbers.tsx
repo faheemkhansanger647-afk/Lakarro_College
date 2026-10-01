@@ -142,7 +142,7 @@ function rollSessionStatus(s: { is_published: boolean; publish_at: string | null
   return t !== null && t > Date.now() ? "scheduled" : "live";
 }
 
-const ALL_CLASSES = ["6", "7", "8", "9", "10"];
+const ALL_CLASSES =["1st Year", "2nd Year"];
 const TERMS = ["1st Semester", "2nd Semester", "Annual-I", "Annual-II", "Annual"];
 
 type Status = ExamAttStatus;
@@ -1097,7 +1097,7 @@ const AdminExamRollNumbers = () => {
   // All-Classes mode AND (b) a subject is selected for that class. Unused
   // queries are no-ops. Each is also class-filtered to its own class, same
   // reasoning as above.
-  const ALL_POSSIBLE_CLASSES = ["6", "7", "8", "9", "10"];
+  const ALL_POSSIBLE_CLASSES =["1st Year", "2nd Year"];
   const classPaperTimesQueries = ALL_POSSIBLE_CLASSES.map(cls =>
     usePaperTimesFromSeatingPlan(
       isAllClassesMode && allClassSubjects[cls] ? attSession : undefined,

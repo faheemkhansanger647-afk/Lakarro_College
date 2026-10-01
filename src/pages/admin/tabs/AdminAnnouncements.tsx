@@ -39,7 +39,7 @@ interface NewsItem {
 
 const noticeCategories = ["general", "academic", "events", "urgent"];
 const achCategories = ["Academic", "Sports", "Art", "Science", "Other"];
-const classOptions = ["6", "7", "8", "9", "10"];
+const classOptions =["1st Year", "2nd Year"];
 const currentYear = new Date().getFullYear();
 const yearOptions = Array.from({ length: 10 }, (_, i) => currentYear - i);
 const PAGE_SIZE = 15;

@@ -74,7 +74,7 @@ interface AdminDMCsProps {
   year: number;
 }
 
-const ALL_CLASSES = ["6", "7", "8", "9", "10"];
+const ALL_CLASSES =["1st Year", "2nd Year"];
 
 // Classes 6-8 record results under "1st/2nd Semester"; classes 9-10 record
 // under "Annual-I/Annual-II". These are DIFFERENT label sets — using one

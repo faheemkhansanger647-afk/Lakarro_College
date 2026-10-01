@@ -95,13 +95,13 @@ const statusConfig: Record<Status, {
   },
 };
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const FILTERS = ["all", "present", "absent", "late", "leave", "halfday"] as const;
 type FilterKey = (typeof FILTERS)[number];
 
 const AdminAttendance = () => {
   const qc = useQueryClient();
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const [date, setDate] = useState(new Date());
   const [tab, setTab] = useState<"mark" | "report" | "analytics">("mark");
   const [statuses, setStatuses] = useState<Record<string, Status>>({});

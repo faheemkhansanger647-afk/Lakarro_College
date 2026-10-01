@@ -1153,7 +1153,7 @@ const Home = () => {
               <m.div variants={stagger.child}>
                 <span className={`inline-flex items-center gap-2 ${heroBadgeBg} backdrop-blur-sm rounded-full px-4 py-1.5 text-sm shadow-sm`}>
                   <span className="w-2 h-2 rounded-full bg-azure animate-pulse" />
-                  <span className="tracking-wide">Est. {settings?.established_year || 2004} · Estd. 2004</span>
+                  <span className="tracking-wide">Est. {settings?.established_year || 2004}</span>
                 </span>
               </m.div>
               <HeroTypewriterHeading

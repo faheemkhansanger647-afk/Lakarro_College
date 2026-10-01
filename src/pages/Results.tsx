@@ -541,7 +541,7 @@ interface RCResult {
 // a separate 6-8 pool and a separate 9-10 pool. (Previously split via
 // RC_CLASSES_BY_EXAM_TYPE, causing rank to look "wrong" when all classes
 // were published together — fixed per request.)
-const RC_ALL_CLASSES = ["6", "7", "8", "9", "10"];
+const RC_ALL_CLASSES =["1st Year", "2nd Year"];
 
 const gradeFromPct = (pct: number) => {
   if (pct >= 90) return "A+"; if (pct >= 80) return "A";

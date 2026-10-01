@@ -17,35 +17,35 @@ const CLASS_COLORS: Record<string, {
   bg: string;
   iconBg: string;
 }> = {
-  "6": { 
+  "1st Year": { 
     gradient: "from-indigo-500 to-indigo-600", 
     badge: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300", 
     accent: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-50 dark:bg-indigo-950/20",
     iconBg: "bg-indigo-100 dark:bg-indigo-900/40"
   },
-  "7": { 
+  "1st Year": { 
     gradient: "from-teal-500 to-teal-600", 
     badge: "bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-300", 
     accent: "text-teal-600 dark:text-teal-400",
     bg: "bg-teal-50 dark:bg-teal-950/20",
     iconBg: "bg-teal-100 dark:bg-teal-900/40"
   },
-  "8": { 
+  "1st Year": { 
     gradient: "from-orange-500 to-orange-600", 
     badge: "bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300", 
     accent: "text-orange-600 dark:text-orange-400",
     bg: "bg-orange-50 dark:bg-orange-950/20",
     iconBg: "bg-orange-100 dark:bg-orange-900/40"
   },
-  "9": { 
+  "2nd Year": { 
     gradient: "from-pink-500 to-pink-600", 
     badge: "bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-300", 
     accent: "text-pink-600 dark:text-pink-400",
     bg: "bg-pink-50 dark:bg-pink-950/20",
     iconBg: "bg-pink-100 dark:bg-pink-900/40"
   },
-  "10": { 
+  "2nd Year": { 
     gradient: "from-blue-500 to-blue-600", 
     badge: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300", 
     accent: "text-blue-600 dark:text-blue-400",
@@ -72,7 +72,7 @@ const safeMonthLabel = (entry: any): string =>
 // ─── FEATURED STUDENT HERO BANNER ───────────────────────────────────────────
 
 function FeaturedStudentHero({ entry }: { entry: any }) {
-  const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["6"];
+  const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["1st Year"];
   
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-6 sm:p-8 text-white shadow-2xl mb-8">
@@ -171,7 +171,7 @@ function TopAchieversPodium({ entries }: { entries: any[] }) {
       
       <div className="flex items-end justify-center gap-3 sm:gap-6 p-6 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
         {positions.map(({ entry, place, height, medal, gradient, textColor }) => {
-          const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["6"];
+          const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["1st Year"];
           return (
             <div key={entry.id} className="flex flex-col items-center gap-2 flex-1 max-w-[120px]">
               {/* Photo & Name */}
@@ -205,7 +205,7 @@ function TopAchieversPodium({ entries }: { entries: any[] }) {
 // ─── HONOR ROLL CARD (Editorial Style) ──────────────────────────────────────
 
 function HonorRollCard({ entry, index }: { entry: any; index: number }) {
-  const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["6"];
+  const classColor = CLASS_COLORS[entry.class] || CLASS_COLORS["1st Year"];
   const [isHovered, setIsHovered] = useState(false);
 
   return (

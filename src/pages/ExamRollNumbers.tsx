@@ -603,7 +603,7 @@ function SlipFinder({ session, rolls, loading, schedule }: {
   loading: boolean;
   schedule: ExamScheduleEntry[];
 }) {
-  const classes = session.class_order?.length ? session.class_order : ["6", "7", "8", "9", "10"];
+  const classes = session.class_order?.length ? session.class_order : ["1st Year", "2nd Year"];
   const [selectedClass, setSelectedClass] = useState<string>(classes[0] || "6");
   const [fullName, setFullName] = useState("");
   const [matches, setMatches] = useState<RollEntry[] | null>(null);
@@ -955,7 +955,7 @@ function SlipFinder({ session, rolls, loading, schedule }: {
                   >
                     <span className="text-lg font-black leading-none">{cls}</span>
                     <span className={`text-[9px] font-bold uppercase tracking-wide ${active ? "opacity-85" : "opacity-70"}`}>
-                      {cls === "6" ? "6th" : cls === "7" ? "7th" : cls === "8" ? "8th" : cls === "9" ? "9th" : "10th"}
+                      {cls === "1st Year" ? "1st Yr" : cls === "2nd Year" ? "2nd Yr" : cls}
                     </span>
                   </button>
                 );

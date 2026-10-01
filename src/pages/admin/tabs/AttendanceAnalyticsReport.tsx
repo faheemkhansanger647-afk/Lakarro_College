@@ -31,7 +31,7 @@ import jsPDF from "jspdf";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const ALL_CLASSES = ["6", "7", "8", "9", "10"];
+const ALL_CLASSES =["1st Year", "2nd Year"];
 
 const MONTH_NAMES_FULL = [
   "January", "February", "March", "April", "May", "June",

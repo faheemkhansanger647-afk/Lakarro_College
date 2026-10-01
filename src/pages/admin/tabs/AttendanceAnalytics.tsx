@@ -43,7 +43,7 @@ import {
 import { format } from "date-fns";
 import AttendanceAnalyticsReportButton from "./AttendanceAnalyticsReport";
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 // ─── Color Helpers ──────────────────────────────────────────────────────────
@@ -492,7 +492,7 @@ function ThresholdManager() {
 
 const AttendanceAnalytics = () => {
   const now = new Date();
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
 

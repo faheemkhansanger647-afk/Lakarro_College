@@ -35,7 +35,7 @@ interface DutyData {
   updated_at: string;
 }
 
-const CLASSES: ClassId[] = ["6", "7", "8", "9", "10"];
+const CLASSES: ClassId[] =["1st Year", "2nd Year"];
 
 const emptyClass = (): ClassDuty => ({
   monitor: "", proctor: "", social_worker: "", head_boy: "", nazira: "",

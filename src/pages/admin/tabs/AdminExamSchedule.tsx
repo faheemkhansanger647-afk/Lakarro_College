@@ -23,7 +23,7 @@ import {
   useAllExamSchedule, useUpsertExamSchedule, useDeleteExamEntry, useDeleteExamScheduleBatch,
 } from "@/hooks/useNewFeatures";
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const getExamTypes = (cls: string) => ["9", "10"].includes(cls) ? ["Annual-I", "Annual-II"] : ["1st Semester", "2nd Semester"];
 const SUBJECTS_6_8 = ["English", "Urdu", "Islamiyat", "M.Quran", "Arabic", "Geography", "Pashto", "Maths", "History", "G.Science", "Computer Science"];
 const SUBJECTS_9_10 = ["English", "Urdu", "Pak-study", "Chemistry", "Physics", "Computer Science", "Biology", "Islamiyat", "M.Quran", "Mathematics"];
@@ -37,9 +37,9 @@ export default function AdminExamSchedule() {
   const deleteEntry = useDeleteExamEntry();
   const deleteBatch = useDeleteExamScheduleBatch();
 
-  const [filterCls, setFilterCls] = useState("6");
+  const [filterCls, setFilterCls] = useState("1st Year");
   const [filterExam, setFilterExam] = useState("1st Semester");
-  const [bulkCls, setBulkCls] = useState("6");
+  const [bulkCls, setBulkCls] = useState("1st Year");
   const [bulkExam, setBulkExam] = useState("1st Semester");
   const [bulkYearInput, setBulkYearInput] = useState(String(currentYear));
   const [saving, setSaving] = useState(false);
@@ -160,7 +160,7 @@ export default function AdminExamSchedule() {
   // ── PDF export: single class or all classes combined ──
   const [exportOpen, setExportOpen] = useState(false);
   const [exportScope, setExportScope] = useState<"single" | "all">("single");
-  const [exportCls, setExportCls] = useState("6");
+  const [exportCls, setExportCls] = useState("1st Year");
   const [exportExam, setExportExam] = useState("1st Semester");
 
   // ── Single-class PDF section: # / Subject / Date / Day / Time, all centered ──

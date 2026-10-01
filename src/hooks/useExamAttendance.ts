@@ -1777,4 +1777,4 @@ export const EXAM_SUBJECTS = [
   "History", "Geography", "General Knowledge", "Mutalia Quran", "Pashto", "Arabic",
 ];
 
-export const ALL_CLASSES = ["6", "7", "8", "9", "10"];
+export const ALL_CLASSES =["1st Year", "2nd Year"];

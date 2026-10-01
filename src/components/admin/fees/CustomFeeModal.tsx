@@ -29,7 +29,7 @@ const COMMON_FEE_LABELS = [
   "Other (custom)",
 ];
 
-const CLASS_OPTIONS = ["6", "7", "8", "9", "10"];
+const CLASS_OPTIONS =["1st Year", "2nd Year"];
 
 interface Props {
   open: boolean;
@@ -37,7 +37,7 @@ interface Props {
   defaultClass?: string;
 }
 
-export default function CustomFeeModal({ open, onClose, defaultClass = "6" }: Props) {
+export default function CustomFeeModal({ open, onClose, defaultClass = "1st Year" }: Props) {
   const [className, setClassName] = useState(defaultClass);
   const [search, setSearch] = useState("");
   const [selectedStudent, setSelectedStudent] = useState<{

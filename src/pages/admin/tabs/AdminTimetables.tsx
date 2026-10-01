@@ -39,7 +39,7 @@ import {
   type SubstitutionResult,
 } from "@/hooks/useTimetableOverrides";
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -1079,7 +1079,7 @@ function SubstituteTeacherDialog({
 
 const AdminTimetables = () => {
   const qc = useQueryClient();
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const [grid, setGrid] = useState<Grid>({});
   const [editingCell, setEditingCell] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);

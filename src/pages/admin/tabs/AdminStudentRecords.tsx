@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-const CLASS_OPTIONS = ["5", "6", "7", "8", "9", "10"];
+const CLASS_OPTIONS = ["1st Year", "2nd Year"];
 
 const emptyForm: Partial<StudentRecordPayload> = {
   admission_date: "", serial_no: undefined, student_name: "", date_of_birth: "",

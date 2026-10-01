@@ -38,7 +38,7 @@ const PASSWORD = "babikhel#123";
 const SESSION_KEY = "rc_auth_ok";
 const LS_ROLLS_KEY = "rc_roll_entries";
 const LS_SELECTION_KEY = "rc_exam_selection";
-const CLASS_OPTIONS: ClassName[] = ["9th", "10th", "1st Year", "2nd Year"];
+const CLASS_OPTIONS: ClassName[] = ["1st Year", "2nd Year"];
 const DEFAULT_SCHOOL = "Government Degree College Lakarai, District Mohmand";
 
 type Stage = "password" | "form" | "fetching" | "results";
@@ -70,13 +70,13 @@ export default function ReportCardModal({ open, onClose }: Props) {
         // Backfill schoolName for selections saved before this field existed,
         // and guard against an unknown saved class.
         const merged = { schoolName: DEFAULT_SCHOOL, ...parsed };
-        if (!CLASS_OPTIONS.includes(merged.className)) merged.className = "10th";
+        if (!CLASS_OPTIONS.includes(merged.className)) merged.className = "1st Year";
         return merged;
       }
     } catch {}
     return {
       schoolName: "Government Degree College Lakarai, District Mohmand",
-      className: "10th",
+      className: "1st Year",
       examType: "Annual-I",
       year: String(new Date().getFullYear()),
     };

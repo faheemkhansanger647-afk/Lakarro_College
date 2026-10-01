@@ -58,7 +58,7 @@ import {
 } from "@/hooks/useFees";
 import CustomFeeModal from "@/components/admin/fees/CustomFeeModal";
 
-const CLASSES = ["6", "7", "8", "9", "10"];
+const CLASSES =["1st Year", "2nd Year"];
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
@@ -647,7 +647,7 @@ function DashboardTab() {
 // ═══════════════════════════════════════════════════════════════
 
 function StructuresTab() {
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<FeeStructure | null>(null);
   const [form, setForm] = useState({
@@ -1017,7 +1017,7 @@ function StructuresTab() {
 // ═══════════════════════════════════════════════════════════════
 
 function VouchersTab() {
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
   const [statusFilter, setStatusFilter] = useState<string>("all");

@@ -101,7 +101,7 @@ export interface DailyStatRecord {
   attendance_rate: number;
 }
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const DAY_NAMES = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 

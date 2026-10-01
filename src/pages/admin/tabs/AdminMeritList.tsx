@@ -1385,7 +1385,7 @@ function HeroBanner({ title, subtitle }: { title: string; subtitle: string }) {
 function SchoolMeritTab() {
   const [yearInput, setYearInput] = useState(String(new Date().getFullYear()));
   const [viewMode, setViewMode] = useState<"combined"|"class">("combined");
-  const [selectedClass, setSelectedClass] = useState("6");
+  const [selectedClass, setSelectedClass] = useState("1st Year");
   const [publishOpen, setPublishOpen] = useState(false);
   const year = parseInt(yearInput, 10);
   const validYear = !isNaN(year) && year >= 2000 && year <= 2099;

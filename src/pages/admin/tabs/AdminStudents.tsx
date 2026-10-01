@@ -47,7 +47,7 @@ interface Student {
   created_at: string;
 }
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 
 // All exam types shown for all classes
 const ALL_EXAM_TYPES = ["1st Semester", "2nd Semester", "Annual-I", "Annual-II"];
@@ -55,7 +55,7 @@ const ALL_EXAM_TYPES = ["1st Semester", "2nd Semester", "Annual-I", "Annual-II"]
 const emptyStudent = {
   full_name: "",
   roll_number: "",
-  class: "6",
+  class: "1st Year",
   father_name: "",
   father_cnic: "",
   contact_number: "",
@@ -78,8 +78,8 @@ const AdminStudents = () => {
   const [importing, setImporting] = useState(false);
   const [importProgress, setImportProgress] = useState(0);
   const [promotionOpen, setPromotionOpen] = useState(false);
-  const [promotionFrom, setPromotionFrom] = useState("6");
-  const [promotionTo, setPromotionTo] = useState("7");
+  const [promotionFrom, setPromotionFrom] = useState("1st Year");
+  const [promotionTo, setPromotionTo] = useState("2nd Year");
   const [promotionExamType, setPromotionExamType] = useState("Annual-I");
   const [promotionYear, setPromotionYear] = useState<number>(new Date().getFullYear());
   const [promoting, setPromoting] = useState(false);
@@ -209,8 +209,8 @@ const AdminStudents = () => {
 
     const headers = ["full_name", "roll_number", "class", "father_name", "father_cnic", "contact_number"];
     const exampleRows = [
-      ["Ali Khan", "001", "9", "Muhammad Khan", "35202-1234567-1", "03001234567"],
-      ["Sara Ahmed", "002", "10", "Ahmed Ali", "35202-7654321-2", "03217654321"],
+      ["Ali Khan", "001", "1st Year", "Muhammad Khan", "35202-1234567-1", "03001234567"],
+      ["Sara Ahmed", "002", "2nd Year", "Ahmed Ali", "35202-7654321-2", "03217654321"],
     ];
 
     ws.columns = headers.map((h) => ({ header: h, key: h, width: Math.max(h.length + 4, 18) }));
@@ -280,7 +280,7 @@ const AdminStudents = () => {
     }
 
     const dataLines = lines.slice(1).filter(l => l.trim());
-    const validClasses = ["6", "7", "8", "9", "10"];
+    const validClasses =["1st Year", "2nd Year"];
     const rows: Array<{
       full_name: string; roll_number: string; class: string;
       father_name: string | null; father_cnic: string | null;

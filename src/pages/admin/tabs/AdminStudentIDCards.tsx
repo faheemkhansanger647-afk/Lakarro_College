@@ -49,7 +49,7 @@ interface Student {
 const W = 638;
 const H = 1012;
 
-const CLASSES = ["6", "7", "8", "9", "10"];
+const CLASSES =["1st Year", "2nd Year"];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function loadImage(src: string): Promise<HTMLImageElement> {

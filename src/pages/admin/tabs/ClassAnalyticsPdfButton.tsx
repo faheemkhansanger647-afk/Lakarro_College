@@ -576,7 +576,7 @@ function generateAllClassesCombinedPdf(
   const my = 8;  // vertical margin
 
   // ── Class ordering ──────────────────────────────────────────────────────
-  const CLASS_ORDER = ["6", "7", "8", "9", "10"];
+  const CLASS_ORDER =["1st Year", "2nd Year"];
   const presentClasses = CLASS_ORDER.filter((c) => classData.has(c));
   if (presentClasses.length === 0) return;
 
@@ -1241,7 +1241,7 @@ interface ClassAnalyticsPdfButtonProps {
   year: number;
 }
 
-const ALL_CLASSES = ["6", "7", "8", "9", "10"];
+const ALL_CLASSES =["1st Year", "2nd Year"];
 const ALL_CLASSES_KEY = "all";
 
 /**

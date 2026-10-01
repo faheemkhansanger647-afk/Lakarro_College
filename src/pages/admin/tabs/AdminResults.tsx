@@ -69,7 +69,7 @@ function parseCSVRows(text: string): string[][] {
   return rows.filter(r => r.some(c => c.trim() !== ""));
 }
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const getExamTypes = (cls: string) =>
   ["9", "10"].includes(cls)
     ? ["Annual-I", "Annual-II"]
@@ -188,7 +188,7 @@ function ResultCountdownTimer({ targetDate, cls, examType, year, onPublished }: 
 
 const AdminResults = () => {
   const qc = useQueryClient();
-  const [cls, setCls] = useState("6");
+  const [cls, setCls] = useState("1st Year");
   const examTypes = getExamTypes(cls);
   const [examType, setExamType] = useState(examTypes[0]);
   const [year, setYear] = useState(currentYear);
@@ -650,7 +650,7 @@ const AdminResults = () => {
   // published in practice (all classes together) and is far less fiddly on
   // mobile than re-opening a panel on every class tab.
   const [showGlobalSchedule, setShowGlobalSchedule] = useState(false);
-  const [gsClasses, setGsClasses] = useState<string[]>(["6", "7", "8", "9", "10"]);
+  const [gsClasses, setGsClasses] = useState<string[]>(["1st Year", "2nd Year"]);
 
   // ── Bulk delete (delete ALL results for one or more classes, for the
   //    currently selected year) — used when new results are about to
@@ -1217,7 +1217,7 @@ const AdminResults = () => {
             // time it's opened: all 5 classes checked, current exam type's
             // year kept, date reset so an old pick from a previous session
             // isn't accidentally reused.
-            setGsClasses(["6", "7", "8", "9", "10"]);
+            setGsClasses(["1st Year", "2nd Year"]);
             setGsDate("");
             setGsTime("08:00");
             setShowGlobalSchedule(true);
@@ -1781,7 +1781,7 @@ const AdminResults = () => {
                 })}
               </div>
               <div className="flex gap-3 mt-2">
-                <button type="button" className="text-xs text-blue-600 font-medium" onClick={() => setGsClasses(["6","7","8","9","10"])}>Select All</button>
+                <button type="button" className="text-xs text-blue-600 font-medium" onClick={() => setGsClasses(["1st Year", "2nd Year"])}>Select All</button>
                 <button type="button" className="text-xs text-muted-foreground font-medium" onClick={() => setGsClasses([])}>Clear</button>
               </div>
               <label className="mt-3 flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5 cursor-pointer">
@@ -2060,7 +2060,7 @@ const AdminResults = () => {
               })}
             </div>
             <div className="flex gap-3 mt-2">
-              <button type="button" className="text-xs text-destructive font-medium" onClick={() => setBdClasses(["6","7","8","9","10"])}>Select All</button>
+              <button type="button" className="text-xs text-destructive font-medium" onClick={() => setBdClasses(["1st Year", "2nd Year"])}>Select All</button>
               <button type="button" className="text-xs text-muted-foreground font-medium" onClick={() => setBdClasses([])}>Clear</button>
             </div>
           </div>

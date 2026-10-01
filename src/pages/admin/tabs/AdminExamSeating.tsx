@@ -57,11 +57,11 @@ import {
 
 // Distinct, accessible colors for up to 8 classes. Beyond 8, fall back to a hash.
 const CLASS_COLORS: Record<string, { bg: string; text: string; pdfRgb: [number, number, number] }> = {
-  "6":  { bg: "bg-blue-100 dark:bg-blue-900/40",       text: "text-blue-700 dark:text-blue-300",       pdfRgb: [219, 234, 254] },
-  "7":  { bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300", pdfRgb: [209, 250, 229] },
-  "8":  { bg: "bg-amber-100 dark:bg-amber-900/40",     text: "text-amber-700 dark:text-amber-300",     pdfRgb: [254, 243, 199] },
-  "9":  { bg: "bg-rose-100 dark:bg-rose-900/40",       text: "text-rose-700 dark:text-rose-300",       pdfRgb: [254, 205, 211] },
-  "10": { bg: "bg-violet-100 dark:bg-violet-900/40",   text: "text-violet-700 dark:text-violet-300",   pdfRgb: [237, 233, 254] },
+  "1st Year": { bg: "bg-blue-100 dark:bg-blue-900/40",       text: "text-blue-700 dark:text-blue-300",       pdfRgb: [219, 234, 254] },
+  "1st Year": { bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300", pdfRgb: [209, 250, 229] },
+  "1st Year": { bg: "bg-amber-100 dark:bg-amber-900/40",     text: "text-amber-700 dark:text-amber-300",     pdfRgb: [254, 243, 199] },
+  "2nd Year": { bg: "bg-rose-100 dark:bg-rose-900/40",       text: "text-rose-700 dark:text-rose-300",       pdfRgb: [254, 205, 211] },
+  "2nd Year": { bg: "bg-violet-100 dark:bg-violet-900/40",   text: "text-violet-700 dark:text-violet-300",   pdfRgb: [237, 233, 254] },
 };
 const colorFor = (cls: string) =>
   CLASS_COLORS[cls] ?? { bg: "bg-slate-100 dark:bg-slate-900/40", text: "text-slate-700 dark:text-slate-300", pdfRgb: [226, 232, 240] };
@@ -505,7 +505,7 @@ const CreatePlanForm = ({ sessionId, onCreated }: { sessionId: string; onCreated
       <div>
         <Label className="text-xs">Classes to mix (select at least 2 for anti-cheat)</Label>
         <div className="flex flex-wrap gap-1.5 mt-1">
-          {(session?.classes ?? ["6","7","8","9","10"]).map(c => (
+          {(session?.classes ?? ["1st Year", "2nd Year"]).map(c => (
             <button
               key={c}
               type="button"

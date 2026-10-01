@@ -190,7 +190,7 @@ async function fetchSchoolProfile() {
     total_students: typeof s.total_students === "number" ? s.total_students : null,
     total_teachers: typeof s.total_teachers === "number" ? s.total_teachers : null,
     pass_percentage: typeof s.pass_percentage === "number" ? s.pass_percentage : null,
-    classes_offered: ["6", "7", "8", "9", "10"],
+    classes_offered: ["1st Year", "2nd Year"],
     board: "BISE Peshawar",
     website: SITE_URL,
     facebook: "#",
@@ -220,7 +220,7 @@ async function fetchAdmissionInfo() {
     updated_at: a?.updated_at || null,
     apply_url: `${SITE_URL}/admission`,
     track_url: `${SITE_URL}/admission`,
-    classes: ["6", "7", "8", "9", "10"],
+    classes: ["1st Year", "2nd Year"],
     fee: "Free of charge (government school)",
     how_to_apply: [
       "Fill the online admission form at " +
@@ -668,7 +668,7 @@ async function fetchDuty() {
   if (!d) return null;
   return {
     chief_proctor: d.chief_proctor || null,
-    // classes: { "6": { monitor, proctor, nazira, head_boy, social_worker }, … }
+    // classes: { "1st Year": { monitor, proctor, nazira, head_boy, social_worker }, … }
     classes: d.classes || null,
     updated_at: d.updated_at || null,
   };
@@ -813,7 +813,7 @@ async function getLiveSiteData(sections) {
     total_students: null,
     total_teachers: null,
     pass_percentage: null,
-    classes_offered: ["6", "7", "8", "9", "10"],
+    classes_offered: ["1st Year", "2nd Year"],
     board: "BISE Peshawar",
     website: SITE_URL,
     facebook: "#",

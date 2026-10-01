@@ -10,7 +10,7 @@ import { Calendar, Printer, ChevronRight, CalendarPlus } from "lucide-react";
 import { format, isPast, isToday, differenceInDays } from "date-fns";
 import { generateExamICS } from "@/utils/generateExamICS";
 
-const classes = ["6", "7", "8", "9", "10"];
+const classes =["1st Year", "2nd Year"];
 const getExamTypes = (cls: string) => ["9", "10"].includes(cls) ? ["Annual-I", "Annual-II"] : ["1st Semester", "2nd Semester"];
 const currentYear = new Date().getFullYear();
 

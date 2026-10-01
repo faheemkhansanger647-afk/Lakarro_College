@@ -29,7 +29,7 @@ import {
 } from "@/pages/dashboard/tabs/VideosTab";
 
 const fileCategories = ["All", "Past Papers", "Books", "Notes", "Assignments", "Admission", "Other"];
-const classOptions = ["All", "6", "7", "8", "9", "10"];
+const classOptions = ["All", "1st Year", "2nd Year"];
 
 type ContentType = "files" | "videos";
 

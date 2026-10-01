@@ -33,7 +33,7 @@ import { getYouTubeId, getYouTubeThumbnail, isYouTubeUrl, VIDEO_CATEGORIES } fro
 import type { VideoItem } from "@/pages/dashboard/tabs/VideosTab";
 
 const categories = ["Past Papers", "Books", "Notes", "Assignments", "Admission", "Other"];
-const classOptions = ["6", "7", "8", "9", "10", "All"];
+const classOptions = ["1st Year", "2nd Year", "All"];
 
 // ═══════════════════════════════════════════════════════════════════════
 // Top-level: Files / Videos sub-tabs — one merged "Library" section
