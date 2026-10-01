@@ -170,7 +170,7 @@ function RollSlipCountdown({ variant }: { variant: "chip" | "strip" | "menu-badg
       <Link
         to="/roll-no-slip"
         aria-label="Roll No. Slip countdown — tap to open"
-        className={`hidden lg:inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm no-underline ${
+        className={`hidden xl:inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm no-underline ${
           live
             ? "bg-orange-600 text-white hover:bg-orange-700 shadow-orange-600/30"
             : "bg-azure/10 border border-azure/40 text-foreground hover:bg-azure/15"
@@ -194,7 +194,7 @@ function RollSlipCountdown({ variant }: { variant: "chip" | "strip" | "menu-badg
       <Link
         to="/roll-no-slip"
         aria-label="Roll No. Slip countdown — tap to open"
-        className={`lg:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
+        className={`xl:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
           live
             ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
             : "bg-red-50 text-red-600 border-b border-red-200"
@@ -249,7 +249,7 @@ function ResultsCountdown() {
     <Link
       to="/results"
       aria-label="Results countdown — tap to open"
-      className={`lg:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
+      className={`xl:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
         live
           ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
           : "bg-red-50 text-red-600 border-b border-red-200"
@@ -300,7 +300,7 @@ function BisepResultsCountdown() {
     <Link
       to="/results"
       aria-label="BISE Peshawar results countdown — tap to open"
-      className={`lg:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
+      className={`xl:hidden flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold no-underline transition-colors ${
         live
           ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
           : "bg-red-50 text-red-600 border-b border-red-200"
@@ -875,7 +875,7 @@ const Navbar = () => {
       style={{ transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms, box-shadow 300ms, border-color 300ms" }}
     >
       {/* ── Top bar ── */}
-      <div className="container mx-auto flex min-w-0 w-full items-center justify-between h-16 px-4">
+      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 px-4">
 
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-3 shrink-0">
@@ -892,10 +892,10 @@ const Navbar = () => {
             )}
           </HexagonLogoFrame>
           <div>
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-none block tracking-tight">
+            <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Government Degree College
             </span>
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-none block tracking-tight">
+            <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Lakarai
             </span>
             <span className="mt-1 block text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground/80 leading-none">
@@ -905,7 +905,7 @@ const Navbar = () => {
         </Link>
 
         {/* ── Desktop nav: direct links + grouped mega drop-downs ── */}
-        <div className="hidden min-w-0 lg:flex items-center gap-1" ref={desktopNavRef}>
+        <div className="hidden min-w-0 flex-1 xl:flex items-center justify-center gap-0.5" ref={desktopNavRef}>
 
           {/* Home — direct link */}
           <Link
@@ -1119,7 +1119,7 @@ const Navbar = () => {
                 >
                   <Search className="w-4 h-4" />
                   <span
-                    className="hidden lg:inline-flex items-center gap-0.5 rounded-md border border-border/70 bg-secondary/60 px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground/80"
+                    className="hidden xl:inline-flex items-center gap-0.5 rounded-md border border-border/70 bg-secondary/60 px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground/80"
                     aria-hidden="true"
                     title="Press Cmd/Ctrl+K to open the command palette"
                   >
@@ -1147,7 +1147,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop right-side controls */}
-        <div className="hidden sm:flex items-center gap-2 shrink-0">
+        <div className="hidden xl:flex items-center gap-2 shrink-0">
           {/* Live countdown on the Roll No. Slip link (desktop top bar) */}
           <RollSlipCountdown variant="chip" />
           {!authLoading && (
@@ -1190,7 +1190,7 @@ const Navbar = () => {
             search + quick actions + recents) instead of the old inline
             search bar, so mobile gets the exact same experience as
             desktop's Cmd/Ctrl+K. */}
-        <div className="lg:hidden flex items-center gap-1 shrink-0 ml-2">
+        <div className="xl:hidden flex items-center gap-1 shrink-0 ml-2">
           <button
             onClick={() => { setSearchOpen(false); setOpen(!open); }}
             className="p-2 rounded-lg text-foreground hover:bg-secondary transition-colors"
@@ -1238,7 +1238,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="lg:hidden border-t border-border bg-card overflow-y-auto overflow-x-hidden overscroll-contain"
+            className="xl:hidden border-t border-border bg-card overflow-y-auto overflow-x-hidden overscroll-contain"
             style={{ maxHeight: "calc(100svh - 64px)" }}
           >
             <div className="p-3 pb-5 space-y-2.5" style={{ WebkitTapHighlightColor: "transparent" }}>
@@ -1358,7 +1358,7 @@ const Navbar = () => {
         pins it to the navbar instead of the viewport. */}
     {!hideGlobalBottomBar && (
       <div
-        className={`lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-sm border-t border-border transition-transform duration-300 ease-out ${
+        className={`xl:hidden fixed bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-sm border-t border-border transition-transform duration-300 ease-out ${
           bottomHidden ? "translate-y-full" : "translate-y-0"
         }`}
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
