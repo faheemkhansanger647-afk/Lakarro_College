@@ -735,7 +735,7 @@ const Navbar = () => {
   const anyMenuOpen = open || !!openSection || !!mobileOpenSection || searchOpen;
   useEffect(() => {
     lastScrollYRef.current = window.scrollY;
-    const NAV_HEIGHT = 104; // matches the XL two-row top bar; hiding starts only past it
+    const NAV_HEIGHT = 108; // matches the XL three-row controls; hiding starts only past it
     const onScroll = () => {
       const y = window.scrollY;
       const last = lastScrollYRef.current;
@@ -828,7 +828,7 @@ const Navbar = () => {
      — glowing gold dot on the active link (.nav-dot)
      All defined once in src/index.css, driven by data-active. */
   const desktopLinkClass = (active: boolean) =>
-    `nav-link px-3.5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
+    `nav-link px-2.5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
       active ? "text-azure-strong dark:text-azure" : "text-muted-foreground hover:text-foreground"
     }`;
 
@@ -875,7 +875,7 @@ const Navbar = () => {
       style={{ transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms, box-shadow 300ms, border-color 300ms" }}
     >
       {/* ── Top bar ── */}
-      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 xl:h-[104px] px-4">
+      <div className="container mx-auto flex min-w-0 w-full items-center justify-between gap-3 h-16 xl:h-[108px] px-4">
 
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-3 shrink-0">
@@ -905,8 +905,8 @@ const Navbar = () => {
         </Link>
 
         {/* ── Desktop nav: direct links + grouped mega drop-downs ── */}
-        <div className="hidden min-w-0 flex-1 xl:flex items-center justify-center" ref={desktopNavRef}>
-          <div className="grid grid-cols-4 grid-rows-2 items-center justify-items-center gap-x-1 gap-y-0.5">
+        <div className="hidden min-w-0 flex-1 xl:flex items-center justify-center overflow-visible" ref={desktopNavRef}>
+          <div className="flex min-w-max items-center justify-center gap-0.5">
 
           {/* Home — direct link */}
           <Link
@@ -1042,12 +1042,49 @@ const Navbar = () => {
             <span className="nav-dot" aria-hidden="true" />
           </Link>
 
-          </div>
         </div>
-        {/* Desktop right-side controls: search is separated from the tab grid,
-            while account/theme controls stay in their own clearly bounded group. */}
-        <div className="hidden xl:flex items-center gap-2 shrink-0">
-          <div className="relative flex items-center border-r border-border/70 pr-2">
+        </div>
+        {/* Desktop right-side controls: three clear rows on the right. */}
+        <div className="hidden xl:flex w-[230px] shrink-0 flex-col items-stretch gap-1">
+          {/* Row 1 — admin and sign-in/sign-out */}
+          <div className="flex min-h-8 items-center justify-end gap-1">
+            {!authLoading && (
+              user ? (
+                <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+                    >
+                      <Shield className="w-3.5 h-3.5" /> Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={signOut}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/auth/signin"
+                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:bg-secondary transition-colors"
+                >
+                  <LogIn className="w-3.5 h-3.5" /> Sign In
+                </Link>
+              )
+            )}
+          </div>
+          {/* Row 2 — notification, theme toggle, and live status */}
+          <div className="flex min-h-8 items-center justify-end gap-2">
+            <RollSlipCountdown variant="chip" />
+            {!authLoading && user && <NotificationBell />}
+            <ThemeSwitcher />
+          </div>
+          {/* Row 3 — full-width search */}
+          <div className="relative flex min-h-8 w-full items-center justify-end">
           {/* ── Inline Search ── */}
           <div className="relative ml-1 flex items-center">
             <AnimatePresence mode="wait">
@@ -1154,46 +1191,8 @@ const Navbar = () => {
               />
             )}
           </div>
-        </div>
           </div>
-          <div className="flex items-center gap-2">
-          {/* Live countdown on the Roll No. Slip link (desktop top bar) */}
-          <RollSlipCountdown variant="chip" />
-          {!authLoading && (
-            user ? (
-              <>
-                <NotificationBell />
-                <ThemeSwitcher />
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
-                  >
-                    <Shield className="w-4 h-4" /> Admin
-                  </Link>
-                )}
-                <button
-                  onClick={signOut}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden xl:inline">Sign Out</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <ThemeSwitcher />
-                <Link
-                  to="/auth/signin"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-secondary transition-colors"
-                >
-                  <LogIn className="w-4 h-4" /> Sign In
-                </Link>
-              </>
-            )
-          )}
-        </div>
-
+          </div>
         {/* Mobile: Search icon + Hamburger — outside the drawer.
             The search icon now opens the full ⌘K command palette (fuzzy
             search + quick actions + recents) instead of the old inline
@@ -1209,6 +1208,36 @@ const Navbar = () => {
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
+        </div>
+      </div>
+
+      {/* Mobile one-row tab strip — horizontally scrollable on narrow screens. */}
+      <div className="xl:hidden border-t border-border/60 bg-background/95 overflow-x-auto overscroll-x-contain scrollbar-hide">
+        <div className="flex min-w-max items-center gap-1 px-3 py-1.5">
+          <Link
+            to="/"
+            onClick={closeAllMenus}
+            className={desktopLinkClass(location.pathname === "/")}
+          >
+            Home
+          </Link>
+          {NAV_SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => { setOpen(true); setMobileOpenSection(section.id); }}
+              className={desktopLinkClass(section.links.some((l) => l.to === location.pathname))}
+            >
+              {section.label}
+            </button>
+          ))}
+          <Link
+            to="/admission"
+            onClick={closeAllMenus}
+            className={desktopLinkClass(location.pathname === "/admission")}
+          >
+            Admission
+          </Link>
         </div>
       </div>
 
