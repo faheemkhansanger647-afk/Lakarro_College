@@ -1205,36 +1205,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile one-row tab strip — horizontally scrollable on narrow screens. */}
-      <div className="xl:hidden border-t border-border/60 bg-background/95 overflow-x-auto overscroll-x-contain scrollbar-hide">
-        <div className="flex min-w-max items-center gap-1 px-3 py-1.5">
-          <Link
-            to="/"
-            onClick={closeAllMenus}
-            className={desktopLinkClass(location.pathname === "/")}
-          >
-            Home
-          </Link>
-          {NAV_SECTIONS.map((section) => (
-            <button
-              key={section.id}
-              type="button"
-              onClick={() => { setOpen(true); setMobileOpenSection(section.id); }}
-              className={desktopLinkClass(section.links.some((l) => l.to === location.pathname))}
-            >
-              {section.label}
-            </button>
-          ))}
-          <Link
-            to="/admission"
-            onClick={closeAllMenus}
-            className={desktopLinkClass(location.pathname === "/admission")}
-          >
-            Admission
-          </Link>
-        </div>
-      </div>
-
       {/* subtle gold hairline glowing along the navbar's bottom edge — base
           wash stays static so the line is never fully invisible, and the
           reactive spotlight (nav-spotlight-line, driven by --mouse-x from
