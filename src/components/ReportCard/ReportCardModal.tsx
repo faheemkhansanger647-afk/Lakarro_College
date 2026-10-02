@@ -33,9 +33,14 @@ import { computeStats } from "./normalize";
 import { generateResultPDF } from "./generatePDF";
 import { generateResultExcel } from "./generateExcel";
 import { generateCombinedReportPDF } from "./generateCombinedPDF";
+import { useSchoolSettings } from "@/hooks/useSchoolSettings";
 
-const PASSWORD = "babikhel#123";
 const SESSION_KEY = "rc_auth_ok";
+// Neutral default access code — the REAL code is admin-controlled via
+// school_settings.report_card_access_code (Admin → College Settings), with
+// an optional Vercel env override (VITE_REPORT_CARD_ACCESS_CODE). Nothing
+// institution-specific is hardcoded here any more.
+const DEFAULT_ACCESS_CODE = "GDC-LAKARAI";
 const LS_ROLLS_KEY = "rc_roll_entries";
 const LS_SELECTION_KEY = "rc_exam_selection";
 const CLASS_OPTIONS: ClassName[] = ["1st Year", "2nd Year"];
@@ -49,6 +54,11 @@ interface Props {
 }
 
 export default function ReportCardModal({ open, onClose }: Props) {
+  const { data: settings } = useSchoolSettings();
+  const accessCode =
+    settings?.report_card_access_code?.trim() ||
+    (import.meta.env.VITE_REPORT_CARD_ACCESS_CODE as string | undefined)?.trim() ||
+    DEFAULT_ACCESS_CODE;
   const [stage, setStage] = useState<Stage>("password");
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -202,7 +212,7 @@ export default function ReportCardModal({ open, onClose }: Props) {
 
   // ── Password submit ──
   const submitPassword = () => {
-    if (passwordInput.trim() === PASSWORD) {
+    if (passwordInput.trim() === accessCode) {
       try {
         sessionStorage.setItem(SESSION_KEY, "1");
       } catch {

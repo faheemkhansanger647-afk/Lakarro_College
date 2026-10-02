@@ -24,6 +24,19 @@ export interface SchoolSettings {
   principal_name: string | null;
   principal_message: string | null;
   principal_photo_url: string | null;
+  /* ── Extended contact block (admin-managed) ──
+     Optional + backwards-compatible: these columns are added by
+     supabase-migration.sql (project root). Every consumer must treat
+     them as "may be missing / empty" and fall back gracefully. */
+  office_hours?: string | null;
+  secondary_phone?: string | null;
+  whatsapp_number?: string | null;
+  facebook_url?: string | null;
+  contact_note?: string | null;
+  /* Access code for the bulk Report Card tool (Results page). Optional;
+     added by supabase-migration.sql. Managed from the admin dashboard so
+     no code lives in the source. */
+  report_card_access_code?: string | null;
 }
 
 export const fallbackSettings: SchoolSettings = {
@@ -36,9 +49,16 @@ export const fallbackSettings: SchoolSettings = {
     "Established in 2004, Government Degree College Lakarai (GDC Lakarai) is a public-sector higher-education institution located on Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. Affiliated with Bacha Khan University, Charsadda, the college offers Intermediate (HSSC) programs in Pre-Engineering, Pre-Medical, ICS and Arts (Humanities), Associate Degree (AD) programs in English, Urdu and Political Science, and four-year BS programs in Urdu, Zoology, Botany, Political Science and Computer Science. Our mission is to prepare students for university specialization and professional careers through rigorous academics and dedicated faculty.",
   logo_url: "",
   banner_url: "",
-  emis_code: "24651",
+  // ⚠ NO HARDCODED OPERATIONAL DATA (EMIS code, phone numbers, principal
+  // name/photo) in this pre-fetch fallback. These fields are 100% controlled
+  // from the admin dashboard (school_settings row id=1). The fallback only
+  // renders for the instant before Supabase responds — shipping real values
+  // here is what let stale numbers leak into AI tools and screenshots.
+  emis_code: "",
   address: "Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan",
-  phone: "0924293409",
+  // Phone/email shown before the DB responds: keep the public, non-secret
+  // contact channels only. No personal mobile numbers in source code.
+  phone: "",
   email: "info@gdclakarai.edu.pk",
   established_year: 2004,
   // ⚠ KEEP ALIGNED WITH THE ADMIN DASHBOARD (school_settings id=1).
@@ -56,6 +76,11 @@ export const fallbackSettings: SchoolSettings = {
   principal_message:
     "At Government Degree College Lakarai, we believe higher education is the foundation of a prosperous society. Our faculty is dedicated to nurturing critical thinking, specialization, and academic rigor in every student. We strive to prepare our graduates not only for university success but for lifelong professional leadership.",
   principal_photo_url: "",
+  office_hours: "Monday – Saturday, 8:00 AM – 2:00 PM",
+  secondary_phone: "",
+  whatsapp_number: "",
+  facebook_url: "",
+  contact_note: "",
 };
 
 export function safeMediaUrl(url: string | null | undefined): string | null {
@@ -137,7 +162,8 @@ export function optimizedCloudinaryUrl(
 // known good settings on disk so the UI never shows the empty fallback.
 // Keep the same cache key as before — changing it wipes every browser's
 // cached logo/banner URLs and causes them to disappear until Supabase refetches.
-const CACHE_KEY = "ghs-school-settings-v1";
+export const SCHOOL_SETTINGS_CACHE_KEY = "ghs-school-settings-v1";
+const CACHE_KEY = SCHOOL_SETTINGS_CACHE_KEY;
 
 function readCache(): SchoolSettings | null {
   if (typeof window === "undefined") return null;
@@ -164,11 +190,13 @@ function writeCache(s: SchoolSettings) {
 }
 
 async function fetchSettings(client: typeof supabase) {
+  // select("*") — deliberately NOT a hardcoded column list. New optional
+  // columns (office_hours, secondary_phone, whatsapp_number, facebook_url,
+  // contact_note) are added by supabase-migration.sql; with "*" the fetch
+  // keeps working before AND after that migration runs.
   const { data, error } = await client
     .from("school_settings")
-    .select(
-      "id, school_name, tagline, description, about_text, logo_url, banner_url, emis_code, address, phone, email, established_year, total_students, total_teachers, pass_percentage, board_results, location_lat, location_lng, principal_name, principal_message, principal_photo_url"
-    )
+    .select("*")
     .eq("id", 1)
     .single();
 

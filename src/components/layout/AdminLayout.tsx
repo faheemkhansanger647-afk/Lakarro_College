@@ -1,11 +1,35 @@
 import { useState, useCallback, useRef, useEffect, memo, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, Menu, X, ExternalLink, Moon, Sun, Search, GraduationCap, BarChart2, Bell } from "lucide-react";
+import {
+  LogOut, Menu, X, ExternalLink, Moon, Sun, Search, Bell,
+  LayoutDashboard, Settings, BarChart2, GraduationCap, ClipboardList,
+  FileText, CheckSquare, Wallet, FolderOpen, CalendarDays, Hash,
+  Armchair, Trophy, Users, BookOpen, Calendar, Megaphone, Library,
+  MonitorPlay, BookMarked, Images, ShieldCheck, type LucideIcon,
+} from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import NotificationBell from "@/components/shared/NotificationBell";
 
-// ── Emoji icon component ──────────────────────────────────────────────────────
+// ── Icon chip — soft tinted square behind every nav icon (premium, calm) ─────
+const NavIconChip = ({ item, isActive }: { item: NavItem; isActive: boolean }) => {
+  const Icon = item.lucideIcon;
+  if (!Icon) return <EmojiIcon emoji={item.emoji} size="w-5 h-5" />;
+  return (
+    <span
+      className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-colors ${
+        isActive
+          ? "bg-white/15 text-white"
+          : item.tint ?? "bg-secondary text-muted-foreground"
+      }`}
+      aria-hidden
+    >
+      <Icon className="w-[15px] h-[15px]" />
+    </span>
+  );
+};
+
+// ── Emoji icon component (fallback only — every nav item ships an icon) ──────
 const EmojiIcon = ({ emoji, size = "w-5 h-5" }: { emoji: string; size?: string }) => (
   <span className={`${size} flex items-center justify-center text-base leading-none select-none`} aria-hidden>
     {emoji}
@@ -17,8 +41,10 @@ interface NavItem {
   id: string;
   label: string;
   emoji: string;
-  lucideIcon?: React.ElementType;
+  lucideIcon?: LucideIcon;
   lucideColor?: string;
+  /** Soft chip classes for the icon square (light + dark). */
+  tint?: string;
 }
 interface NavSection {
   heading: string;
@@ -29,55 +55,77 @@ const navSections: NavSection[] = [
   {
     heading: "OVERVIEW",
     items: [
-      { id: "overview",         label: "Overview",              emoji: "📊" },
-      { id: "settings",         label: "College Settings",      emoji: "⚙️" },
+      { id: "overview",         label: "Overview",              emoji: "📊",
+        lucideIcon: LayoutDashboard, tint: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300" },
+      { id: "settings",         label: "College Settings",      emoji: "⚙️",
+        lucideIcon: Settings,        tint: "bg-zinc-100 text-zinc-700 dark:bg-zinc-400/15 dark:text-zinc-300" },
       { id: "site-analytics",   label: "Site Analytics",        emoji: "📈",
-        lucideIcon: BarChart2,  lucideColor: "text-violet-500" },
+        lucideIcon: BarChart2,       tint: "bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300" },
     ],
   },
   {
     heading: "STUDENTS",
     items: [
-      { id: "students",     label: "Manage Students",     emoji: "🎓" },
-      { id: "admissions",   label: "Admissions",          emoji: "📋" },
-      { id: "results",      label: "Manage Results",      emoji: "📝" },
-      { id: "attendance",   label: "Attendance",          emoji: "✅" },
-      { id: "fees",          label: "Fee Management",       emoji: "💰" },
-      { id: "student-records", label: "Student Records",   emoji: "🗂️" },
+      { id: "students",     label: "Manage Students",     emoji: "🎓",
+        lucideIcon: GraduationCap,   tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300" },
+      { id: "admissions",   label: "Admissions",          emoji: "📋",
+        lucideIcon: ClipboardList,   tint: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300" },
+      { id: "results",      label: "Manage Results",      emoji: "📝",
+        lucideIcon: FileText,        tint: "bg-orange-100 text-orange-700 dark:bg-orange-400/15 dark:text-orange-300" },
+      { id: "attendance",   label: "Attendance",          emoji: "✅",
+        lucideIcon: CheckSquare,     tint: "bg-teal-100 text-teal-700 dark:bg-teal-400/15 dark:text-teal-300" },
+      { id: "fees",          label: "Fee Management",       emoji: "💰",
+        lucideIcon: Wallet,          tint: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300" },
+      { id: "student-records", label: "Student Records",   emoji: "🗂️",
+        lucideIcon: FolderOpen,      tint: "bg-indigo-100 text-indigo-700 dark:bg-indigo-400/15 dark:text-indigo-300" },
     ],
   },
   {
     heading: "EXAMS",
     items: [
-      { id: "exam-date-sheet", label: "Exam Date Sheet",   emoji: "🗓️" },
-      { id: "exam-rolls",      label: "Exam Roll Numbers", emoji: "🔢" },
-      { id: "exam-seating",    label: "Exam Seating",      emoji: "🪑" },
-      { id: "merit-list",      label: "Merit List",        emoji: "🏆" },
+      { id: "exam-date-sheet", label: "Exam Date Sheet",   emoji: "🗓️",
+        lucideIcon: CalendarDays,    tint: "bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300" },
+      { id: "exam-rolls",      label: "Exam Roll Numbers", emoji: "🔢",
+        lucideIcon: Hash,            tint: "bg-cyan-100 text-cyan-700 dark:bg-cyan-400/15 dark:text-cyan-300" },
+      { id: "exam-seating",    label: "Exam Seating",      emoji: "🪑",
+        lucideIcon: Armchair,        tint: "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-400/15 dark:text-fuchsia-300" },
+      { id: "merit-list",      label: "Merit List",        emoji: "🏆",
+        lucideIcon: Trophy,          tint: "bg-yellow-100 text-yellow-700 dark:bg-yellow-400/15 dark:text-yellow-300" },
     ],
   },
   {
     heading: "COLLEGE",
     items: [
-      { id: "teachers",      label: "Manage Faculty",   emoji: "👨‍🏫" },
-      { id: "programs",      label: "Manage Programs",  emoji: "🎓" },
-      { id: "timetables",    label: "Timetables",        emoji: "📅" },
-      { id: "events",        label: "Event Calendar",    emoji: "🗓️" },
-      { id: "announcements", label: "Announcements",     emoji: "📢" },
-      { id: "library",       label: "Library",           emoji: "📚" },
-      { id: "online-classes",label: "Online Classes",    emoji: "💻" },
+      { id: "teachers",      label: "Manage Faculty",   emoji: "👨‍🏫",
+        lucideIcon: Users,           tint: "bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300" },
+      { id: "programs",      label: "Manage Programs",  emoji: "🎓",
+        lucideIcon: BookOpen,        tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300" },
+      { id: "timetables",    label: "Timetables",        emoji: "📅",
+        lucideIcon: Calendar,        tint: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300" },
+      { id: "events",        label: "Event Calendar",    emoji: "🗓️",
+        lucideIcon: CalendarDays,    tint: "bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300" },
+      { id: "announcements", label: "Announcements",     emoji: "📢",
+        lucideIcon: Megaphone,       tint: "bg-pink-100 text-pink-700 dark:bg-pink-400/15 dark:text-pink-300" },
+      { id: "library",       label: "Library",           emoji: "📚",
+        lucideIcon: Library,         tint: "bg-indigo-100 text-indigo-700 dark:bg-indigo-400/15 dark:text-indigo-300" },
+      { id: "online-classes",label: "Online Classes",    emoji: "💻",
+        lucideIcon: MonitorPlay,     tint: "bg-blue-100 text-blue-700 dark:bg-blue-400/15 dark:text-blue-300" },
     ],
   },
   {
     heading: "CONTENT",
     items: [
-      { id: "notes",   label: "Notes Manager",    emoji: "📓" },
-      { id: "videos",  label: "Gallery",          emoji: "🖼️" },
+      { id: "notes",   label: "Notes Manager",    emoji: "📓",
+        lucideIcon: BookMarked,      tint: "bg-lime-100 text-lime-700 dark:bg-lime-400/15 dark:text-lime-300" },
+      { id: "videos",  label: "Gallery",          emoji: "🖼️",
+        lucideIcon: Images,          tint: "bg-purple-100 text-purple-700 dark:bg-purple-400/15 dark:text-purple-300" },
     ],
   },
   {
     heading: "ADMIN ACCESS",
     items: [
-      { id: "users", label: "Manage Users", emoji: "👤" },
+      { id: "users", label: "Manage Users", emoji: "👤",
+        lucideIcon: ShieldCheck,     tint: "bg-red-100 text-red-700 dark:bg-red-400/15 dark:text-red-300" },
     ],
   },
 ];
@@ -189,19 +237,17 @@ const NavBtn = memo(({ item, activeTab, onTabChange, onItemClick }: NavBtnProps)
       key={item.id}
       data-active={isActive ? "true" : "false"}
       onClick={() => { onTabChange(item.id); onItemClick?.(); }}
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+      className={`group relative w-full flex items-center gap-2.5 pl-3 pr-2.5 py-1.5 rounded-xl text-sm font-medium transition-all duration-200 ${
         isActive
-          ? "bg-orange-600 text-white shadow-sm"
-          : "hover:bg-secondary text-foreground"
+          ? "bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-600 dark:from-emerald-800 dark:via-emerald-700 dark:to-emerald-700 text-white shadow-md shadow-emerald-900/20 ring-1 ring-emerald-500/30"
+          : "hover:bg-secondary text-foreground hover:shadow-sm"
       }`}
     >
-      {item.lucideIcon ? (
-        <item.lucideIcon
-          className={`w-5 h-5 shrink-0 ${isActive ? "text-white" : item.lucideColor ?? "text-muted-foreground"}`}
-        />
-      ) : (
-        <EmojiIcon emoji={item.emoji} size="w-5 h-5" />
+      {/* Gold left indicator on the active item */}
+      {isActive && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-full bg-gradient-to-b from-amber-400 to-yellow-500" aria-hidden />
       )}
+      <NavIconChip item={item} isActive={isActive} />
       <span className="truncate">{item.label}</span>
     </button>
   );
@@ -242,7 +288,8 @@ const SectionedNav = memo(({ activeTab, onTabChange, onItemClick, query = "" }: 
     <div className="space-y-4">
       {filteredSections.map(section => (
         <div key={section.heading}>
-          <p className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase px-3 mb-1.5">
+          <p className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground tracking-widest uppercase px-3 mb-1.5">
+            <span className="h-px w-3 bg-gradient-to-r from-amber-400 to-transparent" aria-hidden />
             {section.heading}
           </p>
           <div className="space-y-0.5">
@@ -292,14 +339,14 @@ const AdminLayout = ({ activeTab, onTabChange, children }: AdminLayoutProps) => 
     <div className="min-h-screen bg-background flex">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-[260px] bg-card border-r border-border shrink-0 sticky top-0 h-screen">
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-border bg-gradient-to-br from-emerald-50 via-card to-amber-50/70 dark:from-emerald-950/50 dark:via-card dark:to-amber-900/15">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0 ring-1 ring-border">
+            <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0 ring-2 ring-amber-400/50">
               <img src="/icon-512.png" alt="Government Degree College Lakarai logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-heading font-bold text-foreground text-sm">Government Degree College Lakarai</span>
-              <p className="text-[10px] text-muted-foreground font-medium">Admin Panel</p>
+              <p className="text-[10px] font-semibold uppercase tracking-wider bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">Admin Panel</p>
             </div>
           </Link>
         </div>
@@ -307,15 +354,15 @@ const AdminLayout = ({ activeTab, onTabChange, children }: AdminLayoutProps) => 
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-3">
             {profile?.avatar_url ? (
-              <img src={profile.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover" />
+              <img src={profile.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-600 to-amber-500 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-emerald-900/20">
                 {initials}
               </div>
             )}
             <div className="min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">{profile?.full_name || "Admin"}</p>
-              <span className="inline-block text-[10px] font-semibold uppercase bg-primary text-primary-foreground px-2 py-0.5 rounded-full mt-0.5 tracking-wider">
+              <span className="inline-block text-[10px] font-semibold uppercase bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-2 py-0.5 rounded-full mt-0.5 tracking-wider shadow-sm">
                 Administrator
               </span>
             </div>
@@ -348,8 +395,8 @@ const AdminLayout = ({ activeTab, onTabChange, children }: AdminLayoutProps) => 
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-40 h-14 bg-card border-b border-border flex items-center px-4 gap-3">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-secondary text-foreground">
+        <header className="sticky top-0 z-40 h-14 bg-card border-b border-border flex items-center px-4 gap-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-amber-400/50 after:to-transparent relative">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg hover:bg-secondary text-foreground transition-colors">
             <Menu className="w-5 h-5" />
           </button>
           <h1 className="font-heading font-semibold text-foreground">
@@ -385,12 +432,15 @@ const AdminLayout = ({ activeTab, onTabChange, children }: AdminLayoutProps) => 
               <button
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
-                className={`flex flex-col items-center gap-0.5 p-2 min-w-[3rem] ${isActive ? "text-accent" : "text-muted-foreground"}`}
+                className={`relative flex flex-col items-center gap-0.5 p-2 min-w-[3rem] transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
               >
                 {item.lucideIcon ? (
-                  <item.lucideIcon className={`w-5 h-5 ${isActive ? "text-accent" : item.lucideColor ?? "text-muted-foreground"}`} />
+                  <item.lucideIcon className="w-5 h-5" />
                 ) : (
                   <span className="text-lg leading-none">{item.emoji}</span>
+                )}
+                {isActive && (
+                  <span className="absolute -top-px left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-gradient-to-r from-emerald-500 to-amber-400" aria-hidden />
                 )}
               </button>
             );
@@ -406,14 +456,14 @@ const AdminLayout = ({ activeTab, onTabChange, children }: AdminLayoutProps) => 
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-foreground/50" onClick={() => setSidebarOpen(false)} />
           <div className="relative w-72 bg-card h-full shadow-xl flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-br from-emerald-50 via-card to-amber-50/70 dark:from-emerald-950/50 dark:via-card dark:to-amber-900/15">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 ring-1 ring-border">
+                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 ring-2 ring-amber-400/50">
                   <img src="/icon-512.png" alt="Government Degree College Lakarai logo" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <span className="font-heading font-bold text-foreground text-sm leading-tight block">Government Degree College Lakarai</span>
-                  <p className="text-[10px] text-muted-foreground font-medium leading-tight">Admin Panel</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent leading-tight">Admin Panel</p>
                 </div>
               </div>
               <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-lg hover:bg-secondary">

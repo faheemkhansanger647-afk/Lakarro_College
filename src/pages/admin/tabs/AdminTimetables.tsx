@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
+import { getSchoolIdentity, schoolSubtitleLine } from "@/lib/schoolIdentity";
 import autoTable from "jspdf-autotable";
 import {
   useTimetableSettings, useSaveTimetableSettings,
@@ -280,11 +281,11 @@ function exportTimetablePDF(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(10, 10, 10);
-  doc.text("GOVERNMENT HIGH SCHOOL BABI KHEL", w / 2, 15, { align: "center" });
+  doc.text(getSchoolIdentity().name, w / 2, 15, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(70, 70, 70);
-  doc.text("District Mohmand, Khyber Pakhtunkhwa", w / 2, 20, { align: "center" });
+  doc.text(getSchoolIdentity().addressLine, w / 2, 20, { align: "center" });
   doc.setDrawColor(120, 120, 120);
   doc.setLineWidth(0.25);
   doc.line(ML, 23, w - MR, 23);

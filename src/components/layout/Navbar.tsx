@@ -892,16 +892,8 @@ const Navbar = () => {
             )}
           </HexagonLogoFrame>
           <div>
-<<<<<<< HEAD
             <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Government Degree College
-=======
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
-              Government Degree College
-            </span>
-            <span className="font-display italic font-medium text-xl sm:text-2xl text-foreground leading-tight block tracking-tight">
-              Lakarai
->>>>>>> 0e854f1 (scroll)
             </span>
             <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Lakarai

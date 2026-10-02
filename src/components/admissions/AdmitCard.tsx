@@ -26,6 +26,7 @@ import { Download, FileText, Loader2, ShieldCheck, Award } from "lucide-react";
 import QRCode from "qrcode";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
+import { useSchoolSettings } from "@/hooks/useSchoolSettings";
 
 interface Admission {
   id: string;
@@ -72,6 +73,9 @@ async function loadLogoDataUrl(): Promise<string | null> {
 export default function AdmitCard({ admission }: { admission: Admission }) {
   const [generating, setGenerating] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // Contact line comes from the admin-managed school settings — never a
+  // hardcoded personal number in source code.
+  const { data: settings } = useSchoolSettings();
 
   const generatePDF = async (download: boolean = false) => {
     setGenerating(true);
@@ -210,12 +214,15 @@ export default function AdmitCard({ admission }: { admission: Admission }) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7);
       doc.setTextColor(100, 116, 139);
+      const contactPhone = settings?.phone || settings?.secondary_phone || "";
       const instructions = [
         "1. Bring this admit card to the college office on the date and time of your interview.",
         "2. Carry original B-Form, previous result card, and 2 passport-size photos.",
         "3. Reach at least 15 minutes before your scheduled time.",
         "4. This card is non-transferable. Tampering will result in disqualification.",
-        "5. For queries, call 0346-9898295 or visit gdclakarai.edu.pk",
+        contactPhone
+          ? `5. For queries, call ${contactPhone} or visit gdclakarai.edu.pk`
+          : "5. For queries, visit gdclakarai.edu.pk or contact the college office.",
       ];
       y += 4;
       instructions.forEach(line => {

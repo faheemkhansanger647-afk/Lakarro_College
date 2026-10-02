@@ -104,12 +104,18 @@ export const maxDuration = 10;
 
 const SCHOOL_TZ = "Asia/Karachi";
 
+// ⚠ NO personal data here: the principal's name and the office phone are
+// operational data owned by the admin dashboard (school_settings row). The
+// only fallback below is the college's PUBLIC identity. When the live DB
+// fetch fails, contact fields stay empty (and are omitted from output) —
+// they can optionally be supplied via the SCHOOL_PRINCIPAL / SCHOOL_PHONE
+// environment variables instead of being frozen into source code.
 const FALLBACK_SETTINGS = {
   school_name: "Government Degree College Lakarai",
-  phone: "+92 346 9898295",
+  phone: process.env.SCHOOL_PHONE || "",
   email: "info@gdclakarai.edu.pk",
-  principal: "Mr. Imdad Ullah",
-  established: "2018",
+  principal: process.env.SCHOOL_PRINCIPAL || "",
+  established: "2004",
   emis: "",
   address: "Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan",
 };
@@ -1021,7 +1027,7 @@ function liveSections(route, data) {
       if (school?.total_students != null) stats.push(`${school.total_students}+ students enrolled`);
       if (school?.total_teachers != null) stats.push(`${school.total_teachers} teachers`);
       if (school?.pass_percentage != null) stats.push(`${school.pass_percentage}% pass rate`);
-      stats.push(`Established ${school?.established || "2018"}`);
+      if (school?.established) stats.push(`Established ${school.established}`);
       if (stats.length) {
         parts.push("<h2>School at a glance (live)</h2>");
         parts.push(`<ul>${stats.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>`);
@@ -1536,9 +1542,11 @@ function jsonLdFor(route, data, detail, pageName) {
       name: "Government Degree College Lakarai, District Mohmand",
       alternateName: SITE_NAME,
       url: SITE_URL,
-      telephone: data.school.phone,
+      // Contact fields come from the live admin settings; when empty they are
+      // omitted entirely rather than printed as stale hardcoded strings.
+      ...(data.school.phone ? { telephone: data.school.phone } : {}),
       email: data.school.email,
-      foundingDate: data.school.established,
+      foundingDate: data.school.established || "2004",
       // Live admin-maintained statistics — so AI answers quote the current
       // numbers, never a stale build-time figure.
       ...(typeof data.school.total_students === "number"
@@ -2166,7 +2174,7 @@ ${notesChapter.audio_enabled ? `<p class="meta">Audio narration is available for
 <header>
   <div class="wrap" style="padding:0">
     <strong>${esc(data.school.name)}</strong> — ${esc(data.school.tagline)}<br>
-    <span class="small">${esc(data.school.location)} · Phone ${esc(data.school.phone)} · ${esc(data.school.email)}</span>
+    <span class="small">${esc(data.school.location)}${data.school.phone ? ` · Phone ${esc(data.school.phone)}` : ""} · ${esc(data.school.email)}</span>
   </div>
 </header>
 <main class="wrap">
@@ -2181,8 +2189,8 @@ ${nav ? `<nav>${nav}</nav>` : ""}
     <div class="cols">
       <div><strong>${esc(data.school.full_name || data.school.name)}</strong><br>
       ${esc(data.school.location)}<br>
-      Principal: ${esc(data.school.principal)} · EMIS ${esc(data.school.emis_code)}<br>
-      Phone: ${esc(data.school.phone)} · Email: ${esc(data.school.email)}</div>
+      ${[data.school.principal && `Principal: ${esc(data.school.principal)}`, data.school.emis_code && `EMIS ${esc(data.school.emis_code)}`].filter(Boolean).join(" · ")}<br>
+      ${[data.school.phone && `Phone: ${esc(data.school.phone)}`, data.school.email && `Email: ${esc(data.school.email)}`].filter(Boolean).join(" · ")}</div>
       <div class="small">${NAV_LINKS.map(([l, href]) => `<a href="${esc(href)}">${esc(l)}</a>`).join(" · ")}</div>
     </div>
     <p class="small">© ${new Date().getFullYear()} ${esc(data.school.name)}. Free government education — District Mohmand, Khyber Pakhtunkhwa.</p>

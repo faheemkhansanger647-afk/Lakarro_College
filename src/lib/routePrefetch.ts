@@ -200,8 +200,17 @@ export function startBackgroundRoutePrefetch(): void {
  * or the START of a touch, the link target's route chunk begins downloading
  * immediately, so the subsequent navigation is instant.
  */
+import type {
+  MouseEvent as ReactMouseEvent,
+  TouchEvent as ReactTouchEvent,
+  FocusEvent as ReactFocusEvent,
+  PointerEventHandler,
+  TouchEventHandler,
+  FocusEventHandler,
+} from "react";
+
 export function intentPrefetchHandlers() {
-  const handle = (e: Event) => {
+  const handle = (e: ReactMouseEvent<HTMLElement> | ReactTouchEvent<HTMLElement> | ReactFocusEvent<HTMLElement>) => {
     const target = e.target as HTMLElement | null;
     const anchor = target?.closest?.("a[href]") as HTMLAnchorElement | null;
     if (!anchor) return;
@@ -211,8 +220,8 @@ export function intentPrefetchHandlers() {
     } catch { /* ignore malformed hrefs */ }
   };
   return {
-    onPointerEnter: handle, // mouse hover / stylus
-    onTouchStart: handle,   // mobile tap — fires ~100-300ms before click
-    onFocus: handle,        // keyboard / AT navigation
+    onPointerEnter: handle as unknown as PointerEventHandler<HTMLElement>, // mouse hover / stylus
+    onTouchStart: handle as unknown as TouchEventHandler<HTMLElement>,     // mobile tap — fires ~100-300ms before click
+    onFocus: handle as unknown as FocusEventHandler<HTMLElement>,          // keyboard / AT navigation
   };
 }

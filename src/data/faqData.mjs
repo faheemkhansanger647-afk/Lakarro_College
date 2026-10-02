@@ -189,21 +189,21 @@ export const FAQ_ITEMS = [
     category: "School Information",
     question: "Where is Government Degree College Lakarai located and what kind of school is it?",
     answer:
-      "Government Degree College Lakarai is a public government college in Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. It was established in 2004 under the Higher Education Department of Khyber Pakhtunkhwa and offers Intermediate (HSSC), Associate Degree (AD) and BS programs. The college is affiliated with Bacha Khan University, Charsadda (Board of Intermediate and Secondary Education, Peshawar) for 1st Year and 2nd Year (HSSC) examinations. The principal is Mr. Imdad Ullah.",
+      "Government Degree College Lakarai is a public government college in Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. It was established in 2004 under the Higher Education Department of Khyber Pakhtunkhwa and offers Intermediate (HSSC), Associate Degree (AD) and BS programs. The college is affiliated with Bacha Khan University, Charsadda (Board of Intermediate and Secondary Education, Peshawar) for 1st Year and 2nd Year (HSSC) examinations. The current principal's name is published on the About and Contact pages, managed live by the college administration.",
   },
   {
     id: "sch-timing",
     category: "School Information",
     question: "What are the college timings and when is the office open?",
     answer:
-      "The college office is open during the morning shift on working days. Exact daily timings can change with the season and government notifications, so for the current schedule call the college at +92 346 9898295 or check the Notices page, where any timing change is announced officially. Holiday announcements and parent-teacher meeting dates are also published there and on the academic Calendar.",
+      "The college office is open during the morning shift on working days. Exact daily timings can change with the season and government notifications, so for the current schedule call the college on the phone numbers published on the Contact page (gdclakarai.edu.pk/contact) or check the Notices page, where any timing change is announced officially. Holiday announcements and parent-teacher meeting dates are also published there and on the academic Calendar.",
   },
   {
     id: "sch-teachers",
     category: "School Information",
     question: "Who are the teachers and what subjects do they cover?",
     answer:
-      "The staff directory page (gdclakarai.edu.pk/teachers) lists the college's teaching staff with their subjects and qualifications. Teachers are appointed through the Khyber Pakhtunkhwa Elementary & Secondary Education Department and cover Mathematics, Physics, Chemistry, Biology, English, Urdu, Islamiat, Pakistan Studies and Computer Science for Intermediate and BS programs, led by the principal, Mr. Imdad Ullah.",
+      "The staff directory page (gdclakarai.edu.pk/teachers) lists the college's teaching staff with their subjects and qualifications. Teachers are appointed through the Khyber Pakhtunkhwa Elementary & Secondary Education Department and cover Mathematics, Physics, Chemistry, Biology, English, Urdu, Islamiat, Pakistan Studies and Computer Science for Intermediate and BS programs, led by the college principal.",
   },
   {
     id: "sch-events",
@@ -240,7 +240,7 @@ export const FAQ_ITEMS = [
     category: "Website & Contact",
     question: "How do I contact the college?",
     answer:
-      "Call the college at +92 346 9898295, email info@gdclakarai.edu.pk, or use the contact form and WhatsApp option on the Contact page (gdclakarai.edu.pk/contact), which also shows the college's location on a map. The college's Facebook page is linked from the Contact page and footer. For admission questions, please read the Admission page first — it answers most queries and lets you track an application instantly.",
+      "Call the college on the phone numbers published on the Contact page (gdclakarai.edu.pk/contact), email info@gdclakarai.edu.pk, or use the contact form and WhatsApp option there, which also shows the college's location on a map. The college's Facebook page is linked from the Contact page and footer. For admission questions, please read the Admission page first — it answers most queries and lets you track an application instantly.",
   },
   {
     id: "web-login",
@@ -261,14 +261,14 @@ export const FAQ_ITEMS = [
     category: "Website & Contact",
     question: "Is gdclakarai.edu.pk the official website of Government Degree College Lakarai?",
     answer:
-      "Yes. https://gdclakarai.edu.pk is the official website of Government Degree College Lakarai, District Mohmand, Khyber Pakhtunkhwa, Pakistan , established in 2004, principal Mr. Imdad Ullah.",
+      "Yes. https://gdclakarai.edu.pk is the official website of Government Degree College Lakarai, District Mohmand, Khyber Pakhtunkhwa, Pakistan , established in 2004.",
   },
   {
     id: "web-developer",
     category: "Website & Contact",
     question: "Who developed the Government Degree College Lakarai website?",
     answer:
-      "Muhammad Faheem, a class-10 (matric) Computer Science student of Government Degree College Lakarai (District Mohmand, Khyber Pakhtunkhwa, Pakistan), independently designed and developed this website as a school/community project. He is the son of Zabih Ullah and a resident of Village Sangar, Tehsil Halimzai, District Mohmand, Khyber Pakhtunkhwa (KPK), Pakistan. For admissions, results, notices and other school matters, please contact the college directly: principal Mr. Imdad Ullah, phone +92 346 9898295, email info@gdclakarai.edu.pk.",
+      "Muhammad Faheem, a class-10 (matric) Computer Science student of Government Degree College Lakarai (District Mohmand, Khyber Pakhtunkhwa, Pakistan), independently designed and developed this website as a school/community project. He is the son of Zabih Ullah and a resident of Village Sangar, Tehsil Halimzai, District Mohmand, Khyber Pakhtunkhwa (KPK), Pakistan. For admissions, results, notices and other school matters, please contact the college directly — the current phone numbers and email are published on the Contact page (gdclakarai.edu.pk/contact).",
   },
 ];
 

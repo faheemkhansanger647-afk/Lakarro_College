@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { FileDown, Loader2, Layers } from "lucide-react";
 import type { ResultWithStudent } from "@/hooks/useResultsEnhanced";
 import jsPDF from "jspdf";
+import { getSchoolIdentity, schoolSubtitleLine } from "@/lib/schoolIdentity";
 
 // ─── Subject lists per class group ───────────────────────────────────────────
 const SUBJECTS_6_TO_8 = [
@@ -230,12 +231,12 @@ function generateClassAnalyticsPdf(data: ReturnType<typeof computeAnalyticsPdfDa
   doc.setTextColor(PDF.ink[0], PDF.ink[1], PDF.ink[2]);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(15);
-  doc.text("GOVERNMENT HIGH SCHOOL BABI KHEL", w / 2, 20, { align: "center" });
+  doc.text(getSchoolIdentity().name, w / 2, 20, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(PDF.sub[0], PDF.sub[1], PDF.sub[2]);
-  doc.text("District Mohmand, Khyber Pakhtunkhwa  |  Established 2018", w / 2, 25.5, { align: "center" });
+  doc.text(schoolSubtitleLine(getSchoolIdentity()), w / 2, 25.5, { align: "center" });
 
   doc.setFillColor(PDF.navy[0], PDF.navy[1], PDF.navy[2]);
   doc.roundedRect(w / 2 - 46, 28.5, 92, 8.5, 1.5, 1.5, "F");
@@ -607,12 +608,12 @@ function generateAllClassesCombinedPdf(
   doc.setTextColor(PDF.ink[0], PDF.ink[1], PDF.ink[2]);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("GOVERNMENT HIGH SCHOOL BABI KHEL", w / 2, 17, { align: "center" });
+  doc.text(getSchoolIdentity().name, w / 2, 17, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(PDF.sub[0], PDF.sub[1], PDF.sub[2]);
-  doc.text("District Mohmand, Khyber Pakhtunkhwa  |  Established 2018", w / 2, 22, { align: "center" });
+  doc.text(schoolSubtitleLine(getSchoolIdentity()), w / 2, 22, { align: "center" });
 
   doc.setFillColor(PDF.navy[0], PDF.navy[1], PDF.navy[2]);
   doc.roundedRect(w / 2 - 62, 24.5, 124, 7.5, 1.5, 1.5, "F");

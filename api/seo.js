@@ -195,12 +195,15 @@ Sitemap: ${SITE_URL}/sitemap.xml
 // — the endpoint ALWAYS returns valid content, never a 500.
 
 // Current real values — used only when the live DB fetch fails.
+// ⚠ NO personal data frozen here: principal name / phone are admin-owned
+// operational data. They come from the live school_settings row; on DB
+// failure they are sourced from optional env vars and otherwise omitted.
 const LLM_FALLBACK = {
   school_name: "Government Degree College Lakarai",
-  phone: "+92 346 9898295",
+  phone: process.env.SCHOOL_PHONE || "",
   email: "info@gdclakarai.edu.pk",
-  principal: "Mr. Imdad Ullah",
-  established: "2018",
+  principal: process.env.SCHOOL_PRINCIPAL || "",
+  established: "2004",
   emis: "",
 };
 
@@ -280,11 +283,11 @@ function buildLlmsTxt(s, admissionFiles = []) {
 - Full name: Government Degree College Lakarai (also: ${s.school_name})
 - Location: Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan
 - Established: ${s.established}
-- EMIS code: ${s.emis}
-- Principal: ${s.principal}
+${s.emis ? `- EMIS code: ${s.emis}` : ""}
+${s.principal ? `- Principal: ${s.principal}` : ""}
 - Classes offered: 6, 7, 8, 9 and 10
 - Board affiliation: BISE Peshawar (Board of Intermediate and Secondary Education, Peshawar) — classes 9 and 10 sit board examinations
-- Phone: ${s.phone}
+${s.phone ? `- Phone: ${s.phone}` : ""}
 - Email: ${s.email}${statsLine}
 - Website: ${SITE_URL}
 - Facebook: ${FACEBOOK_URL}

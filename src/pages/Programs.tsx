@@ -1,13 +1,19 @@
 import { useState, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   BookOpen, GraduationCap, Beaker, Microscope, Calculator,
   Palette, Atom, Dna, Code, Scale, FileText, Layers,
   CheckCircle2, Info, ArrowRight, Calendar, Award,
+  Phone, Mail, Clock, MessageCircle,
 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
 import PageBanner from "@/components/shared/PageBanner";
+import { useSchoolSettings } from "@/hooks/useSchoolSettings";
+import {
+  usePrograms, mergePrograms,
+  type ProgramRecord, type ProgramCategory, type ProgramSubjectGroup,
+} from "@/hooks/usePrograms";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PROGRAM DATA — Intermediate + BS program definitions with subjects
@@ -414,19 +420,102 @@ const PROGRAMS: ProgramDef[] = [
    HELPERS
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function findBySlug(category: string, slug: string) {
-  return PROGRAMS.find((p) => p.category === category && p.slug === slug);
+/* Convert a built-in program definition into the unified, admin-manageable
+   record shape (1st/2nd Year + Semesters become subjectGroups). */
+function builtInToRecord(p: ProgramDef): ProgramRecord {
+  const subjectGroups: ProgramSubjectGroup[] = [];
+  if (p.firstYear)
+    subjectGroups.push({ label: p.firstYear.label, subjects: p.firstYear.subjects, note: p.firstYear.note });
+  if (p.secondYear)
+    subjectGroups.push({ label: p.secondYear.label, subjects: p.secondYear.subjects, note: p.secondYear.note });
+  if (p.semesters)
+    for (const s of p.semesters) subjectGroups.push({ label: s.label, subjects: s.subjects });
+  return {
+    slug: p.slug,
+    category: p.category,
+    title: p.title,
+    shortName: p.shortName,
+    duration: p.duration,
+    tagline: p.tagline,
+    description: p.description,
+    subjectGroups,
+    careerPaths: p.careerPaths,
+    admissionRequirement: p.admissionRequirement,
+    isActive: true,
+    sortOrder: 0,
+  };
 }
+
+const BUILT_IN_PROGRAMS: ProgramRecord[] = PROGRAMS.map(builtInToRecord);
+
+const categoryIcon = (cat: ProgramCategory) =>
+  cat === "bs" ? GraduationCap : cat === "ad" ? Award : BookOpen;
+
+const categoryYears = (cat: ProgramCategory) => (cat === "bs" ? "4 Years" : "2 Years");
+
+/* ── Emerald / Gold / Jade accent system (by category) ──
+   One coherent golden+green identity for the whole page instead of the
+   old rainbow emerald/sky/amber mix. */
+const ACCENTS: Record<
+  ProgramCategory,
+  { tile: string; strip: string; icon: string; badge: string; chip: string; text: string; ring: string }
+> = {
+  intermediate: {
+    tile: "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light",
+    strip: "from-primary/15 via-gold/5 to-transparent",
+    icon: "text-primary",
+    badge: "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light",
+    chip: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    ring: "hover:border-primary/40",
+  },
+  bs: {
+    tile: "bg-gold/15 text-bronze dark:bg-gold/20 dark:text-gold",
+    strip: "from-gold/25 via-gold/10 to-transparent",
+    icon: "text-bronze dark:text-gold",
+    badge: "bg-gold/15 text-bronze dark:bg-gold/20 dark:text-gold",
+    chip: "bg-bronze text-white dark:bg-gold dark:text-[hsl(36_60%_12%)]",
+    text: "text-bronze dark:text-gold",
+    ring: "hover:border-gold/50",
+  },
+  ad: {
+    tile: "bg-azure-soft text-azure-strong dark:bg-azure-soft",
+    strip: "from-azure/15 via-gold/5 to-transparent",
+    icon: "text-azure-strong dark:text-azure",
+    badge: "bg-azure-soft text-azure-strong dark:bg-azure-soft dark:text-azure",
+    chip: "bg-azure-strong text-white",
+    text: "text-azure-strong dark:text-azure",
+    ring: "hover:border-azure/40",
+  },
+};
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PROGRAMS INDEX PAGE — /programs
-   Lists all 8 programs as a grid of cards
+   Built-in definitions merged with admin-managed programs (Supabase),
+   rendered as a golden+green themed grid of pathway cards.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const ProgramsIndex = () => {
-  const intermediate = PROGRAMS.filter((p) => p.category === "intermediate");
-  const bs = PROGRAMS.filter((p) => p.category === "bs");
-  const ad = PROGRAMS.filter((p) => p.category === "ad");
+  const { data: overrides = [] } = usePrograms();
+  const programs = useMemo(() => mergePrograms(BUILT_IN_PROGRAMS, overrides), [overrides]);
+
+  const sections: { category: ProgramCategory; title: string; subtitle: string }[] = [
+    {
+      category: "intermediate",
+      title: "Intermediate Programs",
+      subtitle: "2-Year HSSC — 1st Year (Part-I) + 2nd Year (Part-II) · Affiliated with BISE Peshawar",
+    },
+    {
+      category: "bs",
+      title: "BS Programs (4-Year)",
+      subtitle: "4-Year Undergraduate Degrees — 8 Semesters · Affiliated with Bacha Khan University, Charsadda",
+    },
+    {
+      category: "ad",
+      title: "Associate Degree (AD) Programs",
+      subtitle: "2-Year AD Degrees — 4 Semesters · HEC-recognized · Equivalent to 14 years of schooling",
+    },
+  ];
 
   return (
     <PageLayout>
@@ -437,135 +526,77 @@ const ProgramsIndex = () => {
 
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-7xl">
-          {/* ── Intro ── */}
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
-              Choose your pathway to higher education
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Government Degree College Lakarai offers Intermediate programs in four streams — Pre-Engineering, Pre-Medical, ICS (Computer Science) and Arts (Humanities) — alongside HEC-recognized four-year BS programs in Urdu, Zoology, Political Science, Computer Science and Botany, and two-year Associate Degree (AD) programs in English, Urdu and Political Science. Each program is affiliated with Bacha Khan University, Charsadda, and aligned with the BISE Peshawar and Higher Education Commission (HEC) curricula.
-            </p>
-          </div>
-
-          {/* ── Intermediate ── */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-400/15 flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-emerald-700 dark:text-emerald-300" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-heading font-bold text-foreground">Intermediate Programs</h3>
-                <p className="text-sm text-muted-foreground">2-Year HSSC — 1st Year (Part-I) + 2nd Year (Part-II) · Affiliated with BISE Peshawar</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {intermediate.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <Link
-                    key={p.slug}
-                    to={`/programs/intermediate/${p.slug}`}
-                    className="group bg-card rounded-2xl overflow-hidden border border-border shadow-card hover:shadow-elevated transition-all duration-200"
-                  >
-                    <div className="h-32 bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 flex items-center justify-center relative">
-                      <Icon className="w-12 h-12 text-emerald-600 dark:text-emerald-300" strokeWidth={1.4} />
-                      <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider bg-emerald-600/90 text-white px-2 py-1 rounded-full">
-                        2 Years
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h4 className="font-heading font-semibold text-foreground text-base mb-1">{p.shortName}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{p.tagline}</p>
-                      <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-emerald-700 dark:text-emerald-300 group-hover:gap-1.5 transition-all">
-                        View subjects <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
+          {/* ── Intro — light emerald/gold gradient wash ── */}
+          <div className="relative overflow-hidden max-w-3xl mx-auto text-center mb-16 rounded-3xl border border-border/70 bg-gradient-to-b from-gold/10 via-card to-primary/5 px-6 py-10 shadow-card">
+            <div className="orb orb-gold w-56 h-56 -top-24 -right-16" />
+            <div className="orb orb-primary w-48 h-48 -bottom-24 -left-16" />
+            <div className="relative">
+              <span className="eyebrow">Admissions Open</span>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mt-2 mb-4">
+                Choose your pathway to <span className="text-gradient-brand">higher education</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Government Degree College Lakarai offers Intermediate programs in four streams — Pre-Engineering, Pre-Medical, ICS (Computer Science) and Arts (Humanities) — alongside HEC-recognized four-year BS programs in Urdu, Zoology, Political Science, Computer Science and Botany, and two-year Associate Degree (AD) programs in English, Urdu and Political Science. Each program is affiliated with Bacha Khan University, Charsadda, and aligned with the BISE Peshawar and Higher Education Commission (HEC) curricula.
+              </p>
             </div>
           </div>
 
-          {/* ── BS ── */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-400/15 flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-sky-700 dark:text-sky-300" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-heading font-bold text-foreground">BS Programs (4-Year)</h3>
-                <p className="text-sm text-muted-foreground">4-Year Undergraduate Degrees — 8 Semesters · Affiliated with Bacha Khan University, Charsadda</p>
-              </div>
-            </div>
+          {sections.map(({ category, title, subtitle }) => {
+            const accent = ACCENTS[category];
+            const list = programs.filter((p) => p.category === category);
+            if (list.length === 0) return null;
+            const HeaderIcon = categoryIcon(category);
+            return (
+              <div key={category} className="mb-16 last:mb-0">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${accent.tile}`}>
+                    <HeaderIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-heading font-bold text-foreground">{title}</h3>
+                    <p className="text-sm text-muted-foreground">{subtitle}</p>
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {bs.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <Link
-                    key={p.slug}
-                    to={`/programs/bs/${p.slug}`}
-                    className="group bg-card rounded-2xl overflow-hidden border border-border shadow-card hover:shadow-elevated transition-all duration-200"
-                  >
-                    <div className="h-32 bg-gradient-to-br from-sky-500/15 to-sky-600/5 flex items-center justify-center relative">
-                      <Icon className="w-12 h-12 text-sky-600 dark:text-sky-300" strokeWidth={1.4} />
-                      <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider bg-sky-600/90 text-white px-2 py-1 rounded-full">
-                        4 Years
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h4 className="font-heading font-semibold text-foreground text-base mb-1">{p.shortName}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{p.tagline}</p>
-                      <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-sky-700 dark:text-sky-300 group-hover:gap-1.5 transition-all">
-                        View curriculum <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── AD (Associate Degrees) ── */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-400/15 flex items-center justify-center">
-                <Award className="w-5 h-5 text-amber-700 dark:text-amber-300" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {list.map((p) => {
+                    const Icon = categoryIcon(p.category);
+                    const subjectCount = p.subjectGroups.reduce((n, g) => n + g.subjects.length, 0);
+                    return (
+                      <Link
+                        key={p.slug}
+                        to={`/programs/${p.category}/${p.slug}`}
+                        className={`group bg-card rounded-2xl overflow-hidden border border-border shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-200 flex flex-col ${accent.ring}`}
+                      >
+                        <div className={`h-28 bg-gradient-to-br ${accent.strip} flex items-center justify-center relative shrink-0`}>
+                          <Icon className={`w-11 h-11 ${accent.icon}`} strokeWidth={1.4} />
+                          <span className={`absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-white px-2 py-1 rounded-full ${accent.chip}`}>
+                            {categoryYears(p.category)}
+                          </span>
+                        </div>
+                        <div className="p-5 flex flex-col flex-1">
+                          <h4 className="font-heading font-semibold text-foreground text-base mb-1">{p.shortName}</h4>
+                          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 flex-1">
+                            {p.tagline || p.description}
+                          </p>
+                          <div className="flex items-center justify-between mt-3">
+                            <span className={`inline-flex items-center gap-1 text-xs font-medium group-hover:gap-1.5 transition-all ${accent.text}`}>
+                              View curriculum <ArrowRight className="w-3 h-3" />
+                            </span>
+                            {subjectCount > 0 && (
+                              <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                                {subjectCount} subjects
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl font-heading font-bold text-foreground">Associate Degree (AD) Programs</h3>
-                <p className="text-sm text-muted-foreground">2-Year AD Degrees — 4 Semesters · HEC-recognized · Equivalent to 14 years of schooling</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {ad.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <Link
-                    key={p.slug}
-                    to={`/programs/ad/${p.slug}`}
-                    className="group bg-card rounded-2xl overflow-hidden border border-border shadow-card hover:shadow-elevated transition-all duration-200"
-                  >
-                    <div className="h-32 bg-gradient-to-br from-amber-500/15 to-amber-600/5 flex items-center justify-center relative">
-                      <Icon className="w-12 h-12 text-amber-600 dark:text-amber-300" strokeWidth={1.4} />
-                      <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider bg-amber-600/90 text-white px-2 py-1 rounded-full">
-                        2 Years
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h4 className="font-heading font-semibold text-foreground text-base mb-1">{p.shortName}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{p.tagline}</p>
-                      <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-amber-700 dark:text-amber-300 group-hover:gap-1.5 transition-all">
-                        View curriculum <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
     </PageLayout>
@@ -574,15 +605,31 @@ const ProgramsIndex = () => {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PROGRAM DETAIL PAGE — /programs/:category/:slug
-   Shows the full program description with subject combinations
+   Shows the full program with curriculum, admission requirements and an
+   admin-managed admission-contact card (College Settings + per-program info).
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const ProgramDetail = () => {
-  const { category, slug } = useParams<{ category: string; slug: string }>();
+  // NOTE: routes are /programs/intermediate/:slug, /programs/bs/:slug,
+  // /programs/ad/:slug — the category is part of the PATH, not a param,
+  // so we derive it from the pathname (the old code read a non-existent
+  // :category param, which made every detail page show "Program Not Found").
+  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const category = useMemo<ProgramCategory | null>(() => {
+    if (location.pathname.startsWith("/programs/intermediate/")) return "intermediate";
+    if (location.pathname.startsWith("/programs/bs/")) return "bs";
+    if (location.pathname.startsWith("/programs/ad/")) return "ad";
+    return null;
+  }, [location.pathname]);
+  const { data: settings } = useSchoolSettings();
+  const { data: overrides = [] } = usePrograms();
+  const allPrograms = useMemo(() => mergePrograms(BUILT_IN_PROGRAMS, overrides), [overrides]);
+
   const program = useMemo(() => {
-    if (category !== "intermediate" && category !== "bs" && category !== "ad") return undefined;
-    return findBySlug(category, slug || "");
-  }, [category, slug]);
+    if (!category || !slug) return undefined;
+    return allPrograms.find((p) => p.category === category && p.slug === slug);
+  }, [allPrograms, category, slug]);
 
   if (!program) {
     return (
@@ -605,24 +652,13 @@ const ProgramDetail = () => {
     );
   }
 
-  const Icon = program.icon;
+  const Icon = categoryIcon(program.category);
+  const accent = ACCENTS[program.category];
   const isIntermediate = program.category === "intermediate";
-  const isAD = program.category === "ad";
-  const accentBg = program.accent === "emerald"
-    ? "from-emerald-500/15 to-emerald-600/5"
-    : program.accent === "amber"
-    ? "from-amber-500/15 to-amber-600/5"
-    : "from-sky-500/15 to-sky-600/5";
-  const accentText = program.accent === "emerald"
-    ? "text-emerald-700 dark:text-emerald-300"
-    : program.accent === "amber"
-    ? "text-amber-700 dark:text-amber-300"
-    : "text-sky-700 dark:text-sky-300";
-  const accentBadge = program.accent === "emerald"
-    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
-    : program.accent === "amber"
-    ? "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
-    : "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300";
+  const displayPhone = settings?.phone?.trim();
+  const displayEmail = settings?.email?.trim() || "info@gdclakarai.edu.pk";
+  const officeHours = settings?.office_hours?.trim() || "Monday – Saturday, 8:00 AM – 2:00 PM";
+  const whatsapp = settings?.whatsapp_number?.trim();
 
   return (
     <PageLayout>
@@ -635,16 +671,16 @@ const ProgramDetail = () => {
             {/* Left — description */}
             <div className="lg:col-span-2">
               <div className="flex items-start gap-4 mb-6">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${accentBg} flex items-center justify-center shrink-0`}>
-                  <Icon className={`w-7 h-7 ${accentText}`} strokeWidth={1.4} />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${accent.tile}`}>
+                  <Icon className="w-7 h-7" strokeWidth={1.4} />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${accentBadge}`}>
-                      {isIntermediate ? "Intermediate" : isAD ? "Associate Degree" : "BS Program"}
+                    <span className={`inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${accent.badge}`}>
+                      {isIntermediate ? "Intermediate" : program.category === "ad" ? "Associate Degree" : "BS Program"}
                     </span>
                     <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-                      <Calendar className="w-3 h-3" /> {program.duration}
+                      <Calendar className="w-3 h-3" /> {program.duration || categoryYears(program.category)}
                     </span>
                   </div>
                   <h1 className="text-2xl md:text-3xl font-heading font-bold text-foreground">{program.title}</h1>
@@ -652,36 +688,79 @@ const ProgramDetail = () => {
               </div>
 
               <p className="text-muted-foreground leading-relaxed text-base">
-                {program.description}
+                {program.description || program.tagline}
               </p>
             </div>
 
-            {/* Right — admission card */}
+            {/* Right — admission + contact card */}
             <aside className="lg:col-span-1">
-              <div className="bg-card rounded-2xl border border-border p-5 sticky top-4">
+              <div className="bg-card rounded-2xl border border-border p-5 sticky top-4 shadow-card">
                 <div className="flex items-center gap-2 mb-3">
-                  <CheckCircle2 className={`w-5 h-5 ${accentText}`} />
+                  <CheckCircle2 className={`w-5 h-5 ${accent.icon}`} />
                   <h3 className="font-heading font-semibold text-foreground">Admission Requirement</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {program.admissionRequirement}
+                  {program.admissionRequirement || "Contact the college admission office for current requirements."}
                 </p>
 
+                {program.careerPaths.length > 0 && (
+                  <div className="border-t border-border pt-4 mt-4">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Career Pathways</h4>
+                    <ul className="space-y-1.5">
+                      {program.careerPaths.map((cp, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <ArrowRight className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${accent.icon}`} />
+                          <span>{cp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* ── Admission contact — fully managed from the admin panel
+                    (Admin → College Settings for phone/email/WhatsApp/hours,
+                    Admin → Programs for the per-program note below) ── */}
                 <div className="border-t border-border pt-4 mt-4">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Career Pathways</h4>
-                  <ul className="space-y-1.5">
-                    {program.careerPaths.map((cp, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <ArrowRight className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${accentText}`} />
-                        <span>{cp}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">Admission Contact</h4>
+                  <div className="space-y-2 text-sm">
+                    {program.contactInfo && (
+                      <p className="text-xs text-foreground/85 bg-gold/10 border border-gold/25 rounded-lg px-3 py-2 leading-relaxed">
+                        {program.contactInfo}
+                      </p>
+                    )}
+                    {displayPhone && (
+                      <a
+                        href={`tel:${displayPhone.replace(/\s/g, "")}`}
+                        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Phone className={`w-4 h-4 shrink-0 ${accent.icon}`} /> {displayPhone}
+                      </a>
+                    )}
+                    {whatsapp && (
+                      <a
+                        href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <MessageCircle className={`w-4 h-4 shrink-0 ${accent.icon}`} /> WhatsApp: {whatsapp}
+                      </a>
+                    )}
+                    <a
+                      href={`mailto:${displayEmail}`}
+                      className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors break-all"
+                    >
+                      <Mail className={`w-4 h-4 shrink-0 ${accent.icon}`} /> {displayEmail}
+                    </a>
+                    <p className="flex items-start gap-2 text-muted-foreground">
+                      <Clock className={`w-4 h-4 mt-0.5 shrink-0 ${accent.icon}`} /> {officeHours}
+                    </p>
+                  </div>
                 </div>
 
                 <Link
                   to="/admission"
-                  className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                  className="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-accent text-white font-semibold shadow-md"
                 >
                   Apply Now <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -695,7 +774,7 @@ const ProgramDetail = () => {
       <section className="py-12 bg-secondary/30">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex items-center gap-2 mb-2">
-            <Layers className={`w-5 h-5 ${accentText}`} />
+            <Layers className={`w-5 h-5 ${accent.icon}`} />
             <h2 className="text-xl md:text-2xl font-heading font-bold text-foreground">
               {isIntermediate ? "Subject Combinations" : "Semester-wise Curriculum"}
             </h2>
@@ -703,61 +782,26 @@ const ProgramDetail = () => {
           <p className="text-sm text-muted-foreground mb-8">
             {isIntermediate
               ? "Subjects taught in each year of the Intermediate program. In 2nd Year, Islamiyat is replaced by Pak-Study — per BISE Peshawar HSSC scheme. M.Quran is studied only in 1st Year."
-              : isAD
+              : program.category === "ad"
               ? "Semester-wise subjects across the two-year Associate Degree program, aligned with the Higher Education Commission (HEC) of Pakistan Associate Degree framework. AD graduates can take lateral entry into the 5th semester of the corresponding BS program at any HEC-recognized university."
               : "Semester-wise subjects across the four-year BS program, aligned with the Higher Education Commission (HEC) of Pakistan curriculum."}
           </p>
 
-          {/* ── Intermediate: 1st Year / 2nd Year cards ── */}
-          {isIntermediate && program.firstYear && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${program.subjectGroups.length > 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} gap-4 md:gap-6`}>
+            {program.subjectGroups.map((group, i) => (
               <SubjectCard
-                label={program.firstYear.label}
-                subjects={program.firstYear.subjects}
-                note={program.firstYear.note}
-                accent={program.accent}
+                key={i}
+                group={group}
+                accent={accent}
                 emptyPlaceholder="Subjects will be added by the college administration."
               />
-              {program.secondYear && (
-                <SubjectCard
-                  label={program.secondYear.label}
-                  subjects={program.secondYear.subjects}
-                  note={program.secondYear.note}
-                  accent={program.accent}
-                  emptyPlaceholder="Subjects will be added by the college administration."
-                />
-              )}
-            </div>
-          )}
-
-          {/* ── BS / AD: semester cards ── */}
-          {!isIntermediate && program.semesters && (
-            <div className={`grid grid-cols-1 md:grid-cols-2 ${program.semesters.length > 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} gap-4`}>
-              {program.semesters.map((sem, i) => (
-                <div
-                  key={i}
-                  className="bg-card rounded-xl border border-border p-4 shadow-card"
-                >
-                  <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${accentBadge} mb-3`}>
-                    <Calendar className="w-3 h-3" /> {sem.label}
-                  </div>
-                  <ul className="space-y-1.5">
-                    {sem.subjects.map((s, idx) => (
-                      <li key={idx} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                        <span className={`mt-1 w-1 h-1 rounded-full bg-current ${accentText}`} />
-                        <span>{s}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
+            ))}
+          </div>
 
           {/* ── Islamiyat / Pak-Study note ── */}
           {isIntermediate && (
-            <div className="mt-8 bg-card border border-amber-200 dark:border-amber-400/20 rounded-xl p-4 flex items-start gap-3">
-              <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <div className="mt-8 bg-card border border-gold/30 dark:border-gold/20 rounded-xl p-4 flex items-start gap-3">
+              <Info className="w-5 h-5 text-bronze dark:text-gold shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-foreground mb-1">
                   Difference between 1st Year and 2nd Year
@@ -775,11 +819,11 @@ const ProgramDetail = () => {
       <section className="py-12">
         <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-lg font-heading font-semibold text-foreground mb-5 flex items-center gap-2">
-            <Award className={`w-5 h-5 ${accentText}`} /> Other Programs
+            <Award className={`w-5 h-5 ${accent.icon}`} /> Other Programs
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-            {PROGRAMS.filter((p) => p.slug !== program.slug).map((p) => {
-              const OtherIcon = p.icon;
+            {allPrograms.filter((p) => p.slug !== program.slug).map((p) => {
+              const OtherIcon = categoryIcon(p.category);
               return (
                 <Link
                   key={p.slug}
@@ -798,36 +842,27 @@ const ProgramDetail = () => {
   );
 };
 
-/* ── Subject card (used by Intermediate programs) ── */
+/* ── Subject group card (1st/2nd Year or Semester) ── */
 const SubjectCard = ({
-  label,
-  subjects,
-  note,
+  group,
   accent,
   emptyPlaceholder,
 }: {
-  label: string;
-  subjects: string[];
-  note?: string;
-  accent: string;
+  group: ProgramSubjectGroup;
+  accent: (typeof ACCENTS)[ProgramCategory];
   emptyPlaceholder?: string;
 }) => {
-  const accentText = accent === "emerald" ? "text-emerald-700 dark:text-emerald-300" : "text-sky-700 dark:text-sky-300";
-  const accentBadge = accent === "emerald"
-    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
-    : "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300";
-
   return (
-    <div className="bg-card rounded-2xl border border-border p-6 shadow-card">
-      <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${accentBadge} mb-4`}>
-        <BookOpen className="w-3 h-3" /> {label}
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-card hover:shadow-elevated transition-shadow">
+      <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${accent.badge} mb-4`}>
+        <BookOpen className="w-3 h-3" /> {group.label}
       </div>
 
-      {subjects.length > 0 ? (
+      {group.subjects.length > 0 ? (
         <ul className="space-y-2.5">
-          {subjects.map((s, i) => (
+          {group.subjects.map((s, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm text-foreground">
-              <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${accentText}`} />
+              <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${accent.icon}`} />
               <span>{s}</span>
             </li>
           ))}
@@ -838,11 +873,11 @@ const SubjectCard = ({
         </div>
       )}
 
-      {note && (
+      {group.note && (
         <div className="mt-4 pt-4 border-t border-border">
           <p className="text-xs text-muted-foreground leading-relaxed flex items-start gap-2">
             <Info className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-            <span>{note}</span>
+            <span>{group.note}</span>
           </p>
         </div>
       )}

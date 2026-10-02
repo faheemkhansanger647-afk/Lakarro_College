@@ -35,12 +35,10 @@ export const SITE_LONG_NAME = "Government Degree College Lakarai, District Mohma
 const SCHOOL_FACTS = [
   "Full name: Government Degree College Lakarai (Government Degree College Lakarai)",
   "Location: Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa (KPK), Pakistan",
-  "Established: 2018",
+  "Established: 2004",
   "",
-  "Principal: Mr. Imdad Ullah",
   "Classes offered: 6, 7, 8, 9 and 10 (matriculation)",
   "Board affiliation: BISE Peshawar — classes 9 and 10 sit board examinations",
-  "Phone: +92 346 9898295",
   "Email: info@gdclakarai.edu.pk",
 ];
 
@@ -91,7 +89,7 @@ const PAGES = {
     blocks: [
       {
         p: [
-          "Government Degree College Lakarai (GDC Lakarai) is a government college in Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan, established in 2004 . The college offers Intermediate and BS programs and is affiliated with Bacha Khan University, Charsadda, the Board of Intermediate and Secondary Education Peshawar, whose examinations our 1st Year and 2nd Year students sit every year. Mr. Imdad Ullah is the principal of the college.",
+          "Government Degree College Lakarai (GDC Lakarai) is a government college in Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan, established in 2004 . The college offers Intermediate and BS programs and is affiliated with Bacha Khan University, Charsadda, the Board of Intermediate and Secondary Education Peshawar, whose examinations our 1st Year and 2nd Year students sit every year. The college is led by its principal, whose current profile is published on the About page.",
           "This official website is the college's digital front door. Students and parents can apply for admission online, search exam results by roll number, read official notices and school news, download free study notes and past papers, check the academic calendar, browse the teacher directory and view photos of school events. The site also works as a Progressive Web App (PWA), so it can be installed on a phone and used offline.",
         ],
       },
@@ -121,7 +119,7 @@ const PAGES = {
   "/about": {
     title: "About Us — Government Degree College Lakarai, District Mohmand",
     description:
-      "About Government Degree College Lakarai, District Mohmand, KPK: established 2018, , principal Mr. Imdad Ullah, Intermediate (1st Year + 2nd Year) and BS programs, affiliated with Bacha Khan University, Charsadda. Our mission, vision and values.",
+      "About Government Degree College Lakarai, District Mohmand, KPK: established in 2004, Intermediate (1st Year + 2nd Year) and BS programs, affiliated with Bacha Khan University, Charsadda. Our mission, vision and values.",
     h1: "About Government Degree College Lakarai",
     blocks: [
       {
@@ -154,7 +152,7 @@ const PAGES = {
   "/contact": {
     title: "Contact Us — Government Degree College Lakarai, District Mohmand",
     description:
-      "Contact Government Degree College Lakarai: phone +92 346 9898295, email info@gdclakarai.edu.pk, Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. Contact form, WhatsApp and location map.",
+      "Contact Government Degree College Lakarai: email info@gdclakarai.edu.pk, Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan. Current phone numbers, WhatsApp and office hours are published on this page and managed live by the college administration. Contact form and location map.",
     h1: "Contact Government Degree College Lakarai",
     blocks: [
       {
@@ -167,9 +165,7 @@ const PAGES = {
         ul: [
           "School: Government Degree College Lakarai",
           "Address: Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan",
-          "Phone: +92 346 9898295",
           "Email: info@gdclakarai.edu.pk",
-          "Principal: Mr. Imdad Ullah",
           "Facebook page: #",
         ],
       },
@@ -327,12 +323,12 @@ const PAGES = {
   "/teachers": {
     title: "Teachers — Staff Directory | Government Degree College Lakarai",
     description:
-      "Teaching staff of Government Degree College Lakarai, District Mohmand — subject teachers for Intermediate (1st Year + 2nd Year) and BS programs with qualifications, and the principal Mr. Imdad Ullah.",
+      "Teaching staff of Government Degree College Lakarai, District Mohmand — subject teachers for Intermediate (1st Year + 2nd Year) and BS programs with their qualifications and subjects.",
     h1: "Our Faculty",
     blocks: [
       {
         p: [
-          "Government Degree College Lakarai is staffed by qualified subject teachers appointed through the Khyber Pakhtunkhwa Elementary & Secondary Education Department. The staff directory on this page lists the teaching staff with their subjects and qualifications, led by the principal, Mr. Imdad Ullah. Teachers cover Mathematics, Physics, Chemistry, Biology, English, Urdu, Islamiat, Pakistan Studies and Computer Science for Intermediate and BS programs.",
+          "Government Degree College Lakarai is staffed by qualified subject teachers appointed through the Khyber Pakhtunkhwa Elementary & Secondary Education Department. The staff directory on this page lists the teaching staff with their subjects and qualifications, led by the college principal. Teachers cover Mathematics, Physics, Chemistry, Biology, English, Urdu, Islamiat, Pakistan Studies and Computer Science for Intermediate and BS programs.",
         ],
       },
     ],
@@ -574,7 +570,7 @@ function buildContentHtml(route) {
       .join("")}</ul>`
   );
   parts.push(
-    `<p>Contact: Government Degree College Lakarai, District Mohmand, KPK, Pakistan · Phone +92 346 9898295 · Email info@gdclakarai.edu.pk</p>`
+    `<p>Contact: Government Degree College Lakarai, District Mohmand, KPK, Pakistan · Email info@gdclakarai.edu.pk</p>`
   );
   // Developer attribution — machine-readable layer only. This paragraph is
   // part of the build-time static fallback block (.ghs-seo-static), which
@@ -621,9 +617,8 @@ export function buildJsonLd(route) {
         alternateName: SITE_NAME,
         url: SITE_URL,
         identifier: "",
-        telephone: "+92-346-9898295",
         email: "info@gdclakarai.edu.pk",
-        foundingDate: "2018",
+        foundingDate: "2004",
         address: {
           "@type": "PostalAddress",
           streetAddress: "Lakarai",

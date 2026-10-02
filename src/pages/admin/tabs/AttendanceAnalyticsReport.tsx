@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileDown, Loader2 } from "lucide-react";
 import jsPDF from "jspdf";
+import { getSchoolIdentity, schoolSubtitleLine } from "@/lib/schoolIdentity";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -782,12 +783,12 @@ function generateAttendanceReportPdf(data: CombinedReportData) {
   doc.setTextColor(PDF.ink[0], PDF.ink[1], PDF.ink[2]);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("GOVERNMENT HIGH SCHOOL BABI KHEL", w / 2, 18, { align: "center" });
+  doc.text(getSchoolIdentity().name, w / 2, 18, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(PDF.sub[0], PDF.sub[1], PDF.sub[2]);
-  doc.text("District Mohmand, Khyber Pakhtunkhwa  |  Established 2018", w / 2, 22.5, { align: "center" });
+  doc.text(schoolSubtitleLine(getSchoolIdentity()), w / 2, 22.5, { align: "center" });
 
   // Title (text-based, no filled pill)
   doc.setTextColor(PDF.navy[0], PDF.navy[1], PDF.navy[2]);

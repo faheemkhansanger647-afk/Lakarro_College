@@ -244,7 +244,7 @@ const FramedImage = ({
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]"
+      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
     />
     {/* ink wash so the image reads as a printed plate */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/10" />

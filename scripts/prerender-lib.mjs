@@ -443,7 +443,12 @@ async function renderPage(context, route, outPath, originalPreloads) {
       }
     }
 
-    await page.waitForSelector("footer", { timeout: 15000 }).catch(() => {});
+    // The footer is home-only now (PageLayout renders it just on "/"),
+    // so only wait for it on the home route — waiting on inner routes
+    // would burn the full 15s timeout for every prerendered page.
+    if (route === "/") {
+      await page.waitForSelector("footer", { timeout: 15000 }).catch(() => {});
+    }
     await page.waitForTimeout(SETTLE_MS);
 
     // Strip runtime-added modulepreload/prefetch links (the idle route

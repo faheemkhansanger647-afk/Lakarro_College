@@ -66,58 +66,59 @@
 @tailwind utilities;
 
 @layer base {
-  /* ─── SOLAR CREAM — Tangerine & Honey on Warm Cream (Copilot-style) ───
-     A modern warm-editorial system: soft cream paper instead of stark
-     white, espresso ink text, a confident tangerine primary for buttons
-     and active states, and honey-amber highlights. No heavy, dense or
-     neon tones — everything is tuned for long reading comfort. */
+  /* ─── EMERALD & GOLD — Royal green + golden honey on soft ivory ───
+     A modern premium system: light ivory paper with delicate green/gold
+     gradient washes (never heavy solid blocks), deep emerald as the
+     confident primary for buttons and active states, and rich gold as
+     the signature highlight. Gradients flow green → gold across heroes,
+     cards and accent tiles for a cohesive, prestigious look. */
   :root {
     color-scheme: light;
-    --background: 38 44% 94%;
-    --foreground: 22 22% 13%;
+    --background: 45 42% 94%;
+    --foreground: 165 22% 12%;
 
-    --card: 44 64% 98%;
-    --card-foreground: 22 22% 13%;
+    --card: 48 55% 98%;
+    --card-foreground: 165 22% 12%;
 
-    --popover: 44 64% 98%;
-    --popover-foreground: 22 22% 13%;
+    --popover: 48 55% 98%;
+    --popover-foreground: 165 22% 12%;
 
-    --primary: 20 87% 44%;
-    --primary-foreground: 40 60% 98%;
+    --primary: 152 58% 26%;
+    --primary-foreground: 45 60% 97%;
 
-    --primary-dark: 20 84% 36%;
-    --primary-light: 25 92% 55%;
-    --primary-glow: 24 95% 62%;
+    --primary-dark: 155 62% 19%;
+    --primary-light: 150 42% 36%;
+    --primary-glow: 145 50% 44%;
 
-    --secondary: 34 40% 89%;
-    --secondary-foreground: 22 25% 22%;
+    --secondary: 44 36% 90%;
+    --secondary-foreground: 160 18% 22%;
 
-    --muted: 35 33% 91%;
-    --muted-foreground: 27 12% 42%;
+    --muted: 44 30% 92%;
+    --muted-foreground: 162 9% 40%;
 
-    --accent: 27 85% 90%;
-    --accent-foreground: 20 78% 27%;
+    --accent: 43 75% 89%;
+    --accent-foreground: 152 65% 20%;
 
     --destructive: 0 74% 56%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 26% 83%;
-    --input: 32 26% 83%;
-    --ring: 20 87% 44%;
+    --border: 44 24% 83%;
+    --input: 44 24% 83%;
+    --ring: 152 55% 30%;
 
     --radius: 0.9rem;
 
-    --success: 142 60% 42%;
+    --success: 142 60% 40%;
     --warning: 35 92% 48%;
 
-    --sidebar-background: 44 64% 98%;
-    --sidebar-foreground: 22 25% 20%;
-    --sidebar-primary: 20 87% 44%;
-    --sidebar-primary-foreground: 40 60% 98%;
-    --sidebar-accent: 27 85% 90%;
-    --sidebar-accent-foreground: 20 78% 27%;
-    --sidebar-border: 32 26% 83%;
-    --sidebar-ring: 20 87% 44%;
+    --sidebar-background: 48 55% 98%;
+    --sidebar-foreground: 160 18% 20%;
+    --sidebar-primary: 152 58% 26%;
+    --sidebar-primary-foreground: 45 60% 97%;
+    --sidebar-accent: 43 75% 89%;
+    --sidebar-accent-foreground: 152 65% 20%;
+    --sidebar-border: 44 24% 83%;
+    --sidebar-ring: 152 55% 30%;
 
     --font-heading: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -129,73 +130,82 @@
        letters as isolated glyphs without their proper Nastaliq shaping. */
     --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
 
-    /* Honey-amber signature accent — the warm second tone of the Solar
-       Cream system (eyebrow labels, hexagon logo frame, ticker, gradient
-       text). Deliberately distinct from the tangerine --primary so framed
-       elements (e.g. gold hexagon around a primary-filled logo) keep their
-       separation. Does not replace --accent, which is used elsewhere. */
-    --gold: 38 90% 46%;
-    --gold-soft: 32 90% 88%;
+    /* Golden honey signature accent — the warm second tone of the
+       Emerald & Gold system (eyebrow labels, hexagon logo frame, ticker,
+       gradient text). Deliberately distinct from the emerald --primary so
+       framed elements (e.g. gold hexagon around a primary-filled logo)
+       keep their separation. Does not replace --accent, which is used
+       elsewhere. */
+    --gold: 41 82% 44%;
+    --gold-soft: 43 80% 88%;
 
-    /* Bright professional blue (azure) — the cool counterpoint to the
-       warm tangerine primary. Used for: nav active states, links, info
-       chips, section eyebrows and icon accents, so the site reads calm
-       and corporate instead of all-orange. Tuned bright and clear —
-       never navy, never dense. */
-    --azure: 201 90% 38%;
-    --azure-strong: 204 86% 32%;
-    --azure-soft: 199 78% 93%;
+    /* Deep gold (bronze) — readable gold tone for small text and icons
+       on light backgrounds, where the brighter --gold lacks contrast. */
+    --bronze: 36 72% 34%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(206 88% 30%), hsl(201 90% 38%), hsl(198 85% 46%));
-    --gradient-card: linear-gradient(145deg, hsl(44 64% 98%), hsl(36 40% 94%));
-    --gradient-accent: linear-gradient(135deg, hsl(21 89% 47%), hsl(27 94% 60%));
-    --shadow-card: 0 8px 24px -12px hsl(21 60% 25% / 0.16);
-    --shadow-elevated: 0 20px 46px -20px hsl(21 60% 25% / 0.24);
+    /* Professional jade green (azure token) — the cool counterpoint to
+       the golden accents. Used for: nav active states, links, info
+       chips, section eyebrows and icon accents. The name --azure is kept
+       for compatibility with every existing utility; the hue is now a
+       refined jade-emerald that harmonises with the green + gold theme. */
+    --azure: 163 55% 28%;
+    --azure-strong: 166 60% 22%;
+    --azure-soft: 158 40% 92%;
+
+    /* Signature gradients — deep emerald flowing into golden honey.
+       Heroes stay dark enough for white text; card/accent gradients stay
+       light and airy ("lightly tinted", never solid). */
+    --gradient-hero: linear-gradient(135deg, hsl(160 72% 12%), hsl(154 66% 19%), hsl(43 62% 24%));
+    --gradient-card: linear-gradient(145deg, hsl(48 55% 98%), hsl(44 40% 94%));
+    --gradient-accent: linear-gradient(135deg, hsl(152 58% 26%), hsl(41 80% 42%));
+    --shadow-card: 0 8px 24px -12px hsl(160 55% 12% / 0.16);
+    --shadow-elevated: 0 20px 46px -20px hsl(160 55% 12% / 0.24);
   }
 
-  /* ─── SOLAR CREAM DARK — soft warm cocoa, never heavy black ─── */
+  /* ─── EMERALD NIGHT — deep green-cocoa, never heavy black ─── */
   .dark {
     color-scheme: dark;
-    --background: 26 15% 10%;
-    --foreground: 38 32% 91%;
-    --card: 26 14% 14%;
-    --card-foreground: 38 32% 91%;
-    --popover: 26 14% 13%;
-    --popover-foreground: 38 32% 91%;
-    --primary: 21 90% 48%;
+    --background: 165 24% 7%;
+    --foreground: 44 34% 92%;
+    --card: 164 20% 11%;
+    --card-foreground: 44 34% 92%;
+    --popover: 164 20% 10%;
+    --popover-foreground: 44 34% 92%;
+    --primary: 150 48% 42%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 21 86% 40%;
-    --primary-light: 27 95% 62%;
-    --primary-glow: 25 96% 66%;
-    --secondary: 27 13% 18%;
-    --secondary-foreground: 38 30% 88%;
-    --muted: 27 12% 20%;
-    --muted-foreground: 35 16% 66%;
-    --accent: 24 35% 24%;
-    --accent-foreground: 30 85% 85%;
-    --gold: 40 95% 60%;
-    --gold-soft: 34 70% 32%;
-    --azure: 199 92% 64%;
-    --azure-strong: 201 88% 58%;
-    --azure-soft: 202 45% 20%;
+    --primary-dark: 154 52% 33%;
+    --primary-light: 145 45% 56%;
+    --primary-glow: 143 50% 60%;
+    --secondary: 160 14% 17%;
+    --secondary-foreground: 44 28% 88%;
+    --muted: 160 12% 19%;
+    --muted-foreground: 150 12% 66%;
+    --accent: 152 26% 20%;
+    --accent-foreground: 43 80% 84%;
+    --gold: 43 88% 58%;
+    --gold-soft: 38 60% 30%;
+    --bronze: 40 80% 62%;
+    --azure: 158 45% 58%;
+    --azure-strong: 162 50% 50%;
+    --azure-soft: 163 30% 16%;
     --destructive: 0 72% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 27 13% 25%;
-    --input: 27 13% 25%;
-    --ring: 21 90% 48%;
-    --sidebar-background: 26 15% 12%;
-    --sidebar-foreground: 38 30% 88%;
-    --sidebar-primary: 21 90% 48%;
+    --border: 160 14% 24%;
+    --input: 160 14% 24%;
+    --ring: 150 48% 42%;
+    --sidebar-background: 165 22% 9%;
+    --sidebar-foreground: 44 28% 88%;
+    --sidebar-primary: 150 48% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 27 13% 18%;
-    --sidebar-accent-foreground: 38 30% 88%;
-    --sidebar-border: 27 13% 25%;
-    --sidebar-ring: 21 90% 48%;
-    --gradient-hero: linear-gradient(135deg, hsl(210 70% 14%), hsl(204 80% 22%), hsl(199 85% 30%));
-    --gradient-card: linear-gradient(145deg, hsl(26 15% 16%), hsl(26 13% 12%));
-    --gradient-accent: linear-gradient(135deg, hsl(21 90% 48%), hsl(27 95% 62%));
-    --shadow-card: 0 4px 20px -4px hsl(20 30% 3% / 0.45);
-    --shadow-elevated: 0 12px 40px -8px hsl(20 30% 3% / 0.6);
+    --sidebar-accent: 160 14% 17%;
+    --sidebar-accent-foreground: 44 28% 88%;
+    --sidebar-border: 160 14% 24%;
+    --sidebar-ring: 150 48% 42%;
+    --gradient-hero: linear-gradient(135deg, hsl(165 55% 7%), hsl(158 50% 12%), hsl(43 45% 16%));
+    --gradient-card: linear-gradient(145deg, hsl(164 20% 13%), hsl(162 16% 10%));
+    --gradient-accent: linear-gradient(135deg, hsl(150 48% 40%), hsl(42 85% 52%));
+    --shadow-card: 0 4px 20px -4px hsl(160 45% 3% / 0.45);
+    --shadow-elevated: 0 12px 40px -8px hsl(160 45% 3% / 0.6);
   }
 
   /* ─── LANTERN MODE · The Hujra Reading Experience ───
@@ -208,56 +218,57 @@
      (flicker, glow, vignette) lives in the HUJRA AMBIENCE section at the
      bottom of this file and renders via <HujraAmbiance />. */
   .dark.theme-lantern {
-    --background: 24 38% 7%;
-    --foreground: 36 50% 89%;
+    --background: 150 22% 6%;
+    --foreground: 42 44% 89%;
 
-    --card: 24 32% 11%;
-    --card-foreground: 36 46% 88%;
-    --popover: 24 32% 11%;
-    --popover-foreground: 36 46% 88%;
+    --card: 152 20% 10%;
+    --card-foreground: 42 42% 88%;
+    --popover: 152 20% 10%;
+    --popover-foreground: 42 42% 88%;
 
-    --primary: 30 94% 46%;
+    --primary: 38 88% 46%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 28 88% 38%;
-    --primary-light: 36 96% 64%;
-    --primary-glow: 33 96% 60%;
+    --primary-dark: 34 86% 38%;
+    --primary-light: 42 94% 62%;
+    --primary-glow: 40 94% 58%;
 
-    --secondary: 25 28% 16%;
-    --secondary-foreground: 36 42% 86%;
+    --secondary: 152 16% 15%;
+    --secondary-foreground: 42 38% 86%;
 
-    --muted: 25 26% 15%;
-    --muted-foreground: 33 28% 70%;
+    --muted: 152 15% 14%;
+    --muted-foreground: 40 26% 70%;
 
-    --accent: 28 50% 22%;
-    --accent-foreground: 38 65% 88%;
+    --accent: 38 45% 20%;
+    --accent-foreground: 42 60% 88%;
 
     --destructive: 0 62% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 26 24% 21%;
-    --input: 26 24% 21%;
-    --ring: 30 94% 46%;
+    --border: 152 18% 20%;
+    --input: 152 18% 20%;
+    --ring: 38 88% 46%;
 
     --gold: 42 92% 62%;
-    --gold-soft: 34 55% 34%;
-    --azure: 199 85% 62%;
-    --azure-strong: 201 80% 56%;
-    --azure-soft: 200 40% 18%;
+    --gold-soft: 38 55% 32%;
+    --bronze: 40 85% 64%;
+    --azure: 155 42% 58%;
+    --azure-strong: 158 45% 52%;
+    --azure-soft: 155 35% 17%;
 
-    --sidebar-background: 24 36% 9%;
-    --sidebar-foreground: 36 42% 86%;
-    --sidebar-primary: 30 94% 46%;
+    --sidebar-background: 150 20% 8%;
+    --sidebar-foreground: 42 38% 86%;
+    --sidebar-primary: 38 88% 46%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 25 28% 16%;
-    --sidebar-accent-foreground: 36 42% 86%;
-    --sidebar-border: 26 24% 21%;
-    --sidebar-ring: 30 94% 46%;
+    --sidebar-accent: 152 16% 15%;
+    --sidebar-accent-foreground: 42 38% 86%;
+    --sidebar-border: 152 18% 20%;
+    --sidebar-ring: 38 88% 46%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(212 65% 12%), hsl(205 75% 19%), hsl(199 82% 27%));
-    --gradient-card: linear-gradient(145deg, hsl(24 32% 12%), hsl(24 28% 9%));
-    --gradient-accent: linear-gradient(135deg, hsl(30 94% 50%), hsl(38 96% 64%));
-    --shadow-card: 0 4px 20px -4px hsl(20 40% 3% / 0.5);
-    --shadow-elevated: 0 12px 40px -8px hsl(20 40% 3% / 0.65);
+    --gradient-hero: linear-gradient(135deg, hsl(155 50% 9%), hsl(150 42% 14%), hsl(38 55% 18%));
+    --gradient-card: linear-gradient(145deg, hsl(152 20% 11%), hsl(152 16% 8%));
+    --gradient-accent: linear-gradient(135deg, hsl(36 90% 48%), hsl(42 95% 62%));
+    --shadow-card: 0 4px 20px -4px hsl(160 40% 3% / 0.5);
+    --shadow-elevated: 0 12px 40px -8px hsl(160 40% 3% / 0.65);
   }
 
   /* The old "Midnight Pro", "Forest Sage", and "Deep Violet" colour themes
@@ -318,6 +329,21 @@
     color: transparent;
   }
 
+  /* Signature brand text gradient — golden honey flowing into emerald.
+     Use for hero/display words that should feel premium on light bg. */
+  .text-gradient-brand {
+    background: linear-gradient(120deg, hsl(var(--gold)) 0%, hsl(var(--gold)) 35%, hsl(var(--primary-light)) 75%, hsl(var(--primary)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dark .text-gradient-brand {
+    background: linear-gradient(120deg, hsl(var(--gold)) 0%, hsl(var(--gold)) 35%, hsl(var(--primary-light)) 75%, hsl(var(--primary-light)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .gradient-hero {
     background: var(--gradient-hero);
   }
@@ -328,9 +354,9 @@
      page. */
   .result-hero-blue {
     background: linear-gradient(135deg,
-      rgba(122, 45, 14, 0.96),
-      rgba(199, 78, 18, 0.93) 45%,
-      rgba(233, 111, 30, 0.90)
+      rgba(6, 50, 38, 0.96),
+      rgba(13, 84, 60, 0.93) 45%,
+      rgba(150, 112, 26, 0.90)
     );
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -574,12 +600,12 @@
 }
 
 /* Editorial paper-grain texture — used as the masthead background so it
-   reads as printed parchment instead of a flat cream box. */
+   reads as printed parchment instead of a flat cream box (green/gold tint). */
 .paper-grain {
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(210, 100, 30, 0.035) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(170, 95, 35, 0.03) 0%, transparent 50%),
-    linear-gradient(160deg, hsl(42 50% 96%) 0%, hsl(38 42% 92%) 55%, hsl(33 36% 87%) 100%);
+    radial-gradient(circle at 20% 30%, rgba(16, 94, 66, 0.035) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(180, 140, 30, 0.04) 0%, transparent 50%),
+    linear-gradient(160deg, hsl(48 45% 96%) 0%, hsl(50 32% 93%) 55%, hsl(140 16% 90%) 100%);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -1065,12 +1091,12 @@
   .hujra-wick   { opacity: 0.9; }
 }
 
-/* ── 404 sky — a pale Peshawar dawn for the kite page (theme-aware) ── */
+/* ── 404 sky — a pale green-gold Peshawar dawn for the kite page ── */
 .sky-dawn {
-  background: linear-gradient(180deg, #f8efdc 0%, #f3e0bc 48%, #eccf9f 100%);
+  background: linear-gradient(180deg, #f3f5e3 0%, #eaeed1 48%, #f2e6c2 100%);
 }
 .dark .sky-dawn {
-  background: linear-gradient(180deg, #1b1510 0%, #241a12 55%, #2c2014 100%);
+  background: linear-gradient(180deg, #10170f 0%, #142016 55%, #1e2110 100%);
 }
 .sky-cloud {
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 70%);

@@ -55,16 +55,27 @@ import {
   type SeatingRoom, type RoomWithAssignments, type SeatingPlanFull, type ClassPaperTime,
 } from "@/hooks/useExamSeating";
 
-// Distinct, accessible colors for up to 8 classes. Beyond 8, fall back to a hash.
-const CLASS_COLORS: Record<string, { bg: string; text: string; pdfRgb: [number, number, number] }> = {
-  "1st Year": { bg: "bg-blue-100 dark:bg-blue-900/40",       text: "text-blue-700 dark:text-blue-300",       pdfRgb: [219, 234, 254] },
-  "1st Year": { bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300", pdfRgb: [209, 250, 229] },
-  "1st Year": { bg: "bg-amber-100 dark:bg-amber-900/40",     text: "text-amber-700 dark:text-amber-300",     pdfRgb: [254, 243, 199] },
-  "2nd Year": { bg: "bg-rose-100 dark:bg-rose-900/40",       text: "text-rose-700 dark:text-rose-300",       pdfRgb: [254, 205, 211] },
-  "2nd Year": { bg: "bg-violet-100 dark:bg-violet-900/40",   text: "text-violet-700 dark:text-violet-300",   pdfRgb: [237, 233, 254] },
+// Distinct, accessible colors for up to 8 classes. A class name is mapped to
+// a color via a stable hash, so every distinct class always gets the same
+// palette entry across renders, sessions and PDF exports — and duplicate
+// object keys are impossible by construction. Beyond the palette, fall back
+// to a neutral slate tone.
+const CLASS_COLORS: { bg: string; text: string; pdfRgb: [number, number, number] }[] = [
+  { bg: "bg-blue-100 dark:bg-blue-900/40",       text: "text-blue-700 dark:text-blue-300",       pdfRgb: [219, 234, 254] },
+  { bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300", pdfRgb: [209, 250, 229] },
+  { bg: "bg-amber-100 dark:bg-amber-900/40",     text: "text-amber-700 dark:text-amber-300",     pdfRgb: [254, 243, 199] },
+  { bg: "bg-rose-100 dark:bg-rose-900/40",       text: "text-rose-700 dark:text-rose-300",       pdfRgb: [254, 205, 211] },
+  { bg: "bg-violet-100 dark:bg-violet-900/40",   text: "text-violet-700 dark:text-violet-300",   pdfRgb: [237, 233, 254] },
+  { bg: "bg-cyan-100 dark:bg-cyan-900/40",       text: "text-cyan-700 dark:text-cyan-300",       pdfRgb: [207, 250, 254] },
+  { bg: "bg-orange-100 dark:bg-orange-900/40",   text: "text-orange-700 dark:text-orange-300",   pdfRgb: [255, 237, 213] },
+  { bg: "bg-lime-100 dark:bg-lime-900/40",       text: "text-lime-700 dark:text-lime-300",       pdfRgb: [236, 252, 203] },
+];
+const CLASS_COLOR_FALLBACK = { bg: "bg-slate-100 dark:bg-slate-900/40", text: "text-slate-700 dark:text-slate-300", pdfRgb: [226, 232, 240] as [number, number, number] };
+const colorFor = (cls: string) => {
+  let hash = 0;
+  for (let i = 0; i < cls.length; i++) hash = (hash * 31 + cls.charCodeAt(i)) >>> 0;
+  return CLASS_COLORS[hash % CLASS_COLORS.length] ?? CLASS_COLOR_FALLBACK;
 };
-const colorFor = (cls: string) =>
-  CLASS_COLORS[cls] ?? { bg: "bg-slate-100 dark:bg-slate-900/40", text: "text-slate-700 dark:text-slate-300", pdfRgb: [226, 232, 240] };
 
 // ────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT
@@ -1396,8 +1407,9 @@ const PublishButton = ({ plan }: { plan: SeatingPlanFull }) => {
     );
   }
 
-  // Scheduled but not yet published — show countdown info + a "Publish Now" override.
-  if (plan.status !== "published" && plan.publish_at) {
+  // Scheduled but not yet published (narrowed: "published" already returned
+  // above) — show countdown info + a "Publish Now" override.
+  if (plan.publish_at) {
     const remaining = new Date(plan.publish_at).getTime() - Date.now();
     return (
       <div className="flex items-center gap-2">
@@ -1557,7 +1569,10 @@ const PrintDeskMapButton = ({ room, plan }: { room: SeatingRoom; plan: SeatingPl
       doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.setTextColor(30, 30, 30);
       doc.text(plan.title, pageW / 2, 14, { align: "center" });
       doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(80);
-      doc.text(`${room.name}  ·  ${room.rows}×${room.cols} grid  ·  ${room.assignments.length} seated`, pageW / 2, 20, { align: "center" });
+      // aMap was just fetched fresh from Supabase — its size is the true
+      // seated count, regardless of whether the caller passed a bare
+      // SeatingRoom or a RoomWithAssignments.
+      doc.text(`${room.name}  ·  ${room.rows}×${room.cols} grid  ·  ${aMap.size} seated`, pageW / 2, 20, { align: "center" });
       let headerBottom = 22.5;
       const invigilatorList: string[] = (room as any).invigilators?.length ? (room as any).invigilators : (room.invigilator ? [room.invigilator] : []);
       if (invigilatorList.length) {

@@ -337,6 +337,29 @@ const MapPicker = ({ lat, lng, onChange }: MapPickerProps) => {
 };
 
 // ─── Main ──────────────────────────────────────────────────────────────────
+/* Columns that were added by supabase-migration.sql. They are only sent to
+   Supabase when the admin has actually filled them in — so saving keeps
+   working even BEFORE the migration is run (empty = omitted from payload). */
+const EXTENDED_CONTACT_FIELDS = [
+  "office_hours",
+  "secondary_phone",
+  "whatsapp_number",
+  "facebook_url",
+  "contact_note",
+  "report_card_access_code",
+] as const;
+
+function buildSettingsPayload(form: Record<string, unknown>) {
+  const payload: Record<string, unknown> = { ...form, id: 1 };
+  for (const key of EXTENDED_CONTACT_FIELDS) {
+    const value = payload[key];
+    if (typeof value !== "string" || value.trim() === "") {
+      delete payload[key];
+    }
+  }
+  return payload;
+}
+
 const AdminSchoolSettings = () => {
   const { data: settings, isLoading } = useSchoolSettings();
   const queryClient = useQueryClient();
@@ -363,6 +386,13 @@ const AdminSchoolSettings = () => {
     principal_name: "",
     principal_message: "",
     principal_photo_url: null as string | null,
+    // ── Extended contact block (admin-managed) ──
+    office_hours: "",
+    secondary_phone: "",
+    whatsapp_number: "",
+    facebook_url: "",
+    contact_note: "",
+    report_card_access_code: "",
   });
 
   useEffect(() => {
@@ -388,6 +418,12 @@ const AdminSchoolSettings = () => {
         principal_name: settings.principal_name || "",
         principal_message: settings.principal_message || "",
         principal_photo_url: settings.principal_photo_url || null,
+        office_hours: settings.office_hours || "",
+        secondary_phone: settings.secondary_phone || "",
+        whatsapp_number: settings.whatsapp_number || "",
+        facebook_url: settings.facebook_url || "",
+        contact_note: settings.contact_note || "",
+        report_card_access_code: settings.report_card_access_code || "",
       });
     }
   }, [settings]);
@@ -419,7 +455,7 @@ const AdminSchoolSettings = () => {
       }
 
       const { error } = await Promise.race([
-        supabase.from("school_settings").upsert({ ...form, id: 1 }, { onConflict: "id" }),
+        supabase.from("school_settings").upsert(buildSettingsPayload(form), { onConflict: "id" }),
         new Promise<{ error: Error }>((_, reject) =>
           setTimeout(() => reject(new Error("Timed out after 15s. Check internet.")), 15000)
         ),
@@ -434,7 +470,16 @@ const AdminSchoolSettings = () => {
           error.hint    ? `Hint: ${error.hint}`        : null,
         ].filter(Boolean).join("\n");
         setSaveError(full);
-        toast.error(`Save failed: ${error.message}`, { duration: 8000 });
+        const needsMigration =
+          /column.*(office_hours|secondary_phone|whatsapp_number|facebook_url|contact_note|report_card_access_code)/i.test(
+            `${error.message} ${error.details ?? ""}`
+          );
+        toast.error(
+          needsMigration
+            ? "Save failed: the new contact fields don't exist in your database yet. Run supabase-migration.sql (project root) in the Supabase SQL Editor, then save again."
+            : `Save failed: ${error.message}`,
+          { duration: 10000 }
+        );
       } else {
         setSaved(true);
         setSaveError(null);
@@ -460,7 +505,7 @@ const AdminSchoolSettings = () => {
   // upload toast, which was confusing.
   const autoSaveAfterUpload = useCallback(async (field: string, url: string) => {
     // Build the form with the new URL already applied
-    const formToSave = { ...form, [field]: url, id: 1 };
+    const formToSave = buildSettingsPayload({ ...form, [field]: url });
 
     try {
       // Ensure session is valid
@@ -535,8 +580,9 @@ const AdminSchoolSettings = () => {
             <Textarea rows={5} placeholder="Write a detailed description of the college's history, values, achievements, and community..." value={form.about_text} onChange={e => set("about_text", e.target.value)} />
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
-            <div><Label></Label>
-              <Input value={form.emis_code} onChange={e => set("emis_code", e.target.value)} /></div>
+            <div>
+              <Label>EMIS Code <span className="text-xs text-muted-foreground font-normal">(shown in the footer)</span></Label>
+              <Input value={form.emis_code} placeholder="e.g. 24651" onChange={e => set("emis_code", e.target.value)} /></div>
             <div><Label>Established Year</Label>
               <Input type="number" value={form.established_year} onChange={e => set("established_year", +e.target.value)} /></div>
           </div>
@@ -547,6 +593,57 @@ const AdminSchoolSettings = () => {
               <Input value={form.phone} onChange={e => set("phone", e.target.value)} /></div>
             <div><Label>Email</Label>
               <Input value={form.email} onChange={e => set("email", e.target.value)} /></div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Contact Information</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Everything here appears on the Contact page and in the footer. Leave a field empty to hide it —
+            new fields need the one-time database migration (supabase-migration.sql in the project root).
+          </p>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label>Office Hours</Label>
+              <Input value={form.office_hours} placeholder="e.g. Monday – Saturday, 8:00 AM – 2:00 PM"
+                onChange={e => set("office_hours", e.target.value)} />
+            </div>
+            <div>
+              <Label>Secondary Phone <span className="text-xs text-muted-foreground font-normal">(mobile etc.)</span></Label>
+              <Input value={form.secondary_phone} placeholder="e.g. 03XX-XXXXXXX"
+                onChange={e => set("secondary_phone", e.target.value)} />
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label>WhatsApp Number <span className="text-xs text-muted-foreground font-normal">(with country code)</span></Label>
+              <Input value={form.whatsapp_number} placeholder="e.g. 923XXXXXXXXX"
+                onChange={e => set("whatsapp_number", e.target.value)} />
+            </div>
+            <div>
+              <Label>Facebook Page URL</Label>
+              <Input value={form.facebook_url} placeholder="https://facebook.com/your-page"
+                onChange={e => set("facebook_url", e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <Label>Contact Page Note <span className="text-xs text-muted-foreground font-normal">(extra message shown on the Contact page)</span></Label>
+            <Textarea rows={2} value={form.contact_note}
+              placeholder="e.g. For admission queries, call between 8 AM and 2 PM on working days."
+              onChange={e => set("contact_note", e.target.value)} />
+          </div>
+          <div>
+            <Label>Report Card Access Code <span className="text-xs text-muted-foreground font-normal">(Results page bulk tool)</span></Label>
+            <Input value={form.report_card_access_code} placeholder="Default: GDC-LAKARAI"
+              onChange={e => set("report_card_access_code", e.target.value)} />
+            <p className="text-[11px] text-muted-foreground mt-1">
+              The code visitors must type to use the bulk Report Card tool. Change it any time —
+              needs the one-time database migration (supabase-migration.sql).
+            </p>
           </div>
         </CardContent>
       </Card>

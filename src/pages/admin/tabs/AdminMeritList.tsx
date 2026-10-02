@@ -56,6 +56,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
+import { getSchoolIdentity, schoolSubtitleLine } from "@/lib/schoolIdentity";
 import autoTable from "jspdf-autotable";
 import { format, formatDistanceToNow, isAfter } from "date-fns";
 import { examTypeLabel } from "@/utils/examTypeLabel";
@@ -454,11 +455,11 @@ function drawPDFHeader(doc: jsPDF, title: string, subtitle: string, w: number) {
   doc.setTextColor(PDF_COLOR.ink[0], PDF_COLOR.ink[1], PDF_COLOR.ink[2]);
   doc.setFontSize(13);
   doc.setFont("helvetica", "bold");
-  doc.text("GOVERNMENT HIGH SCHOOL BABI KHEL", w / 2, 17, { align: "center" });
+  doc.text(getSchoolIdentity().name, w / 2, 17, { align: "center" });
   doc.setFontSize(7.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(PDF_COLOR.sub[0], PDF_COLOR.sub[1], PDF_COLOR.sub[2]);
-  doc.text("District Mohmand, Khyber Pakhtunkhwa  |  Established 2018", w / 2, 22, { align: "center" });
+  doc.text(schoolSubtitleLine(getSchoolIdentity()), w / 2, 22, { align: "center" });
   doc.setDrawColor(PDF_COLOR.rule[0], PDF_COLOR.rule[1], PDF_COLOR.rule[2]);
   doc.setLineWidth(0.25);
   doc.line(14, 25, w - 14, 25);

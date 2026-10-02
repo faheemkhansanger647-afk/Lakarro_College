@@ -69,6 +69,15 @@ const Contact = () => {
   const displayPhone  = settings?.phone?.trim().length > 5 ? settings.phone : null;
   const displayAddress = settings?.address || "Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan";
 
+  /* ── Admin-managed contact block (College Settings in the admin panel).
+     Everything falls back to sensible defaults when empty, so the page
+     never shows a blank tile. */
+  const displayOfficeHours = settings?.office_hours?.trim() || "Monday – Saturday, 8:00 AM – 2:00 PM";
+  const displaySecondaryPhone = settings?.secondary_phone?.trim() || null;
+  const displayWhatsapp = settings?.whatsapp_number?.trim() || null;
+  const displayFacebook = settings?.facebook_url?.trim() || null;
+  const displayContactNote = settings?.contact_note?.trim() || null;
+
   const [form, setForm]       = useState<FormState>(INIT);
   const [sending, setSending] = useState(false);
   const [sent, setSent]       = useState(false);
@@ -236,6 +245,15 @@ const Contact = () => {
           linkLabel: "Call now",
         }]
       : []),
+    ...(displaySecondaryPhone
+      ? [{
+          icon: Phone,
+          label: "Secondary Phone",
+          value: displaySecondaryPhone,
+          href: `tel:${displaySecondaryPhone.replace(/\s/g, "")}`,
+          linkLabel: "Call now",
+        }]
+      : []),
     {
       icon: Mail,
       label: "Email",
@@ -243,10 +261,28 @@ const Contact = () => {
       href: `mailto:${displayEmail}`,
       linkLabel: "Send email",
     },
+    ...(displayWhatsapp
+      ? [{
+          icon: MessageCircle,
+          label: "WhatsApp",
+          value: displayWhatsapp,
+          href: `https://wa.me/${displayWhatsapp.replace(/[^0-9]/g, "")}`,
+          linkLabel: "Chat on WhatsApp",
+        }]
+      : []),
+    ...(displayFacebook
+      ? [{
+          icon: Facebook,
+          label: "Facebook",
+          value: "Follow us on Facebook",
+          href: displayFacebook,
+          linkLabel: "Open page",
+        }]
+      : []),
     {
       icon: Clock,
       label: "Office Hours",
-      value: "Monday – Saturday, 8:00 AM – 2:00 PM",
+      value: displayOfficeHours,
       href: null,
       linkLabel: null,
     },
@@ -316,8 +352,28 @@ const Contact = () => {
               </a>
             )}
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-2 text-xs sm:text-sm font-medium text-on-hero">
-              <Clock className="w-3.5 h-3.5 text-gold" /> Mon – Sat, 8 AM – 2 PM
+              <Clock className="w-3.5 h-3.5 text-gold" /> {displayOfficeHours}
             </span>
+            {displayWhatsapp && (
+              <a
+                href={`https://wa.me/${displayWhatsapp.replace(/[^0-9]/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-2 text-xs sm:text-sm font-medium text-on-hero hover:bg-white/15 transition-colors"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-gold" /> WhatsApp
+              </a>
+            )}
+            {displayFacebook && (
+              <a
+                href={displayFacebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-2 text-xs sm:text-sm font-medium text-on-hero hover:bg-white/15 transition-colors"
+              >
+                <Facebook className="w-3.5 h-3.5 text-gold" /> Facebook
+              </a>
+            )}
           </motion.div>
         </div>
       </section>
@@ -361,6 +417,20 @@ const Contact = () => {
               </motion.div>
             ))}
           </div>
+
+          {/* ══ Admin-managed note banner ══ */}
+          {displayContactNote && (
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-10 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-4 flex items-start gap-3"
+            >
+              <Shield className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+              <p className="text-sm text-foreground/90 leading-relaxed">{displayContactNote}</p>
+            </motion.div>
+          )}
 
           {/* ══ Two-column: form + social ══ */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

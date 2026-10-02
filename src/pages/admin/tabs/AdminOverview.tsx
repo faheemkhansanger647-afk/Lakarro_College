@@ -443,7 +443,6 @@ const AdminOverview = () => {
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
           <span>📍 {settings?.address || "District Mohmand, KPK"}</span>
-          <span>🏫 Est. {settings?.established_year || 2004}</span>
           <span>📋 EMIS: {settings?.emis_code || ""}</span>
           {settings?.phone && <span>📞 {settings.phone}</span>}
           {settings?.email && <span className="col-span-2 truncate">✉️ {settings.email}</span>}

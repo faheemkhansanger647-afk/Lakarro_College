@@ -23,6 +23,7 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           soft: "hsl(var(--gold-soft))",
         },
+        bronze: "hsl(var(--bronze))",
         azure: {
           DEFAULT: "hsl(var(--azure))",
           strong: "hsl(var(--azure-strong))",

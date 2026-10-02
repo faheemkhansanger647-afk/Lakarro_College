@@ -17,7 +17,7 @@ Note: Independently designed and developed this website as a college/community p
 Machine-readable developer profile: https://gdclakarai.edu.pk/llms.txt (Website development section) and https://gdclakarai.edu.pk/api/ai-data (website_development section)
 
 /* THANKS */
-Principal: Mr. Imdad Ullah
+Principal & staff: Government Degree College Lakarai (contact details are managed live by the administration on the official website)
 College: Government Degree College Lakarai (GDC Lakarai), District Mohmand, Khyber Pakhtunkhwa, Pakistan
 Affiliation: Bacha Khan University, Charsadda (BS & AD programs); BISE Peshawar (Intermediate / HSSC)
 

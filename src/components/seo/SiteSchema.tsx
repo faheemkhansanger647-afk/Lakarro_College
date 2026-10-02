@@ -26,8 +26,11 @@ const SiteSchema = () => {
   const ogImage = `${SITE_URL}/og-image.jpg`;
   const logoIcon = `${SITE_URL}/apple-touch-icon.png`;
 
-  // ── Live contact data (falls back to real school details) ──
-  const phone = (settings?.phone || "+923469898295").trim();
+  // ── Live contact data (admin-managed; NO hardcoded fallback numbers) ──
+  // Phone/principal are operational data owned by the admin dashboard. When
+  // the settings have not been saved yet the fields are omitted from the
+  // schema entirely instead of publishing a stale number frozen in code.
+  const phone = (settings?.phone || "").trim();
   const email = (settings?.email || "info@gdclakarai.edu.pk").trim();
   const principal = (settings?.principal_name || "").trim();
 
@@ -63,7 +66,7 @@ const SiteSchema = () => {
       longitude: String(lng),
     },
     hasMap: `https://maps.google.com/?q=${lat},${lng}`,
-    telephone: phone,
+    ...(phone ? { telephone: phone } : {}),
     email: email,
     areaServed: {
       "@type": "AdministrativeArea",

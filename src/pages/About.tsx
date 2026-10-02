@@ -156,7 +156,7 @@ const About = () => {
                       "Government Degree College Lakarai is dedicated to providing quality intermediate and higher education, preparing students for university studies and professional careers. Located in Bajaur Express Road, Mohmand, Khyber Pakhtunkhwa, Pakistan."}
                   </p>
                   <p className="mt-4 text-muted-foreground leading-relaxed">
-                    With an  of {settings?.emis_code || ""}, our college is
+                    With an EMIS code of {settings?.emis_code || "—"}, our college is
                     officially registered with the Education Management Information
                     System of KPK. We are committed to academic excellence with a
                     remarkable {settings?.pass_percentage || 95}% pass rate.

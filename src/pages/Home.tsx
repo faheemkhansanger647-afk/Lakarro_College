@@ -1138,9 +1138,10 @@ const Home = () => {
       {/* ══ 2. HERO ══ */}
       <section id="hero-section" className="relative min-h-[88vh] flex items-center overflow-hidden">
 
-        {/* ── Background: warm cream-peach gradient (light) / soft cocoa
-             gradient (dark) — dark: variant keeps hero text tokens readable ── */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(36,48%,94%)] via-[hsl(33,44%,96%)] to-[hsl(28,66%,88%)] dark:from-[hsl(24,20%,9%)] dark:via-[hsl(22,26%,12%)] dark:to-[hsl(26,32%,16%)]" />
+        {/* ── Background: soft ivory → pale sage → light emerald mist
+             gradient (light) / deep green-cocoa gradient (dark) — the
+             dark: variant keeps hero text tokens readable ── */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(45,52%,93%)] via-[hsl(80,26%,95%)] to-[hsl(155,30%,89%)] dark:from-[hsl(165,25%,9%)] dark:via-[hsl(160,20%,12%)] dark:to-[hsl(150,22%,10%)]" />
 
         {/* ── Dark gradient overlay so text stays readable ── */}
         <div className={`absolute inset-0 ${heroOverlay}`} />
@@ -1770,7 +1771,7 @@ const Home = () => {
                 </m.div>
                 <m.div animate={motionOk ? { y: [0, 10, 0] } : {}} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-4 -right-4 bg-card rounded-2xl shadow-2xl p-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-400 flex items-center justify-center shadow-lg"><Award className="w-6 h-6 text-white" /></div>
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold to-primary flex items-center justify-center shadow-lg"><Award className="w-6 h-6 text-white" /></div>
                     <div><p className="text-2xl font-black text-foreground">{settings?.board_results || "A+"}</p><p className="text-xs text-muted-foreground font-medium">Results</p></div>
                   </div>
                 </m.div>
