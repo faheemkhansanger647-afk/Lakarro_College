@@ -448,7 +448,7 @@ type MinimalDateSheetEntry = {
 
 type MinimalSession = { exam_year: number; exam_term: string } | null | undefined;
 
-/** Same loose ordinal-aware matching AdminExamSeating.tsx uses ("1st Semester" ~ "Annual-I" etc. by position). */
+/** Same loose matching AdminExamSeating.tsx uses (exact/substring first, legacy ordinal fallback). */
 function examTermMatchesLive(examType: string, term: string): boolean {
   const termOrdinal = (s: string): number | null => {
     if (/1st|first|annual-i\b/i.test(s)) return 1;

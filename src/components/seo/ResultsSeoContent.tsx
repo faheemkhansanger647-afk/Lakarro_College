@@ -419,7 +419,7 @@ const ResultsSeoContent = () => {
           <p className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
             This BISE Peshawar Result search portal is maintained by{" "}
             <strong>Government Degree College Lakarai</strong>, District Mohmand, Khyber Pakhtunkhwa,
-            Pakistan (founded 2018). It is provided free of charge to students of the Peshawar Board
+            Pakistan (founded 2004). It is provided free of charge to students of the Peshawar Board
             and the college's own enrolled students. All BISEP result data shown on this page is
             fetched live from the official board portal{" "}
             <a href={BISEP_PORTAL_URL} target="_blank" rel="noopener noreferrer" className="underline font-medium hover:opacity-80 inline-flex items-center gap-1 align-baseline">

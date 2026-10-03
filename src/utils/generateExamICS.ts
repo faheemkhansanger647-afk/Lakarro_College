@@ -9,7 +9,7 @@
 //
 // USAGE:
 //   import { generateExamICS } from "@/utils/generateExamICS";
-//   generateExamICS(schedule, "10", "Annual-I", 2025);
+//   generateExamICS(schedule, "1st Year", "Mid Term", 2025);
 
 export interface ICSExamEntry {
   id: string;
@@ -64,7 +64,7 @@ function nowUTC(): string {
  *
  * @param schedule   Array of exam entries (published, ordered by date)
  * @param cls        Class label, e.g. "10"
- * @param examType   e.g. "Annual-I" or "1st Semester"
+ * @param examType   e.g. "Mid Term" or "Annual"
  * @param year       e.g. 2025
  * @param schoolName Optional override, defaults to "Government Degree College Lakarai"
  */

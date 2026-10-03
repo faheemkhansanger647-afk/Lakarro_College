@@ -327,7 +327,7 @@ const ResultCard = () => {
       // roll number in "Exam Roll Numbers" but never attached it to this
       // particular result (e.g. added via CSV import). exam_roll_numbers is
       // scoped by session_id, and each session has its own exam_year +
-      // exam_term (e.g. "1st Semester" 2026) — the same naming as
+      // exam_term (e.g. "Mid Term" 2026) — the same naming as
       // results.exam_type/year — so we match through exam_roll_sessions on
       // year + term + class + student, instead of just student_id + class
       // (which could grab the wrong session if a student has roll numbers

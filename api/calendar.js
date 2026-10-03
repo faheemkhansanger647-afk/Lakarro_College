@@ -145,7 +145,7 @@ export default async function handler(req, res) {
 
   // Headers — 1h browser cache, 6h CDN cache.
   res.setHeader("Content-Type",        "text/calendar; charset=utf-8");
-  res.setHeader("Content-Disposition", `inline; filename="ghs-babi-khel.ics"`);
+  res.setHeader("Content-Disposition", `inline; filename="gdc-lakarai.ics"`);
   res.setHeader("Cache-Control",       "public, max-age=3600, s-maxage=21600");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).send(body);

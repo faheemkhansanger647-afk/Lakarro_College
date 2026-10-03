@@ -365,19 +365,18 @@ export function subjectsMatch(
 
 /**
  * ── TERM-AWARE MATCHING (shared) ────────────────────────────────────────
- * Different classes use DIFFERENT exam-type vocabularies in the Date
- * Sheet: classes 6-8 use "1st Semester" / "2nd Semester", while classes
- * 9-10 use "Annual-I" / "Annual-II" for the exact same school-year
- * period. A session's exam_term (e.g. "1st Semester 2026") only literally
- * matches classes 6-8's vocabulary — for 1st Year/10 we need to translate
- * "1st" → "Annual-I" and "2nd" → "Annual-II" (and vice versa) so the SAME
- * exam period is found regardless of which class's own naming convention
- * was used to create the session.
+ * All classes use the SAME exam-type vocabulary in the Date Sheet now:
+ * "Mid Term" / "Annual" / "Board Exam". A session's exam_term (e.g.
+ * "Mid Term 2026") matches the date-sheet exam_type "Mid Term" directly.
+ *
+ * The ordinal fallback below still understands legacy school-era terms
+ * ("1st Semester" ~ ordinal 1, "Annual-II" ~ ordinal 2, etc.) so old
+ * sessions keep matching.
  *
  * This is the single shared implementation — AdminExamSeating.tsx and
  * AdminExamConsole.tsx already matched papers this way; the attendance
- * lock-guard below now uses the exact same logic so a 1st Year/10 paper
- * that the Console shows as "live" is never incorrectly locked here.
+ * lock-guard below now uses the exact same logic so a paper that the
+ * Console shows as "live" is never incorrectly locked here.
  */
 function termOrdinal(text: string): 1 | 2 | null {
   const t = text.trim().toLowerCase();

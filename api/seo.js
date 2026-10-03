@@ -332,7 +332,7 @@ ${s.phone ? `- Phone: ${s.phone}` : ""}
 
 ## Results
 
-- School internal results: 1st and 2nd semester for classes 6–8; Annual-I and Annual-II for classes 9–10 — searchable on the Results page by exam roll number once published
+- College internal results: Mid Term and Annual exams for 1st Year and 2nd Year, plus Board Exam results — searchable on the Results page by exam roll number once published
 - BISE Peshawar results (SSC-I / SSC-II): searchable through the same Results page, fetched live from the official board portal (cloud.bisep.edu.pk)
 - Result cards show: name, photo, roll number, class, exam, year, total/obtained marks, percentage, grade, PASS/FAIL status, class position and subject-wise marks
 - Grade scale: A+ (90% and above), A (80–89%), B (60–79%), C (45–59%), D (33–44%), Fail (below 33%)

@@ -101,7 +101,7 @@ export const FAQ_ITEMS = [
     category: "Results & Exams",
     question: "Which exams and results are available for each class?",
     answer:
-      "For classes 6 to 8 the college conducts 1st semester and 2nd semester examinations. For classes 9 and 10 the college conducts Annual-I and Annual-II examinations, and those students additionally sit the BISE Peshawar SSC board examinations (SSC-I for 1st Year and SSC-II for 2nd Year). School internal results are published on the website's Results page once released by the college administration.",
+      "For 1st Year and 2nd Year the college conducts Mid Term and Annual examinations, and students additionally sit the BISE Peshawar board examination (Board Exam), whose result is displayed on the website when released by the board. College internal results are published on the website's Results page once released by the college administration.",
   },
   {
     id: "res-bisep",
@@ -143,14 +143,14 @@ export const FAQ_ITEMS = [
     category: "Results & Exams",
     question: "What is the Merit List page and who appears on it?",
     answer:
-      "The Merit List page (gdclakarai.edu.pk/merit-list) shows the official examination rankings published by the college office — the top position holders of each class and, for some exams, a school-wide list. Each list covers one exam (1st or 2nd semester for classes 6–8, Annual-I or Annual-II for classes 9–10) and shows every listed student's position, name, class, obtained marks, percentage and grade, together with summary statistics such as the total number of students, the passing count, the highest percentage and the average. When the college schedules a merit list in advance, the page shows a live countdown and the rankings appear automatically the moment it reaches zero. A published merit list can also be shared directly from the page as a merit card.",
+      "The Merit List page (gdclakarai.edu.pk/merit-list) shows the official examination rankings published by the college office — the top position holders of each class and, for some exams, a college-wide list. Each list covers one exam (Mid Term, Annual or Board Exam) and shows every listed student's position, name, class, obtained marks, percentage and grade, together with summary statistics such as the total number of students, the passing count, the highest percentage and the average. When the college schedules a merit list in advance, the page shows a live countdown and the rankings appear automatically the moment it reaches zero. A published merit list can also be shared directly from the page as a merit card.",
   },
   {
     id: "res-recheck",
     category: "Results & Exams",
     question: "What if I think there is a mistake in my result?",
     answer:
-      "For a school-conducted exam (semester or Annual-I/II), contact the college office or your subject teacher directly so the marks can be verified against the answer sheet. For a BISE Peshawar board result (SSC-I or SSC-II), rechecking and reappraisal requests must be submitted to BISE Peshawar itself within the board's notified rechecking window — the college website only displays the board's published result and cannot change it.",
+      "For a college-conducted exam (Mid Term or Annual), contact the college office or your subject teacher directly so the marks can be verified against the answer sheet. For a BISE Peshawar board result (Board Exam), rechecking and reappraisal requests must be submitted to BISE Peshawar itself within the board's notified rechecking window — the college website only displays the board's published result and cannot change it.",
   },
 
   // ── Notes, Library & Online Classes ───────────────────────────────────────

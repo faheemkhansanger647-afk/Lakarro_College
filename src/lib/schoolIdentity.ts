@@ -1,15 +1,15 @@
 // schoolIdentity.ts — single source of truth for the college's PRINTABLE
 // identity (PDF headers, admit cards, timetable sheets, merit lists…).
 //
-// WHY THIS EXISTS: five different PDF generators used to hardcode the name
-// of a completely different institution ("GOVERNMENT HIGH SCHOOL BABI KHEL")
-// plus an invented "Established 2018" line. Every document the site prints
-// must instead read the college's name from the admin-managed school
-// settings (school_settings row id=1), which useSchoolSettings() keeps
-// cached in localStorage. These generators run inside admin pages where the
-// settings hook has almost certainly already hydrated that cache — and even
-// if it hasn't, the fallback below is the college's own public identity,
-// never a wrong school's.
+// WHY THIS EXISTS: five different PDF generators used to hardcode an
+// institution name plus a made-up "Established" year instead of reading
+// the college's real identity. Every document the site prints must read
+// the college's name from the admin-managed school settings
+// (school_settings row id=1), which useSchoolSettings() keeps cached in
+// localStorage. These generators run inside admin pages where the
+// settings hook has almost certainly already hydrated that cache — and
+// even if it hasn't, the fallback below is the college's own public
+// identity (Government Degree College Lakarai, Established 2004).
 //
 // ⚠ Nothing in this module may contain personal phone numbers, EMIS codes
 // or staff names — those are operational data owned by the admin dashboard.

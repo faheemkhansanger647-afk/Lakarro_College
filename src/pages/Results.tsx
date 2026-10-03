@@ -556,7 +556,7 @@ const gradeFromPct = (pct: number) => {
 
 // ── Latest published exam (for the page title before any search) ──────────────
 // Mirrors ResultCardTab.tsx: shows which exam's results are currently
-// available, e.g. "Result - Final Semester 2026", even before a search.
+// available, e.g. "Result - Mid Term 2026", even before a search.
 function useLatestPublishedExam() {
   return useQuery({
     queryKey: ["latest-published-exam"],
@@ -782,13 +782,12 @@ const ResultCardSearch = () => {
         };
       });
 
-      // ── Compute WHOLE-SCHOOL rank (Trophy badge) ──────────────────────────
-      // Rank pools by YEAR ONLY — not exam_type. Classes 6-8 store exam_type
-      // as "1st/2nd Semester" and classes 9-10 as "Annual-I/II" (different
-      // label sets, required for other logic — see AdminResults.tsx), but
-      // that label must NOT define the rank pool. Per explicit requirement:
-      // whatever classes the admin selects together in Schedule Publish
-      // (e.g. 6,7,8,9,10 all at once) must rank as ONE pool. `year` is the
+      // ── Compute WHOLE-SCHOOL rank (Trophy badge) ──────────────────────
+      // Rank pools by YEAR ONLY — not exam_type. Exam types ("Mid Term",
+      // "Annual", "Board Exam") must NOT define the rank pool. Per
+      // explicit requirement: whatever classes the admin selects together
+      // in Schedule Publish (e.g. 1st Year + 2nd Year at once) must rank
+      // as ONE pool. `year` is the
       // only value that reliably ties a publish batch together once
       // publish_at is cleared to null after publishing.
       //
@@ -2413,7 +2412,7 @@ const Results = () => {
   //                      schedule pending (publish_at set, in the future).
   //                      The page searches college results by exam roll
   //                      number and shows the college's own result title
-  //                      (e.g. "Result - 1st Semester 2026").
+  //                      (e.g. "Result - Mid Term 2026").
   //
   //   2. BISE mode    — no school result has been published AND no school
   //                      schedule is pending. The page falls back to BISE

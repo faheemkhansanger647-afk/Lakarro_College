@@ -349,15 +349,12 @@ const CreatePlanForm = ({ sessionId, onCreated }: { sessionId: string; onCreated
   }, []);
 
   // ── TERM-AWARE MATCHING ───────────────────────────────────────────────
-  // Different classes use DIFFERENT exam-type vocabularies in the Date
-  // Sheet: classes 6-8 use "1st Semester" / "2nd Semester", while classes
-  // 9-10 use "Annual-I" / "Annual-II" for the exact same school-year
-  // period (see AdminExamSchedule.tsx's getExamTypes). A session's
-  // exam_term like "1st Semester 2026" only literally matches classes
-  // 6-8's vocabulary — for 1st Year/10 we need to translate "1st" → "Annual-I"
-  // and "2nd" → "Annual-II" (and vice versa) so the SAME exam period is
-  // found regardless of which class's own naming convention was used to
-  // create the Exam Roll Numbers session.
+  // All classes use the SAME exam-type vocabulary in the Date Sheet now:
+  // "Mid Term" / "Annual" / "Board Exam" (see AdminExamSchedule.tsx's
+  // getExamTypes). A session's exam_term like "Mid Term 2026" matches the
+  // date-sheet exam_type "Mid Term" directly. The ordinal fallback below
+  // still understands legacy school-era terms ("1st Semester", "Annual-I",
+  // "2nd Semester", "Annual-II") so old sessions keep working.
   //
   // We detect the ordinal (1st vs 2nd) from the session's exam_term text,
   // then accept ANY date-sheet exam_type for that class whose ordinal
@@ -372,10 +369,10 @@ const CreatePlanForm = ({ sessionId, onCreated }: { sessionId: string; onCreated
     return null;
   };
 
-  // Loose match between the session's exam_term (e.g. "1st Semester 2026")
-  // and the date sheet's exam_type (e.g. "1st Semester" or "Annual-I") —
+  // Loose match between the session's exam_term (e.g. "Mid Term 2026")
+  // and the date sheet's exam_type (e.g. "Mid Term" or a legacy value) —
   // matches on literal text OR on ordinal (so vocabulary differences
-  // between classes don't block the automatic match).
+  // don't block the automatic match).
   const examTermMatches = (examType: string, term: string) => {
     const a = examType.trim().toLowerCase();
     const b = term.trim().toLowerCase();
@@ -639,7 +636,7 @@ const PlanEditor = ({ planId, onBack }: { planId: string; onBack: () => void }) 
   return (
     <div className="space-y-5">
       {/* Header — stacks cleanly on mobile. Title takes full width on small
-          screens so long titles like "1st Semester 2026 - Seating" don't get
+          screens so long titles like "Mid Term 2026 - Seating" don't get
           squeezed into one-character-per-line by the flex layout. */}
       <div className="flex items-start gap-2 sm:gap-3">
         <Button variant="ghost" size="sm" onClick={onBack} className="shrink-0 px-2">

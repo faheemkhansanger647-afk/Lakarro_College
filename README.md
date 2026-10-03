@@ -27,7 +27,7 @@ built on a 100% free-tier-friendly stack.
 |---|---|
 | **School** | Government Degree College Lakarai |
 | **Established** | 2004 |
-| **Established** | 2018 |
+| **Established** | 2004 |
 | **Classes** | 6 – 10 |
 | **Board** | BISE Peshawar |
 | **Location** | Lakarai, Tehsil Halimzai, District Mohmand, KPK, Pakistan |
@@ -294,7 +294,7 @@ GDC-Lakarai-main/
 
 ```bash
 # 1 — Clone
-git clone <your-repo-url> ghs-babi-khel && cd ghs-babi-khel
+git clone <your-repo-url> gdc-lakarai && cd gdc-lakarai
 
 # 2 — Install dependencies
 npm install

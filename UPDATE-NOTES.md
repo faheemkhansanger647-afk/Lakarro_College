@@ -134,9 +134,11 @@ For features 5 & 6 to save to your database, run the included SQL file once:
 - Cleaned in: index.html (JSON-LD + noscript), faqData, SEO page content,
   humans.txt, /api/ai-data + /api/render feeds, SiteSchema, admin form
   placeholders. If a value is empty it is omitted — never a stale name.
-- `foundingDate` corrected to **2004** everywhere (was inconsistently 2018).
-- No "GHS Babi Khel" references remain — printed/PDF documents read the
-  college identity from admin settings via `src/lib/schoolIdentity.ts`.
+- `foundingDate` corrected to **2004** everywhere (the official establishment
+  year of GDC Lakarai).
+- No old-school name references remain — printed/PDF documents read the
+  college identity (Government Degree College Lakarai) from admin settings
+  via `src/lib/schoolIdentity.ts`.
 
 ### 6. SEO & performance verified
 - robots.txt (search + AI crawlers), sitemap.xml, canonical tags, robots meta,

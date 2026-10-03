@@ -100,7 +100,7 @@ const PAGES = {
         h2: "What you can do on this website",
         ul: [
           "Apply online for admission to Intermediate (1st Year + 2nd Year) and BS programs and track your application status by reference number, B-Form number or contact number",
-          "Search school exam results by roll number (1st/2nd semester for classes 6–8; Annual-I/Annual-II for classes 9–10)",
+          "Search college exam results by roll number (Mid Term, Annual and Board Exam for 1st Year and 2nd Year)",
           "Search BISE Peshawar intermediate & BS results (SSC 9th/10th) live from the official board portal",
           "View the official Merit List — top position holders of each class and school-wide rankings with pass statistics",
           "Find, download and share your exam Roll No. Slip with its QR code and the exam date sheet",
@@ -261,12 +261,12 @@ const PAGES = {
   "/results": {
     title: "Results — Search by Roll Number | Government Degree College Lakarai",
     description:
-      "Search exam results of Government Degree College Lakarai by roll number — college results for Intermediate (1st Year + 2nd Year) and BS programs (1st/2nd semester and Annual exams) plus live BISE Peshawar intermediate & BS results (SSC 9th/10th). Detailed result cards with subject-wise marks.",
+      "Search exam results of Government Degree College Lakarai by roll number — college results for Intermediate (1st Year + 2nd Year): Mid Term, Annual and Board Exam, plus live BISE Peshawar intermediate & BS results (SSC 9th/10th). Detailed result cards with subject-wise marks.",
     h1: "Exam Results",
     blocks: [
       {
         p: [
-          "On this page students of Government Degree College Lakarai can search their examination results by roll number. School internal results are available for classes 6 to 8 (1st and 2nd semester exams) and for classes 9 and 10 (Annual-I and Annual-II exams) once the college administration publishes them. The same page can also search BISE Peshawar intermediate & BS results for SSC (9th and 10th class) students — these are fetched live from the official board portal, cloud.bisep.edu.pk.",
+          "On this page students of Government Degree College Lakarai can search their examination results by roll number. College internal results are available for 1st Year and 2nd Year (Mid Term and Annual exams, plus Board Exam results) once the college administration publishes them. The same page can also search BISE Peshawar intermediate & BS results for SSC (9th and 10th class) students — these are fetched live from the official board portal, cloud.bisep.edu.pk.",
         ],
       },
       {
@@ -398,7 +398,7 @@ const PAGES = {
     blocks: [
       {
         p: [
-          "The Merit List page shows the official examination rankings of Government Degree College Lakarai as published by the college office. Each list covers one exam — 1st or 2nd semester for classes 6–8, Annual-I or Annual-II for classes 9–10, or a school-wide list — and shows every listed student's position, name, class, obtained marks, percentage and grade, together with summary statistics such as the total number of students, the passing count, the highest percentage and the average. When the college schedules a merit list in advance, the page shows a live countdown and the rankings appear automatically the moment it reaches zero. A published merit list can also be shared directly from the page as a merit card.",
+          "The Merit List page shows the official examination rankings of Government Degree College Lakarai as published by the college office. Each list covers one exam — Mid Term, Annual or Board Exam, or a college-wide list — and shows every listed student's position, name, class, obtained marks, percentage and grade, together with summary statistics such as the total number of students, the passing count, the highest percentage and the average. When the college schedules a merit list in advance, the page shows a live countdown and the rankings appear automatically the moment it reaches zero. A published merit list can also be shared directly from the page as a merit card.",
         ],
       },
     ],

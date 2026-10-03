@@ -11,7 +11,8 @@ import { format, isPast, isToday, differenceInDays } from "date-fns";
 import { generateExamICS } from "@/utils/generateExamICS";
 
 const classes =["1st Year", "2nd Year"];
-const getExamTypes = (cls: string) => ["9", "10"].includes(cls) ? ["Annual-I", "Annual-II"] : ["1st Semester", "2nd Semester"];
+// Every class uses the same exam types: Mid Term, Annual, Board Exam.
+const getExamTypes = (_cls?: string) => ["Mid Term", "Annual", "Board Exam"];
 const currentYear = new Date().getFullYear();
 
 function SubjectBadge({ subject }: { subject: string }) {
@@ -29,8 +30,8 @@ function SubjectBadge({ subject }: { subject: string }) {
 
 const ExamScheduleTab = () => {
   const { profile } = useAuth();
-  const [cls, setCls] = useState(profile?.class || "6");
-  const [examType, setExamType] = useState(getExamTypes(profile?.class || "6")[0]);
+  const [cls, setCls] = useState(profile?.class || "1st Year");
+  const [examType, setExamType] = useState(getExamTypes(profile?.class || "1st Year")[0]);
   const [year] = useState(currentYear);
 
   const { data: schedule = [], isLoading } = useExamSchedule(cls, examType, year);

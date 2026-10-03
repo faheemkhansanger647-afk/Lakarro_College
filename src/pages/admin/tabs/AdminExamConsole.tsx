@@ -64,9 +64,10 @@ const todayLocalDateStr = (): string => {
   return `${y}-${m}-${day}`;
 };
 
-// Same loose ordinal-aware matching AdminExamSeating.tsx uses, so a session's
-// exam_term ("1st Semester 2026") correctly matches Date Sheet exam_type
-// values like "Annual-I" for classes 9/10.
+// Same loose matching AdminExamSeating.tsx uses, so a session's
+// exam_term ("Mid Term 2026") correctly matches Date Sheet exam_type
+// values like "Mid Term". Legacy terms ("1st Semester", "Annual-I")
+// still match by their ordinal as a fallback.
 const examTermMatchesConsole = (examType: string, term: string): boolean => {
   const termOrdinal = (s: string): number | null => {
     if (/1st|first|annual-i\b/i.test(s)) return 1;

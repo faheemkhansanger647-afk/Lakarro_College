@@ -65,9 +65,9 @@ const ImageUploader = ({
           setTimeout(() => reject(new Error(
             `${label} upload is taking too long (over 45s).\n\n` +
             "This usually means Cloudinary isn't responding — most commonly because " +
-            "VITE_CLOUDINARY_CLOUD_NAME or VITE_CLOUDINARY_UPLOAD_PRESET is missing/wrong " +
-            "in your Vercel Environment Variables, or the upload preset isn't set to " +
-            '"Unsigned". Check Vercel → Project Settings → Environment Variables, then ' +
+            "CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY or CLOUDINARY_API_SECRET is " +
+            "missing/wrong in your Vercel Environment Variables. Check " +
+            "Vercel → Project Settings → Environment Variables, then " +
             "redeploy. Tap Retry once fixed."
           )), HARD_CEILING_MS)
         ),

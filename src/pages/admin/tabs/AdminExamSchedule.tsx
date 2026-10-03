@@ -24,7 +24,8 @@ import {
 } from "@/hooks/useNewFeatures";
 
 const classes =["1st Year", "2nd Year"];
-const getExamTypes = (cls: string) => ["9", "10"].includes(cls) ? ["Annual-I", "Annual-II"] : ["1st Semester", "2nd Semester"];
+// Every class uses the same exam types: Mid Term, Annual, Board Exam.
+const getExamTypes = (_cls?: string) => ["Mid Term", "Annual", "Board Exam"];
 const SUBJECTS_6_8 = ["English", "Urdu", "Islamiyat", "M.Quran", "Arabic", "Geography", "Pashto", "Maths", "History", "G.Science", "Computer Science"];
 const SUBJECTS_9_10 = ["English", "Urdu", "Pak-study", "Chemistry", "Physics", "Computer Science", "Biology", "Islamiyat", "M.Quran", "Mathematics"];
 const getSubjects = (cls: string) => ["9", "10"].includes(cls) ? SUBJECTS_9_10 : SUBJECTS_6_8;
@@ -38,9 +39,9 @@ export default function AdminExamSchedule() {
   const deleteBatch = useDeleteExamScheduleBatch();
 
   const [filterCls, setFilterCls] = useState("1st Year");
-  const [filterExam, setFilterExam] = useState("1st Semester");
+  const [filterExam, setFilterExam] = useState("Mid Term");
   const [bulkCls, setBulkCls] = useState("1st Year");
-  const [bulkExam, setBulkExam] = useState("1st Semester");
+  const [bulkExam, setBulkExam] = useState("Mid Term");
   const [bulkYearInput, setBulkYearInput] = useState(String(currentYear));
   const [saving, setSaving] = useState(false);
   const [deletingClass, setDeletingClass] = useState(false);
@@ -161,7 +162,7 @@ export default function AdminExamSchedule() {
   const [exportOpen, setExportOpen] = useState(false);
   const [exportScope, setExportScope] = useState<"single" | "all">("single");
   const [exportCls, setExportCls] = useState("1st Year");
-  const [exportExam, setExportExam] = useState("1st Semester");
+  const [exportExam, setExportExam] = useState("Mid Term");
 
   // ── Single-class PDF section: # / Subject / Date / Day / Time, all centered ──
   const buildPdfForClass = (doc: jsPDF, cls: string, examType: string) => {
@@ -337,7 +338,7 @@ export default function AdminExamSchedule() {
         }
       }
 
-      // Block title: "1st Year · 1st Semester"
+      // Block title: "1st Year · Mid Term"
       doc.setFillColor(245, 245, 245);
       doc.roundedRect(x, y, colW, 6.5, 1, 1, "F");
       doc.setDrawColor(190, 190, 190);

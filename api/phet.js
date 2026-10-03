@@ -67,7 +67,7 @@ async function servePhetSim(req, res, sim) {
   try {
     const upstream = await fetch(simUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; GHSBabiKhel/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; GDCLakarai/1.0)",
         Accept: "text/html",
       },
     });
@@ -126,7 +126,7 @@ async function servePhetAsset(req, res, assetPath) {
   try {
     const upstream = await fetch(upstreamUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; GHSBabiKhel/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; GDCLakarai/1.0)",
         Referer: "https://phet.colorado.edu/",
       },
     });

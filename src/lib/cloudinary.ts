@@ -1,12 +1,67 @@
 // src/lib/cloudinary.ts
-// ✅ FIXED v2: Uses XMLHttpRequest (more reliable on mobile), auto-compresses images
-//    before upload, retries on failure, shows upload progress, gives REAL
-//    error messages, and handles the "stuck at 100%" issue by showing
-//    a "Processing..." state while waiting for Cloudinary response.
+// ✅ FIXED v3: Signed uploads via /api/cloudinary-sign (works with the
+//    college's Cloud Name + API Key + API Secret — NO upload preset needed),
+//    auto-compresses images before upload, retries on failure, shows upload
+//    progress, gives REAL error messages, and handles the "stuck at 100%"
+//    issue by showing a "Processing..." state while waiting for Cloudinary.
+//    If a VITE_CLOUDINARY_UPLOAD_PRESET is configured, the unsigned preset
+//    flow is used instead (backward compatible).
 //    NO Supabase — Cloudinary ONLY.
 
 const CLOUD_NAME    = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME    as string;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
+
+/** Signed-upload credential cache (avoid re-signing within a session). */
+let cachedSignature: { signature: string; timestamp: number; api_key: string; cloud_name: string; folder: string } | null = null;
+
+// ─── Signed Upload Credentials ─────────────────────────────────────────────
+
+/**
+ * Ask our own serverless endpoint (/api/cloudinary-sign) for a short-lived
+ * signature for a signed upload. This is how uploads work with just
+ * CLOUDINARY_CLOUD_NAME + CLOUDINARY_API_KEY + CLOUDINARY_API_SECRET —
+ * the API secret never reaches the browser.
+ */
+async function getUploadSignature(folder: string): Promise<{
+  signature: string; timestamp: number; api_key: string; cloud_name: string; folder: string;
+}> {
+  // A signature is valid for 1 hour and bound to the folder — reuse the
+  // cached one while it is still fresh for the SAME folder.
+  if (
+    cachedSignature &&
+    cachedSignature.folder === folder &&
+    Date.now() / 1000 - cachedSignature.timestamp < 45 * 60
+  ) {
+    return cachedSignature;
+  }
+
+  const res = await fetch("/api/cloudinary-sign", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ folder }),
+  });
+
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
+    try {
+      const j = await res.json();
+      if (j?.error) msg = j.error;
+    } catch { /* keep HTTP status message */ }
+    throw new Error(
+      `Could not get an upload signature from the server (${msg}).\n\n` +
+      "Make sure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and\n" +
+      "CLOUDINARY_API_SECRET are set in the environment and redeployed.",
+    );
+  }
+
+  const data = await res.json();
+  if (!data?.signature || !data?.api_key || !data?.cloud_name) {
+    throw new Error("The server returned an incomplete upload signature.");
+  }
+
+  cachedSignature = data;
+  return data;
+}
 
 // ─── Configuration ─────────────────────────────────────────────────────────
 const MAX_RETRIES         = 3;
@@ -178,8 +233,11 @@ export async function compressImage(file: File): Promise<File> {
 /**
  * Quick check: can we reach Cloudinary's API?
  * Uses a lightweight HEAD request to the ping endpoint.
+ * Skips the check entirely when no cloud name is configured client-side
+ * (signed uploads learn the cloud name from the server instead).
  */
 async function checkCloudinaryReachable(): Promise<boolean> {
+  if (!CLOUD_NAME) return true; // nothing to ping — signed flow will resolve it
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
@@ -213,28 +271,54 @@ export interface UploadProgress {
  * - XHR is more battle-tested for file uploads across all browsers
  * - Some Pakistan mobile carriers' proxies handle XHR better than fetch+FormData
  *
+ * TWO AUTHORISATION MODES:
+ * - UPLOAD PRESET (if VITE_CLOUDINARY_UPLOAD_PRESET is set) → unsigned flow
+ * - otherwise → SIGNED flow: a signature is fetched from our own
+ *   /api/cloudinary-sign endpoint (API key/secret stay server-side)
+ *
  * FIX FOR "STUCK AT 100%":
  * - After upload bytes are sent (100%), we switch to "processing" phase
  * - This tells the UI that we're waiting for Cloudinary's response
  * - Added readystatechange as backup handler (some mobile browsers need it)
  */
+async function getUploadAuth(folder: string): Promise<{
+  cloudName: string;
+  formDataExtras: Record<string, string>;
+}> {
+  if (UPLOAD_PRESET) {
+    if (!CLOUD_NAME) {
+      throw new Error(
+        "Cloudinary is not configured. Please add these environment variables:\n" +
+        "• VITE_CLOUDINARY_CLOUD_NAME\n" +
+        "• VITE_CLOUDINARY_UPLOAD_PRESET\n\n" +
+        "Then redeploy on Vercel (Project Settings → Environment Variables).",
+      );
+    }
+    return { cloudName: CLOUD_NAME, formDataExtras: { upload_preset: UPLOAD_PRESET } };
+  }
+
+  // Signed flow — credentials come from our own serverless endpoint.
+  const sig = await getUploadSignature(folder);
+  return {
+    cloudName: sig.cloud_name || CLOUD_NAME,
+    formDataExtras: {
+      api_key: sig.api_key,
+      timestamp: String(sig.timestamp),
+      signature: sig.signature,
+    },
+  };
+}
+
 function uploadViaXHR(
   file: File,
   folder: string,
   onProgress?: (progress: UploadProgress) => void,
 ): Promise<string> {
-  return new Promise((resolve, reject) => {
-    if (!CLOUD_NAME || !UPLOAD_PRESET) {
-      reject(new Error(
-        "Cloudinary is not configured. Please add these environment variables:\n" +
-        "• VITE_CLOUDINARY_CLOUD_NAME\n" +
-        "• VITE_CLOUDINARY_UPLOAD_PRESET\n\n" +
-        "Then redeploy on Vercel (Project Settings → Environment Variables).",
-      ));
-      return;
-    }
+  return (async () => {
+    const auth = await getUploadAuth(folder);
+    return new Promise<string>((resolve, reject) => {
 
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${auth.cloudName}/auto/upload`;
     const xhr = new XMLHttpRequest();
     let uploadComplete = false;  // Track when upload phase ends
     let resolved = false;       // Prevent double resolve/reject
@@ -297,25 +381,28 @@ function uploadViaXHR(
         if (xhr.status === 400 || xhr.status === 401) {
           // Detect format-restriction errors specifically and give actionable advice
           const isFormatError = /format|extension|allowed/i.test(errMsg);
+          const isSignatureError = /signature|signing|unsigned param/i.test(errMsg);
           resolved = true;
           reject(new Error(
             `Cloudinary rejected the upload: ${errMsg}\n\n` +
             (
               isFormatError
-                ? "This is a format restriction on your upload preset, NOT a signing issue.\n\n" +
-                  "Fix: Go to Cloudinary Dashboard → Settings → Upload → Upload Presets\n" +
-                  `  Find "${UPLOAD_PRESET}" → Edit → Allowed Formats\n` +
-                  "  Either add the missing format (e.g. webp, heic) OR clear the list to allow all formats.\n\n" +
+                ? "This is a format restriction on your upload configuration, NOT a signing issue.\n\n" +
+                  "Fix: Go to Cloudinary Dashboard → Settings → Upload and check\n" +
+                  "  the allowed formats of the preset / account settings.\n\n" +
                   "Note: This site already auto-converts WebP/HEIC/AVIF to JPEG before upload.\n" +
                   "If you're still seeing this, the conversion likely failed in your browser —\n" +
                   "try a different image or a different browser (Chrome recommended)."
-                : "This usually means:\n" +
-                  '• Your upload preset is set to "Signed" instead of "Unsigned"\n' +
-                  "  Fix: Go to Cloudinary Dashboard → Settings → Upload → Upload Presets\n" +
-                  `  Find "${UPLOAD_PRESET}" and change Signing Mode to "Unsigned"\n` +
-                  "• Or the cloud name / preset name is wrong\n" +
-                  "• Or the preset's Allowed Formats excludes this image format\n" +
-                  "  Fix: In the same Upload Preset settings, add the format OR clear the list"
+                : isSignatureError
+                  ? "The upload signature was rejected. This usually means:\n" +
+                    "• The server clock and Cloudinary differ by more than 1 hour\n" +
+                    "• CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET don't match (check for stray spaces)\n" +
+                    "• The signature was reused after expiry — simply retry\n\n" +
+                    "Fix: verify the three CLOUDINARY_* environment variables on Vercel, then redeploy."
+                  : "This usually means:\n" +
+                    "• The Cloudinary cloud name is wrong\n" +
+                    "• The API key doesn't belong to this cloud\n" +
+                    "• The account restricts unsigned/signed uploads — check Cloudinary settings"
             ),
           ));
         } else {
@@ -387,11 +474,14 @@ function uploadViaXHR(
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
     formData.append("folder", folder);
+    for (const [k, v] of Object.entries(auth.formDataExtras)) {
+      formData.append(k, v);
+    }
 
     xhr.send(formData);
-  });
+    });
+  })();
 }
 
 // ─── Sleep helper ──────────────────────────────────────────────────────────

@@ -98,8 +98,8 @@ function sortByRollNumber(students: Student[]): Student[] {
 
 /**
  * Interleaves students round-robin across classes, following classOrder.
- * E.g. classOrder ["10","9","8","7","6"] with 2 students each produces:
- * 10th-1, 9th-1, 8th-1, 7th-1, 6th-1, 10th-2, 9th-2, 8th-2, 7th-2, 6th-2.
+ * E.g. classOrder ["2nd Year","1st Year"] with 2 students each produces:
+ * 2nd Year-1, 1st Year-1, 2nd Year-2, 1st Year-2.
  * A class with fewer students is simply skipped once it's exhausted —
  * the remaining classes keep cycling.
  */
@@ -143,7 +143,8 @@ function rollSessionStatus(s: { is_published: boolean; publish_at: string | null
 }
 
 const ALL_CLASSES =["1st Year", "2nd Year"];
-const TERMS = ["1st Semester", "2nd Semester", "Annual-I", "Annual-II", "Annual"];
+// Exam terms offered for roll-number sessions — Mid Term, Annual, Board Exam.
+const TERMS = ["Mid Term", "Annual", "Board Exam"];
 
 type Status = ExamAttStatus;
 const statusConfig: Record<Status, { icon: React.ReactNode; label: string; color: string; bg: string }> = {
@@ -415,9 +416,9 @@ const AdminExamRollNumbers = () => {
   // Create form
   const [formTitle, setFormTitle] = useState("");
   const [formYear, setFormYear] = useState(new Date().getFullYear());
-  const [formTerm, setFormTerm] = useState("1st Semester");
-  const [selectedClasses, setSelectedClasses] = useState<string[]>(["6", "7", "8"]);
-  const [classOrder, setClassOrder] = useState<string[]>(["6", "7", "8"]);
+  const [formTerm, setFormTerm] = useState("Mid Term");
+  const [selectedClasses, setSelectedClasses] = useState<string[]>(["1st Year", "2nd Year"]);
+  const [classOrder, setClassOrder] = useState<string[]>(["1st Year", "2nd Year"]);
   const [startingNumber, setStartingNumber] = useState(100000);
   const [generating, setGenerating] = useState(false);
   const [updatingStudents, setUpdatingStudents] = useState(false);
@@ -432,7 +433,7 @@ const AdminExamRollNumbers = () => {
 
   // ── ATTENDANCE STATE ────────────────────────────────────────────────────
   const [attSession, setAttSession] = useState<string>("");
-  const [attClass, setAttClass] = useState<string>("");  // "" | "6".."10" | "all"
+  const [attClass, setAttClass] = useState<string>("");  // "" | "1st Year" | "2nd Year" | "all"
   const [attSubject, setAttSubject] = useState<string>("");
   // All-Classes mode: per-class subject map. Key = class, value = subject.
   // Each class has its OWN paper (e.g. 1st Year takes Mathematics while
@@ -878,10 +879,9 @@ const AdminExamRollNumbers = () => {
     }
 
     // Build each class's paper-by-paper date sheet from the admin-authored
-    // Exam Date Sheet (exam_schedule table). Classes 9 & 10 use "Annual-I" /
-    // "Annual-II" exam types while 6-8 use "1st/2nd Semester" — these don't
-    // match the roll session's single exam_term string, so first try an exact
-    // match, and if a class has none, fall back to whatever exam_type that
+    // Exam Date Sheet (exam_schedule table). The roll session's exam_term
+    // (e.g. "Mid Term") should match the date sheet's exam_type exactly;
+    // if a class has no exact match, fall back to whatever exam_type that
     // class actually has scheduled for this year.
     const scheduleByClass = new Map<string, ExamScheduleEntry[]>();
     for (const cls of selectedSession.class_order) {
@@ -2207,7 +2207,7 @@ const AdminExamRollNumbers = () => {
               </div>
               <Card><CardHeader><CardTitle className="text-base">Session Details</CardTitle></CardHeader>
                 <CardContent className="grid gap-4">
-                  <div><Label>Session Title *</Label><Input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="e.g. First Semester Examination 2025" /></div>
+                  <div><Label>Session Title *</Label><Input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="e.g. Mid Term Examination 2025" /></div>
                   <div className="grid grid-cols-2 gap-4">
                     <div><Label>Exam Year *</Label><Input type="number" value={formYear} onChange={e => setFormYear(Number(e.target.value))} /></div>
                     <div><Label>Exam Term *</Label><select value={formTerm} onChange={e => setFormTerm(e.target.value)} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm">{TERMS.map(t => <option key={t} value={t}>{examTypeLabel(t)}</option>)}</select></div>
