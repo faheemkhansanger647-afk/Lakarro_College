@@ -38,6 +38,19 @@
   -webkit-text-fill-color: transparent;
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+   FOREGROUND OVERLAY STACK
+   The navbar sits at z-index 100 and the homepage AI assistant at 150.
+   Radix portals and poppers must always clear both layers when opened.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-radix-popper-content-wrapper] {
+  z-index: 210 !important;
+}
+[data-radix-portal] [role="dialog"],
+[data-radix-portal] [data-radix-dialog-overlay] {
+  z-index: 200;
+}
+
 /* GPU compositing note: content-visibility removed from img/video —
    causes texture corruption glitch on Android Chrome during scroll/animation */
 

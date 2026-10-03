@@ -660,7 +660,7 @@ const AIAssistantWidget = () => {
         transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="fixed right-5 sm:right-6 z-[60] w-[48px] h-[48px] flex items-center justify-center text-orange-600 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
+        className="fixed right-5 sm:right-6 z-[150] w-[52px] h-[52px] rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-orange-500 via-amber-500 to-rose-500 shadow-[0_12px_32px_rgba(234,88,12,0.32)] ring-1 ring-white/70 dark:ring-white/20 hover:shadow-[0_16px_40px_rgba(234,88,12,0.42)] transition-shadow bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
       >
         <AnimatePresence mode="wait" initial={false}>
           {open ? (
@@ -689,7 +689,7 @@ const AIAssistantWidget = () => {
           )}
         </AnimatePresence>
         {!open && (
-          <span className="absolute inset-0 rounded-full animate-ping [animation-duration:2.5s] opacity-20 bg-orange-500/30" />
+          <span className="absolute -inset-1 rounded-[1.15rem] animate-ping [animation-duration:2.5s] opacity-20 bg-orange-500/40 -z-10" />
         )}
       </m.button>
 
@@ -701,12 +701,12 @@ const AIAssistantWidget = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed right-3 sm:right-6 z-[60] w-[calc(100vw-1.5rem)] max-w-md h-[34rem] max-h-[78vh] bg-[#FAFAF8] dark:bg-[#1A1918] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden bottom-[calc(7.75rem+env(safe-area-inset-bottom,0px))] lg:bottom-24"
+            className="fixed right-3 sm:right-6 z-[150] w-[calc(100vw-1.5rem)] max-w-md h-[34rem] max-h-[78vh] bg-[#FAFAF8] dark:bg-[#1A1918] border border-orange-200/80 dark:border-orange-400/20 rounded-[1.35rem] shadow-[0_24px_70px_rgba(15,23,42,0.28)] ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bottom-[calc(7.75rem+env(safe-area-inset-bottom,0px))] lg:bottom-24"
           >
             {/* Header — neutral paper tone. The sparkle avatar now comes
                 alive (rotate + pulse + glow) while the assistant is busy. */}
-            <div className="flex items-center gap-2.5 px-4 py-3.5 bg-[#FAFAF8] dark:bg-[#1A1918] border-b border-black/[0.06] dark:border-white/[0.06] shrink-0">
-              <span className="shrink-0 inline-flex">
+            <div className="relative flex items-center gap-2.5 px-4 py-3.5 bg-gradient-to-r from-orange-50 via-[#FAFAF8] to-rose-50 dark:from-orange-950/40 dark:via-[#1A1918] dark:to-rose-950/30 border-b border-orange-200/60 dark:border-orange-400/15 shrink-0">
+              <span className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/80 dark:bg-white/[0.08] shadow-sm ring-1 ring-orange-200/70 dark:ring-orange-400/20">
                 <AnimatedSparkle size={22} active={busy} className="text-orange-600" />
               </span>
               <div className="min-w-0">
@@ -726,7 +726,7 @@ const AIAssistantWidget = () => {
             {/* Messages */}
             <div
               ref={scrollRef}
-              className="flex-1 overflow-y-auto px-3.5 py-3 space-y-3 bg-[#FAFAF8] dark:bg-[#1A1918]"
+              className="flex-1 overflow-y-auto px-3.5 py-3 space-y-3 bg-gradient-to-b from-[#FAFAF8] to-orange-50/30 dark:from-[#1A1918] dark:to-orange-950/10"
             >
               {messages.length === 0 && (
                 <div className="space-y-3">
@@ -899,7 +899,7 @@ const AIAssistantWidget = () => {
             {/* Input */}
             <form
               onSubmit={handleSubmit}
-              className="shrink-0 flex items-center gap-2 p-2.5 border-t border-black/[0.06] dark:border-white/[0.06] bg-[#FAFAF8] dark:bg-[#1A1918]"
+              className="shrink-0 flex items-center gap-2 p-2.5 border-t border-orange-200/60 dark:border-orange-400/15 bg-[#FAFAF8]/95 dark:bg-[#1A1918]/95 backdrop-blur-sm"
             >
               <input
                 ref={inputRef}
