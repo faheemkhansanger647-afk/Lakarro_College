@@ -8,35 +8,13 @@ import jsPDF from "jspdf";
 import { getSchoolIdentity, schoolSubtitleLine } from "@/lib/schoolIdentity";
 
 // ─── Subject lists per class group ───────────────────────────────────────────
-const SUBJECTS_6_TO_8 = [
-  "English",
-  "Urdu",
-  "Islamiyat",
-  "M.Quran",
-  "Arabic",
-  "Geography",
-  "Pashto",
-  "Maths",
-  "History",
-  "G.Science",
-  "Computer Science",
+const COLLEGE_SUBJECTS = [
+  "English", "Urdu", "Islamiyat", "M.Quran", "Pak-study", "Mathematics",
+  "Physics", "Chemistry", "Biology", "Computer Science", "G.Science",
 ];
 
-const SUBJECTS_9_TO_10 = [
-  "English",
-  "Urdu",
-  "Pak-study",
-  "Chemistry",
-  "Physics",
-  "Computer Science",
-  "Biology",
-  "Islamiyat",
-  "M.Quran",
-  "Mathematics",
-];
-
-function getSubjects(cls: string): string[] {
-  return ["9", "10"].includes(cls) ? SUBJECTS_9_TO_10 : SUBJECTS_6_TO_8;
+function getSubjects(_cls: string): string[] {
+  return COLLEGE_SUBJECTS;
 }
 
 // ─── PDF color palette (matches Merit List / DMC PDF theme) ────────────────
@@ -100,7 +78,7 @@ function computeAnalyticsPdfData({ cls, year, subjects, results }: AnalyticsPdfI
   // Only include subjects that were actually used when adding results for
   // this class/year — a subject nobody entered marks for (count === 0)
   // isn't part of this exam, so it's dropped entirely rather than shown
-  // as a misleading "0%" bar/spoke (e.g. Arabic when it wasn't examined).
+  // as a misleading "0%" bar/spoke (e.g. a retired subject when it was not examined).
   const subjectAverages = subjects
     .map((subject) => {
       let totalPct = 0;
@@ -620,7 +598,7 @@ function generateAllClassesCombinedPdf(
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.text("ALL CLASSES COMBINED RESULT ANALYTICS (6th \u2013 10th)", w / 2, 29.5, { align: "center" });
+  doc.text("COLLEGE RESULT ANALYTICS (1st Year \u2013 2nd Year)", w / 2, 29.5, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);

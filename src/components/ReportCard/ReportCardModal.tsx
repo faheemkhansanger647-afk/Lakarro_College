@@ -4,7 +4,7 @@
 // Flow:
 //   1. Password gate (password: zahir000) — kept in sessionStorage so the
 //      user doesn't re-enter it on every open during a single session.
-//   2. Exam selection: class (9th/10th/1st Year/2nd Year) + exam type (Annual-I/II) + year
+//   2. Exam selection: college class (1st Year/2nd Year) + exam type (Mid Term/Annual Exam/Board Exam) + year
 //   3. Roll number input area — paste/type roll numbers, persisted to
 //      localStorage so they survive page reloads until explicitly deleted.
 //   4. Search button — bulk-fetches all rolls via /api/bisep-proxy with
@@ -87,13 +87,13 @@ export default function ReportCardModal({ open, onClose }: Props) {
     return {
       schoolName: "Government Degree College Lakarai, District Mohmand",
       className: "1st Year",
-      examType: "Annual-I",
+      examType: "Annual Exam",
       year: String(new Date().getFullYear()),
     };
   });
 
   // Roll entries — persisted PER exam selection (class + exam type + year),
-  // so switching from e.g. 9th → 10th no longer shows the previous class's
+  // so switching from e.g. 1st Year → 2nd Year no longer shows the previous class's
   // saved roll numbers. All entries live under one localStorage key as a
   // map of "className|examType|year" → RollEntry[].
   const [rollsBySelection, setRollsBySelection] = useState<Record<string, RollEntry[]>>(() => {
@@ -105,7 +105,7 @@ export default function ReportCardModal({ open, onClose }: Props) {
         // into the new per-selection map under the default selection so
         // existing saved rolls aren't silently lost.
         if (Array.isArray(parsed)) {
-          const migratedKey = `10th|Annual-I|${new Date().getFullYear()}`;
+          const migratedKey = `1st Year|Annual Exam|${new Date().getFullYear()}`;
           return { [migratedKey]: parsed };
         }
         return parsed ?? {};
@@ -138,10 +138,10 @@ export default function ReportCardModal({ open, onClose }: Props) {
   const [retrying, setRetrying] = useState(false);
   const [retryProgress, setRetryProgress] = useState({ done: 0, total: 0 });
   const [retryNote, setRetryNote] = useState("");
-  // Fetch mode: "single" = current class, "combined" = 9th + 10th in parallel
+  // Fetch mode: "single" = current class, "combined" = 1st Year + 2nd Year in parallel
   const [fetchMode, setFetchMode] = useState<"single" | "combined">("single");
   // Per-class combined fetch progress, so the UI can show
-  // "9th: 12/30 · 10th: 18/25" instead of a single combined counter.
+  // "1st Year: 12/30 · 2nd Year: 18/25" instead of a single combined counter.
   const [combinedProgress, setCombinedProgress] = useState<{
     aDone: number; aTotal: number;
     bDone: number; bTotal: number;
@@ -296,21 +296,21 @@ export default function ReportCardModal({ open, onClose }: Props) {
     }
   };
 
-  // ── Combined fetch: 9th + 10th in parallel, then generate combined PDF ──
+  // ── Combined fetch: 1st Year + 2nd Year in parallel, then generate combined PDF ──
   //
-  // Reads saved roll numbers for BOTH 9th and 10th (for the currently
+  // Reads saved roll numbers for BOTH 1st Year and 2nd Year (for the currently
   // selected exam type + year) from localStorage, fetches both classes
   // concurrently via two `bulkFetchResults` pools (each with its own
   // bounded concurrency), and then immediately generates the combined PDF
   // — no separate "results" stage. The single-class flow above is left
   // untouched.
   //
-  // Why two parallel pools (rather than one combined pool): keeping 9th
-  // and 10th fetch pools separate means the per-class progress counters
-  // stay accurate (the UI shows "9th: 12/30 · 10th: 18/25"), and either
+  // Why two parallel pools (rather than one combined pool): keeping 1st Year
+  // and 2nd Year fetch pools separate means the per-class progress counters
+  // stay accurate (the UI shows "1st Year: 12/30 · 2nd Year: 18/25"), and either
   // class can finish independently without waiting for the other.
   const startCombinedSearch = async () => {
-    // Pair depends on the selected class: 9th+10th for college results,
+    // Pair depends on the selected class: 1st Year+2nd Year for college results,
     // 1st Year+2nd Year for college results.
     const [pa, pb] = combinedPairFor(selection.className);
     const keyA = `${pa}|${selection.examType}|${selection.year}`;
@@ -579,7 +579,7 @@ export default function ReportCardModal({ open, onClose }: Props) {
                       Exam Type
                     </label>
                     <div className="grid grid-cols-2 gap-2">
-                      {(["Annual-I", "Annual-II"] as const).map((t) => (
+                      {(["Mid Term", "Annual Exam", "Board Exam"] as const).map((t) => (
                         <button
                           key={t}
                           disabled={stage === "fetching"}
@@ -772,7 +772,7 @@ export default function ReportCardModal({ open, onClose }: Props) {
                 </button>
               )}
 
-              {/* Combined Report button — fetches BOTH classes of the pair (9th+10th or 1st Year+2nd Year) in
+              {/* Combined Report button — fetches BOTH classes of the pair (1st Year+2nd Year or 1st Year+2nd Year) in
                   parallel and generates a 2-page Letter-size PDF combining
                   both classes. Disabled when EITHER class has no saved
                   rolls for the currently-selected exam type + year. */}

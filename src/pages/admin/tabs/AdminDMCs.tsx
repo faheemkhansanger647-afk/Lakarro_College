@@ -76,14 +76,17 @@ interface AdminDMCsProps {
 
 const ALL_CLASSES =["1st Year", "2nd Year"];
 
-// Every class uses the SAME exam-type set — Mid Term, Annual, Board Exam —
-// so one shared list serves every class/group (the old school-era split of
-// "1st/2nd Semester" vs "Annual-I/II" is gone).
-const getExamTypesForClass = (_cls?: string) => ["Mid Term", "Annual", "Board Exam"];
+// Classes 6-8 record results under "Mid Term/Annual Exam"; college classes record
+// under "Mid Term/Annual Exam". These are DIFFERENT label sets — using one
+// shared exam_type string across all classes (as this screen used to) meant
+// Whole School and By Class only ever found results for the class group
+// matching whichever label happened to be selected, leaving the other
+// group's classes empty even though results existed for them.
+const getExamTypesForClass = (_cls: string) => ["Mid Term", "Annual Exam", "Board Exam"];
 
-// "Term" here is an INDEX into that list (0 = Mid Term, 1 = Annual,
-// 2 = Board Exam). This lets Whole School resolve the correct label for
-// every class in one pass.
+// "Term" here means "1st" or "2nd" — index 0 or 1 into the pair above.
+// This lets Whole School resolve the correct label PER class group instead
+// of using one exam_type for every class.
 type Term = 0 | 1 | 2;
 const examTypeForClassAndTerm = (cls: string, term: Term) => getExamTypesForClass(cls)[term];
 
@@ -137,20 +140,15 @@ const ordinalSuffix = (n: number | string): string => {
 const examCode = (examType: string): string => {
   const map: Record<string, string> = {
     "Mid Term": "MT",
-    "Annual": "AN",
+    "Annual Exam": "AE",
     "Board Exam": "BE",
-    // Legacy school-era codes — kept so old DMC numbers stay interpretable.
-    "1st Semester": "1S",
-    "2nd Semester": "2S",
-    "Annual-I": "A1",
-    "Annual-II": "A2",
   };
   if (map[examType]) return map[examType];
   return (examType.replace(/[^A-Za-z0-9]/g, "").slice(0, 2) || "EX").toUpperCase();
 };
 
 // Deterministic, meaningful DMC number: GDC-LK/<year>/<exam><class>-<position>
-// e.g. GDC-LK/2026/MT2Y-01 = Mid Term, 2nd Year, 1st position.
+// e.g. GDC-LK/2026/1S10-01 = Mid Term, 2nd Year, 1st position.
 const buildDMCNo = (r: ResultRecord): string =>
   `GDC-LK/${r.year}/${examCode(r.exam_type)}${r.class}-${String(r.position ?? 0).padStart(2, "0")}`;
 
@@ -729,12 +727,14 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
   const [progress, setProgress] = useState(0);
   const [progressLabel, setProgressLabel] = useState("");
 
-  // ── Term (Mid Term / Annual / Board Exam) — replaces the old fixed `examType` prop ─
-  // We track a term INDEX (0 = Mid Term, 1 = Annual, 2 = Board Exam) and
-  // resolve the actual exam_type string at query time. Every class shares
-  // the same three exam types now, so the index is universal.
-  const initialTermRaw = getExamTypesForClass(cls).indexOf(examType);
-  const initialTerm: Term = (initialTermRaw >= 0 ? initialTermRaw : 0) as Term;
+  // ── Term (1st/2nd) — replaces the old fixed `examType` prop ─────────────
+  // FIX: college classes use "Mid Term/Annual Exam" while 9-10 use "Mid Term/Annual Exam".
+  // Passing one shared examType string to every class's query meant Whole
+  // School (and switching class under By Class) silently found zero
+  // results for whichever class group didn't match that label. Instead we
+  // track a term INDEX (0 = first, 1 = second) and resolve the correct
+  // label per class at query time.
+  const initialTerm: Term = Math.max(0, getExamTypesForClass(cls).indexOf(examType)) as Term;
   const [term, setTerm] = useState<Term>(initialTerm);
 
   // The exam_type actually used for "By Class" scope — always matches
@@ -752,9 +752,10 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
   };
 
   // ── Fetch results (single class, or every class for whole-school) ──────────
-  // Whole School issues ONE query per distinct exam_type for the selected
-  // term. Every class shares the same three exam types now, so this groups
-  // all classes into a single query at index time.
+  // FIX: Whole School now issues ONE query per class group (6-8 semester
+  // label, 9-10 annual label) instead of a single .eq("exam_type", ...)
+  // across all 5 classes — previously that only ever matched one group,
+  // leaving the other group's classes empty.
   const { data: results = [], isLoading, error: fetchError } = useQuery<ResultRecord[]>({
     queryKey: ["admin-dmcs", scope, selectedClass, classExamType, term, year],
     queryFn: async () => {
@@ -956,7 +957,7 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
 
     try {
       const zipLabel = scope === "school" ? "WholeSchool" : `Class${selectedClass}`;
-      const termLabel = ["MidTerm", "Annual", "BoardExam"][term] ?? "Exam";
+      const termLabel = term === 0 ? "Term1" : "Term2";
 
       const doc = new jsPDF({ unit: "mm", format: "a4" });
 
@@ -1001,7 +1002,7 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
             DMC Generation
           </h2>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Generate official Detail Marks Certificates (DMCs) &middot; {scope === "class" ? classExamType : termLabelPair[term]} {year}
+            Generate official Detail Marks Certificates (DMCs) &middot; {scope === "class" ? classExamType : (term === 0 ? "1st Term" : "2nd Term")} {year}
           </p>
         </div>
         {rankedResults.length > 0 && (
@@ -1041,25 +1042,38 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
               </Button>
             </div>
 
-            {/* Term selector — Mid Term / Annual / Board Exam. Every class
-                uses the same three exam types now, so the same labels work
-                for both By Class and Whole School scopes. */}
+            {/* Term selector — replaces the old fixed examType label.
+                Classes 6-8 use "Mid Term/Annual Exam"; 9-10 use "Mid Term/Annual Exam".
+                This picks the right label automatically per class/group. */}
             <div className="mt-3">
               <label className="block text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-1.5">
-                Exam
+                Term
               </label>
               <div className="flex flex-col sm:flex-row gap-2">
-                {termLabelPair.map((label, idx) => (
-                  <Button
-                    key={label}
-                    type="button" size="sm"
-                    variant={term === idx ? "default" : "outline"}
-                    onClick={() => setTerm(idx as Term)}
-                    className="flex-1 min-w-0 whitespace-normal h-auto py-2 text-center"
-                  >
-                    {examTypeLabel(label)}
-                  </Button>
-                ))}
+                <Button
+                  type="button" size="sm"
+                  variant={term === 0 ? "default" : "outline"}
+                  onClick={() => setTerm(0)}
+                  className="flex-1 min-w-0 whitespace-normal h-auto py-2 text-center"
+                >
+                  {scope === "class" ? examTypeLabel(termLabelPair[0]) : "Mid Term"}
+                </Button>
+                <Button
+                  type="button" size="sm"
+                  variant={term === 1 ? "default" : "outline"}
+                  onClick={() => setTerm(1)}
+                  className="flex-1 min-w-0 whitespace-normal h-auto py-2 text-center"
+                >
+                  {scope === "class" ? examTypeLabel(termLabelPair[1]) : "Annual Exam"}
+                </Button>
+                <Button
+                  type="button" size="sm"
+                  variant={term === 2 ? "default" : "outline"}
+                  onClick={() => setTerm(2)}
+                  className="flex-1 min-w-0 whitespace-normal h-auto py-2 text-center"
+                >
+                  Board Exam
+                </Button>
               </div>
             </div>
 
@@ -1087,7 +1101,7 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
 
             {scope === "school" && (
               <p className="text-[11px] text-muted-foreground mt-1.5">
-                Generates DMCs for every class ({ALL_CLASSES.join(", ")}) &middot; {year}. Every class uses the selected exam ({termLabelPair[term]}). The ZIP will contain one subfolder per class — {ALL_CLASSES.join(", ")} (any class with no results for this exam/year will simply be empty).
+                Generates DMCs for every class ({ALL_CLASSES.join(", ")}) &middot; {year}. Classes 6–8 use the matching Semester, classes 9–10 use the matching Mid-Term/Final-Term exam. The ZIP will contain one subfolder per class — 6, 7, 8, 9, and 10 (any class with no results for this term/year will simply be empty).
               </p>
             )}
             {scope === "school" && classesMissing.length > 0 && (
@@ -1188,7 +1202,7 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
           <CardContent className="p-0">
             <div className="px-4 py-3 border-b border-border bg-primary/5">
               <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                {scope === "school" ? "All students in school" : "Students in this class"} &middot; {scope === "class" ? classExamType : termLabelPair[term]} {year}
+                {scope === "school" ? "All students in school" : "Students in this class"} &middot; {scope === "class" ? classExamType : (term === 0 ? "1st Term" : "2nd Term")} {year}
               </p>
             </div>
             <div className="max-h-80 overflow-y-auto">
@@ -1236,7 +1250,7 @@ function AdminDMCs({ cls, examType, year }: AdminDMCsProps) {
             <FileDown className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
             <h3 className="font-semibold text-foreground">No Results Found</h3>
             <p className="text-sm text-muted-foreground mt-2 max-w-sm mx-auto">
-              No results are available for {scope === "school" ? "any class in the college" : `Class ${selectedClass}`} &middot; {scope === "class" ? classExamType : termLabelPair[term]} &middot; {year}.
+              No results are available for {scope === "school" ? "any class in the college" : `Class ${selectedClass}`} &middot; {scope === "class" ? classExamType : (term === 0 ? "1st Term" : "2nd Term")} &middot; {year}.
               Please add results in the Manage Results tab first.
             </p>
           </CardContent>

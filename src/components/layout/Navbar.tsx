@@ -892,10 +892,10 @@ const Navbar = () => {
             )}
           </HexagonLogoFrame>
           <div>
-            <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
+            <span className="college-name font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Government Degree College
             </span>
-            <span className="font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
+            <span className="college-name font-display italic font-medium text-lg sm:text-xl text-foreground leading-none block tracking-tight" style={{ lineHeight: 1.05 }}>
               Lakarai
             </span>
           </div>

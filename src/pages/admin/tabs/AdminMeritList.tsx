@@ -1708,13 +1708,11 @@ const AdminMeritList = () => {
       />
 
       <Tabs defaultValue="school">
-        <TabsList className="grid grid-cols-3 gap-1 w-full sm:flex sm:w-auto sm:inline-flex h-auto">
+        <TabsList className="grid grid-cols-2 gap-1 w-full sm:flex sm:w-auto sm:inline-flex h-auto">
           <TabsTrigger value="school" className="gap-1 text-[11px] sm:text-sm px-2 py-2"><School className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="truncate">School Merit</span></TabsTrigger>
-          <TabsTrigger value="bise" className="gap-1 text-[11px] sm:text-sm px-2 py-2"><Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="truncate">BISE Merit</span></TabsTrigger>
           <TabsTrigger value="published" className="gap-1 text-[11px] sm:text-sm px-2 py-2"><Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="truncate">Published ({records.length})</span></TabsTrigger>
         </TabsList>
         <TabsContent value="school" className="mt-4"><SchoolMeritTab /></TabsContent>
-        <TabsContent value="bise" className="mt-4"><BiseMeritTab /></TabsContent>
         <TabsContent value="published" className="mt-4">
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">

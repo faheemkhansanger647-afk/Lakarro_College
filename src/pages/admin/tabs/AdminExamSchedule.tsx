@@ -24,11 +24,9 @@ import {
 } from "@/hooks/useNewFeatures";
 
 const classes =["1st Year", "2nd Year"];
-// Every class uses the same exam types: Mid Term, Annual, Board Exam.
-const getExamTypes = (_cls?: string) => ["Mid Term", "Annual", "Board Exam"];
-const SUBJECTS_6_8 = ["English", "Urdu", "Islamiyat", "M.Quran", "Arabic", "Geography", "Pashto", "Maths", "History", "G.Science", "Computer Science"];
-const SUBJECTS_9_10 = ["English", "Urdu", "Pak-study", "Chemistry", "Physics", "Computer Science", "Biology", "Islamiyat", "M.Quran", "Mathematics"];
-const getSubjects = (cls: string) => ["9", "10"].includes(cls) ? SUBJECTS_9_10 : SUBJECTS_6_8;
+const getExamTypes = (_cls: string) => ["Mid Term", "Annual Exam", "Board Exam"];
+const COLLEGE_SUBJECTS = ["English", "Urdu", "Islamiyat", "M.Quran", "Pak-study", "Mathematics", "Physics", "Chemistry", "Biology", "Computer Science", "G.Science"];
+const getSubjects = (_cls: string) => COLLEGE_SUBJECTS;
 
 const currentYear = new Date().getFullYear();
 

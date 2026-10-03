@@ -70,8 +70,7 @@ function parseCSVRows(text: string): string[][] {
 }
 
 const classes =["1st Year", "2nd Year"];
-// Every class uses the SAME exam-type set: Mid Term, Annual, Board Exam.
-const getExamTypes = (_cls?: string) => ["Mid Term", "Annual", "Board Exam"];
+const getExamTypes = (_cls: string) => ["Mid Term", "Annual Exam", "Board Exam"];
 
 interface Student { id: string; full_name: string; roll_number: string; photo_url: string | null; }
 interface ExamRollEntry {
@@ -90,16 +89,11 @@ interface Result {
 }
 
 // ─── Subject lists per class group ───────────────────────────────────────────
-const SUBJECTS_6_TO_8 = [
-  "English", "Urdu", "Islamiyat", "M.Quran", "Arabic", "Geography",
-  "Pashto", "Maths", "History", "G.Science", "Computer Science",
+const COLLEGE_SUBJECTS = [
+  "English", "Urdu", "Islamiyat", "M.Quran", "Pak-study", "Mathematics",
+  "Physics", "Chemistry", "Biology", "Computer Science", "G.Science",
 ];
-const SUBJECTS_9_TO_10 = [
-  "English", "Urdu", "Pak-study", "Chemistry", "Physics",
-  "Computer Science", "Biology", "Islamiyat", "M.Quran", "Mathematics",
-];
-const getSubjects = (cls: string) =>
-  ["9", "10"].includes(cls) ? SUBJECTS_9_TO_10 : SUBJECTS_6_TO_8;
+const getSubjects = (_cls: string) => COLLEGE_SUBJECTS;
 const DEFAULT_SUBJECT_MAX = 75;
 
 const currentYear = new Date().getFullYear();
@@ -110,7 +104,7 @@ const currentYear = new Date().getFullYear();
 //
 //   1. "Trickle publish" — when admin schedules "All Classes At Once", every
 //      class row gets the SAME `publish_at` timestamp. The old code only
-//      published the CURRENT class+exam+year when the timer fired, so class 6
+//      published the CURRENT class+exam+year when the timer fired, so the selected class
 //      published at T+0, then class 7 waited for the next Vercel cron tick
 //      (up to 1 minute later), then class 8, etc. Fix: publish by
 //      `publish_at` value so all classes sharing that timestamp flip in one
@@ -238,15 +232,15 @@ const AdminResults = () => {
   //     for each subject — the totals columns still carry the real numbers.
   //
   // Notes on exam-type matching:
-  //   - ALL classes (1st Year / 2nd Year) use the same exam types:
-  //     ["Mid Term", "Annual", "Board Exam"].
+  //   - Classes 6–8 use exam types ["Mid Term", "Annual Exam"].
+  //   - College classes use the same three exam types.
   //   - The admin clicks "Export Excel" from whatever class+exam is currently
   //     selected. To give a true "all classes" export we map the currently
   //     selected exam type to its nearest equivalent for each class:
   //       * If the current examType is valid for a class → use it.
   //       * Otherwise fall back to that class's first exam type.
-  //     This means: if the admin is on 1st Year → "Mid Term", every other
-  //     class also exports "Mid Term" (the shared first exam type).
+  //     This means: if the admin is on 1st Year → "Mid Term", classes 6–8
+  //     get "Mid Term" and classes 9–10 get "Mid Term" (their first slot).
   //
   // Rank vs Position:
   //   - `position` = the student's standing WITHIN their own class, computed
@@ -261,11 +255,12 @@ const AdminResults = () => {
   //   always internally consistent and never rely on a stale/null DB value.
   const handleExportAllClassesExcel = async () => {
     setExporting(true);
-    const toastId = toast.loading("Fetching results for all classes...");
+    const toastId = toast.loading("Fetching results for all classes (6–10)...");
     try {
       // Pick the matching exam_type for each class based on the currently
       // selected examType. Falls back to the class's first exam type if the
-      // current selection isn't valid for that class.
+      // current selection isn't valid for that class (e.g. "Mid Term" can't
+      // apply to the selected class — the selected class doesn't have Mid Term, so use "Mid Term").
       const examTypePerClass: Record<string, string> = {};
       for (const c of classes) {
         const valid = getExamTypes(c);
@@ -1714,13 +1709,21 @@ const AdminResults = () => {
           unchanged) takes over from there for each class tab, so the admin
           can always see how much time remains without reopening this modal.
 
-          BUG FIX ("only some classes got scheduled"): previously classes 6-8
-          used exam_type values "1st Semester" / "2nd Semester", while
-          classes 9-10 used "Annual-I" / "Annual-II" — two DIFFERENT label
-          sets. Now every class shares the SAME set (Mid Term / Annual /
-          Board Exam), and the schedule loop still resolves the exam type
-          per selected class via getExamTypes(cls), so each checked class
-          is scheduled under its own valid exam types. */}
+          BUG FIX ("only 6,7,8 got scheduled, not 9 & 10"): college classes use
+          exam_type values "Mid Term" / "Annual Exam", while classes
+          9-10 use "Mid Term" / "Annual Exam" — two DIFFERENT label sets. The
+          old code always filtered by whatever `examType` the currently-open
+          class TAB happened to have selected (e.g. "Mid Term"), so when
+          that update ran with `.eq("exam_type", examType)`, classes 9 and
+          10 had ZERO rows matching "Mid Term" and were silently
+          skipped — even though they were checked in the modal.
+          Fix: schedule EACH selected class using the CORRECT exam_type
+          for that specific class (via getExamTypes(cls)), not one shared
+          examType value for every class. Classes 6-8 get scheduled under
+          BOTH their semester labels; college classes get scheduled under BOTH
+          their annual labels — so picking "all 5 classes" genuinely
+          schedules all 5, regardless of which tab was open when the modal
+          was opened. */}
       <Dialog open={showGlobalSchedule} onOpenChange={setShowGlobalSchedule}>
         {/* MOBILE FIX: this dialog's content (class picker + date/time + 3
             action buttons) is taller than most phone screens. The shared
@@ -1823,9 +1826,9 @@ const AdminResults = () => {
                   setGsSaving(true);
                   const publishAt = new Date(`${gsDate}T${gsTime}:00`).toISOString();
                   // Schedule EACH class using ITS OWN valid exam_type values
-                  // (every exam type in that class's list) instead of
-                  // one shared `examType`. This is what makes "all
-                  // classes" actually schedule all of them.
+                  // (both semesters for 6-8, both annuals for 9-10) — not
+                  // one shared `examType`. This is what makes "all 5
+                  // classes" actually schedule all 5.
                   //
                   // "Hide top 3 of each class": when checked, look up that
                   // class's current unpublished rows FIRST, rank by
@@ -1971,7 +1974,7 @@ const AdminResults = () => {
                 // Flip is_published true -> false AND clear publish_at in the
                 // SAME patch (anti re-publish loop — see button comment above).
                 // Same per-class exam_type coverage as scheduling: BOTH exam
-                // type labels per class
+                // type labels per class (semesters for 6-8, annuals for 9-10)
                 // so selected classes are fully unpublished no matter which
                 // exam type tab was open when the modal was opened.
                 const res = await Promise.all(
@@ -2010,8 +2013,8 @@ const AdminResults = () => {
       {/* ── Bulk Delete dialog ────────────────────────────────────────────
           Same class-picker pattern as Schedule Publish above. Deletes EVERY
           result row for each selected class + year, across all of that
-          class's exam types — a full wipe so new results can be entered
-          cleanly. */}
+          class's exam types (both semesters for 6-8, both annuals for
+          9-10) — a full wipe so new results can be entered cleanly. */}
       <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
         <AlertDialogContent className="max-w-sm w-[92vw] sm:max-w-md rounded-2xl">
           <AlertDialogHeader>
@@ -2020,7 +2023,7 @@ const AdminResults = () => {
             </AlertDialogTitle>
             <AlertDialogDescription>
               Pick one or more classes. ALL results for those classes in {year}
-              {" "}(every exam type) will be permanently deleted. This
+              {" "}(every exam type/semester) will be permanently deleted. This
               cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>

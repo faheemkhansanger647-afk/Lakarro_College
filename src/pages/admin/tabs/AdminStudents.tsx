@@ -16,7 +16,7 @@ import { Plus, Pencil, Trash2, Loader2, Upload, Search, FileUp, Download, Gradua
 import ExcelJS from "exceljs";
 import toast from "react-hot-toast";
 import { StudentProfileDrawer } from "@/components/admin/StudentProfileDrawer";
-import { examTypeLabel, ALL_EXAM_TYPES } from "@/utils/examTypeLabel";
+import { examTypeLabel } from "@/utils/examTypeLabel";
 
 // ─── StudentAvatar (extracted to avoid hook-in-loop) ──────────────────────
 function StudentAvatar({ photoUrl, fullName, size = "sm" }: { photoUrl: string | null; fullName: string; size?: "sm" | "lg" }) {
@@ -49,6 +49,9 @@ interface Student {
 
 const classes =["1st Year", "2nd Year"];
 
+// All exam types shown for all classes
+const ALL_EXAM_TYPES = ["Mid Term", "Annual Exam", "Board Exam"];
+
 const emptyStudent = {
   full_name: "",
   roll_number: "",
@@ -77,7 +80,7 @@ const AdminStudents = () => {
   const [promotionOpen, setPromotionOpen] = useState(false);
   const [promotionFrom, setPromotionFrom] = useState("1st Year");
   const [promotionTo, setPromotionTo] = useState("2nd Year");
-  const [promotionExamType, setPromotionExamType] = useState("Annual");
+  const [promotionExamType, setPromotionExamType] = useState("Annual Exam");
   const [promotionYear, setPromotionYear] = useState<number>(new Date().getFullYear());
   const [promoting, setPromoting] = useState(false);
   const [promotionPreview, setPromotionPreview] = useState<{

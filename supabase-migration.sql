@@ -105,3 +105,31 @@ create trigger programs_touch_updated_at
   for each row execute function public.touch_updated_at();
 
 -- Done! Nothing else to configure.
+
+-- 3) College result persistence and exam-label normalization (October 2026)
+-- These are safe to re-run and keep the code and database schema aligned.
+alter table public.results add column if not exists teacher_remarks text;
+update public.results set exam_type = case
+  when exam_type in ('1st Semester', 'Annual-I') then 'Mid Term'
+  when exam_type in ('2nd Semester', 'Annual-II') then 'Annual Exam'
+  else exam_type end
+where exam_type in ('1st Semester', '2nd Semester', 'Annual-I', 'Annual-II');
+update public.exam_schedule set exam_type = case
+  when exam_type in ('1st Semester', 'Annual-I') then 'Mid Term'
+  when exam_type in ('2nd Semester', 'Annual-II') then 'Annual Exam'
+  else exam_type end
+where exam_type in ('1st Semester', '2nd Semester', 'Annual-I', 'Annual-II');
+update public.merit_lists set exam_type = case
+  when exam_type in ('1st Semester', 'Annual-I') then 'Mid Term'
+  when exam_type in ('2nd Semester', 'Annual-II') then 'Annual Exam'
+  else exam_type end
+where exam_type in ('1st Semester', '2nd Semester', 'Annual-I', 'Annual-II');
+update public.exam_roll_sessions set exam_term = replace(replace(replace(replace(exam_term,
+  '1st Semester', 'Mid Term'), '2nd Semester', 'Annual Exam'), 'Annual-I', 'Mid Term'), 'Annual-II', 'Annual Exam')
+where exam_term is not null;
+-- Remove the retired school subjects from saved per-subject result JSON.
+update public.results r set subject_marks = coalesce((
+  select jsonb_object_agg(e.key, e.value)
+  from jsonb_each(coalesce(r.subject_marks, '{}'::jsonb)) e
+  where lower(e.key) not in ('history', 'geography', 'arabic', 'pashto')
+), '{}'::jsonb) where r.subject_marks is not null;

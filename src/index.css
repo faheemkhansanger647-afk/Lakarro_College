@@ -28,6 +28,15 @@
    correctly — it just uses the system fonts.
 
    Do not re-add the @import here. ─────────────────────────────────────────── */
+.college-name {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #f12711, #f5af19, #ff6a88, #8a2be2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 
 /* GPU compositing note: content-visibility removed from img/video —
    causes texture corruption glitch on Android Chrome during scroll/animation */

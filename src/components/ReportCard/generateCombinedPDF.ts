@@ -1,10 +1,10 @@
 // src/components/ReportCard/generateCombinedPDF.ts
-// Combined 9th + 10th BISE Peshawar result report — Letter size, 2 pages.
+// Combined 1st Year + 2nd Year BISE Peshawar result report — Letter size, 2 pages.
 //
 // Page 1 — Combined Overview & Position Holders
 //   • Title block (school + exam + year + BISE Peshawar)
 //   • 5-tile combined KPI strip (Total / Passed / Failed / Pass% / Avg)
-//   • Two side-by-side class cards (9th sky-tinted, 10th violet-tinted),
+//   • Two side-by-side class cards (1st Year sky-tinted, 2nd Year violet-tinted),
 //     each with: class KPI row + Top 3 position holders with medal badges
 //   • Top 6 combined scorers horizontal bar chart (color-coded by class)
 //   • Insight footer line
@@ -74,9 +74,9 @@ type ClassKey = ClassName;
 
 // The two classes being compared. Set once at the top of
 // generateCombinedReportPDF (drawing is fully synchronous) so every label,
-// title and narrative line reads "9th / 10th" for college results and
+// title and narrative line reads "1st Year / 2nd Year" for college results and
 // "1st Year / 2nd Year" for college results.
-const L: { a: ClassKey; b: ClassKey } = { a: "9th", b: "10th" };
+const L: { a: ClassKey; b: ClassKey } = { a: "1st Year", b: "2nd Year" };
 const cls = (k: ClassKey): string => classDisplayName(k);
 const pairTitle = (): string =>
   isCollegeClass(L.a) ? `${L.a} & ${L.b}` : `Class ${L.a} & ${L.b}`;
@@ -91,7 +91,7 @@ export interface CombinedPDFOpts {
   schoolName: string;
   examType: ExamSelection["examType"];
   year: string;
-  /** Which two classes are compared. Defaults to ["9th", "10th"]. */
+  /** Which two classes are compared. Defaults to ["1st Year", "2nd Year"]. */
   pair?: [ClassKey, ClassKey];
   classes: Partial<Record<ClassKey, ClassData>>;
 }
@@ -440,7 +440,7 @@ function drawPage1(
   //   inner ring = 2nd Yearth (violet = pass, red = fail portion).
   //   Center label = combined pass %.
   //   Every dot in the legend now has a real counterpart on the chart:
-  //   the sky ring for 9th, the violet ring for 10th, and since both
+  //   the sky ring for 1st Year, the violet ring for 2nd Year, and since both
   //   rings share the same red fail-color for their unfilled portion,
   //   "Failed" is represented too. "Combined" refers to the center label,
   //   not a separate ring, since it's a derived summary of the other two.
@@ -456,7 +456,7 @@ function drawPage1(
     fill: C.stripe, stroke: C.border, radius: 6,
   });
 
-  // Donut geometry — outer ring (9th) r=55→42, inner ring (10th) r=38→25.
+  // Donut geometry — outer ring (1st Year) r=55→42, inner ring (2nd Year) r=38→25.
   // Both rings use C.fail for their unfilled portion so the red segments
   // are always visible and match the "Failed" legend dot.
   const donutCx = MARGIN + 80;
@@ -911,7 +911,7 @@ function drawPage2(
   //   data — "1st Yearth leads in 5 of 8 subjects", "Largest gap:
   //   Physics — 2nd Yearth ahead by 18 pts", etc. Each bullet is
   //   prefixed with a small colored dot matching the class it
-  //   highlights (sky for 9th, violet for 10th, gold for top-scorer
+  //   highlights (sky for 1st Year, violet for 2nd Year, gold for top-scorer
   //   callouts, gray for neutral observations).
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
@@ -1067,7 +1067,7 @@ export async function generateCombinedReportPDF(opts: CombinedPDFOpts): Promise<
   const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "pt", format: "letter" });
 
-  const [keyA, keyB] = opts.pair ?? (["9th", "10th"] as [ClassKey, ClassKey]);
+  const [keyA, keyB] = opts.pair ?? (["1st Year", "2nd Year"] as [ClassKey, ClassKey]);
   L.a = keyA;
   L.b = keyB;
   const classA = opts.classes[keyA];
